@@ -19,7 +19,7 @@ class Article:
         self.content = content
 
 # options = Options()
-# options.headless = True  # Enable headless mode
+# options.headless = True  # Enable headless mode (not yet for development purposes)
 
 # Set the path to the Chromedriver
 DRIVER_PATH = '/Users/chelseagomez/Downloads/chromedriver-mac-arm64/chromedriver'
@@ -29,7 +29,7 @@ driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
 try:
     # Wait for up to 20 seconds until the element with ID "css-jghyns" is present in the DOM (article element)
-    driver.get('https://iapp.org/news/?size=n_3_n')
+    driver.get('https://iapp.org/news/?size=n_10_n')
 
     element = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.CLASS_NAME, "css-jghyns"))
@@ -91,7 +91,11 @@ try:
                 content_text.append(paragraph[0].text) # Append to content by paragraph
 
         new_article.content = content_text
-        new_article.description = content_text[0]
+
+        if "Editor's note" in content_text[0]:
+            new_article.description = content_text[1]
+        else:
+            new_article.description = content_text[0]
         
         articles_list.append(new_article)
 
