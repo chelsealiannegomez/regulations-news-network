@@ -9,7 +9,7 @@ articles_list = []
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
 class Article:
-    def __init__(self, url="", title="", location="", date_published="", keywords=[], description="", content=""):
+    def __init__(self, url="", title="", location="", date_published="", keywords=[], description="", content=[]):
         self.url = url
         self.title = title
         self.location = location
@@ -29,7 +29,7 @@ driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
 try:
     # Wait for up to 20 seconds until the element with ID "css-jghyns" is present in the DOM (article element)
-    driver.get('https://iapp.org/news/?size=n_20_n')
+    driver.get('https://iapp.org/news/?size=n_3_n')
 
     element = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.CLASS_NAME, "css-jghyns"))
@@ -81,6 +81,17 @@ try:
                 article_keywords.append(keyword.text)
 
         new_article.keywords = article_keywords
+
+        content = article_soup.select('.css-al1m8k')
+        
+        content_text = []
+        for i in content:
+            paragraph = i.find_all('p')
+            if len(paragraph) > 0:
+                content_text.append(paragraph[0].text) # Append to content by paragraph
+
+        new_article.content = content_text
+        new_article.description = content_text[0]
         
         articles_list.append(new_article)
 
