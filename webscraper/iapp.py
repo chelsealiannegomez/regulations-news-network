@@ -27,9 +27,13 @@ DRIVER_PATH = '/Users/chelseagomez/Downloads/chromedriver-mac-arm64/chromedriver
 # Set up the Chrome WebDriver
 driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 
+NUM_ARTICLES = 10
+BASE_URL = 'https://iapp.org'
+URL_TO_SCRAPE = f'{BASE_URL}/news?size=n_{NUM_ARTICLES}_n'
+
 try:
     # Wait for up to 20 seconds until the element with ID "css-jghyns" is present in the DOM (article element)
-    driver.get('https://iapp.org/news/?size=n_10_n')
+    driver.get(URL_TO_SCRAPE)
 
     element = WebDriverWait(driver, 20).until(
         EC.presence_of_element_located((By.CLASS_NAME, "css-jghyns"))
@@ -41,7 +45,7 @@ try:
 
     for article in articles:
         new_article = Article()
-        new_article.url = 'https://iapp.org' +  article.get('href')
+        new_article.url = BASE_URL + article.get('href')
 
         content = article.find_all('p')
         if len(content) == 3:
@@ -50,6 +54,8 @@ try:
         elif len(content) == 2:
             new_article.date_published = content[0].text
             new_article.title = content[1].text
+        else:
+            raise ValueError('Article format is unexpected')
 
         # Visit article URL
 
@@ -70,6 +76,10 @@ try:
 
         article_keywords = []
         loc_count = 0
+
+        if len(keywords) == 0:
+            raise ValueError('No keywords found')
+
         for keyword in keywords:
             if keyword.text in locations: 
                 if loc_count == 0:
@@ -83,6 +93,9 @@ try:
         new_article.keywords = article_keywords
 
         content = article_soup.select('.css-al1m8k')
+
+        if len(content) == 0:
+            raise ValueError('No content found')
         
         content_text = []
         for i in content:
@@ -92,20 +105,19 @@ try:
 
         new_article.content = content_text
 
-        if "Editor's note" in content_text[0]:
+        if "Editor's note" in content_text[0]: # If editor's note is first in content, use second line for description
             new_article.description = content_text[1]
         else:
             new_article.description = content_text[0]
         
         articles_list.append(new_article)
-
-
-
     
     file_path = "articles.json"
     with open(file_path, 'w') as f:
         json.dump(articles_list, f, indent=4, default=lambda o: o.__dict__)
 
+except:
+    print("An error occured")
 
 finally:
     # Quit Driver
