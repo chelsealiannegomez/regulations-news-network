@@ -18,3 +18,14 @@ model User {
   lastName      String
   password      String
 }
+
+model Article {
+  id            Int          @id @default(autoincrement())  
+  url           String       @unique
+  title         String
+  date_posted   String
+  location      String
+  description   String
+  content       String
+  keywords      String[]
+}

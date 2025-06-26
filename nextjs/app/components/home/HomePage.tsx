@@ -1,9 +1,16 @@
+import { User } from '@/lib/definitions'
 
-export default function HomePage( user ) {
+type HomePageProps = {
+  user: User;
+};
 
-    return (
-        <div>
-            <p>Welcome, {user.firstName}</p>
-        </div>
-    );
+export default function HomePage({ user }: HomePageProps) {
+  return (
+    <div>
+        <header className="h-20 flex justify-center items-center text-xl">
+            Regulations News Network
+        </header>
+      <p>Welcome, {user.firstName}</p>
+    </div>
+  );
 }

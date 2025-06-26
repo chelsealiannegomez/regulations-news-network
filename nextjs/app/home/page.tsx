@@ -1,7 +1,9 @@
 import { cookies } from 'next/headers';
-import { decrypt, updateSession, deleteSession } from '@/lib/session';
+import { decrypt } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
+import HomePage from '../components/home/HomePage';
+import { User } from '@/lib/definitions'
 
 
 export default async function Page () {
@@ -19,7 +21,7 @@ export default async function Page () {
         redirect('/login');
     }
 
-    const user = await prisma.user.findUnique({
+    const user: User = await prisma.user.findUnique({
         where: { id: payload.userId },
     })
 
@@ -30,7 +32,8 @@ export default async function Page () {
 
     return (
         <div>
-            <h1>Welcome back, {user.firstName}</h1>
+            <HomePage user={user}/>
+            {/* <h1>Welcome back, {user.firstName}</h1> */}
         </div>
     )
 }
