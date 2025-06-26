@@ -1,18 +1,33 @@
 'use client';
 
 import { useState, useRef } from "react";
+import Link from 'next/link';
 
 export default function RegisterForm() {
     const userRef = useRef<HTMLInputElement>(null);
     const passRef = useRef<HTMLInputElement>(null);
 
+    const [successfulRegister, setSuccessfulRegister] = useState("");
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const username = userRef.current?.value 
-        const password = passRef.current?.value
-        console.log(username)
-        console.log(password)
+        const email = userRef.current?.value;
+        const password = passRef.current?.value;
+        
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify( {email, password} )
+            })
+            const message = await response.json();
+            setSuccessfulRegister(message.message);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
@@ -66,6 +81,8 @@ export default function RegisterForm() {
                     Register
                     </button>
                 </div>
+                <p className="pt-3 text-red-800">{successfulRegister}</p>
+                <p>Have an account? Login <Link href="/login"><b>here</b></Link></p>
             </div>
         </form>
     );
