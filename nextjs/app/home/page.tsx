@@ -1,20 +1,22 @@
 import { cookies } from 'next/headers';
 import { decrypt } from '@/lib/session';
+import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
-// import { useRouter } from 'next/navigation';
+
 
 export default async function Page () {
-    // const router = useRouter()
     const sessionCookie = (await cookies()).get('session')?.value;
 
     if (!sessionCookie) {
-        return<p>Please log in</p>
+        // No session found, redirect to login page
+        redirect('/login');
     }
 
     const payload = await decrypt(sessionCookie);
 
     if (!payload) {
-        return <p>Session expired or invalid. Please log in again.</p>
+        // Session expired or invalid, redirect to login page
+        redirect('/login');
     }
 
     const user = await prisma.user.findUnique({
