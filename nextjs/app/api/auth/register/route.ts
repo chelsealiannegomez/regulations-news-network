@@ -1,10 +1,10 @@
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma'
 import { hashPassword } from '@/lib/bcrypt'
 import { createSession } from '@/lib/session'
 import { NextResponse, NextRequest } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
-    const { email, password } = await request.json();
+    const { email, password, firstName, lastName } = await request.json();
 
     try {
 
@@ -22,6 +22,8 @@ export const POST = async (request: NextRequest) => {
             data: {
                 email: email,
                 password: hashedPassword,
+                firstName,
+                lastName,
             }
         })
         await createSession(newUser.id);

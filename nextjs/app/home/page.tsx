@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { decrypt } from '@/lib/session';
+import { decrypt, updateSession, deleteSession } from '@/lib/session';
 import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 
@@ -24,12 +24,13 @@ export default async function Page () {
     })
 
     if (!user) {
-        return <p>User not found. Please log in again.</p>
-    }
+        // User not found, redirect to login page
+        redirect('/login');
+    } 
 
     return (
         <div>
-            <h1>Welcome back, {user.email}</h1>
+            <h1>Welcome back, {user.firstName}</h1>
         </div>
     )
 }
