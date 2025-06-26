@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useRef } from "react";
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function RegisterForm() {
+    const router = useRouter();
     const userRef = useRef<HTMLInputElement>(null);
     const passRef = useRef<HTMLInputElement>(null);
 
@@ -23,6 +25,9 @@ export default function RegisterForm() {
                 },
                 body: JSON.stringify( {email, password} )
             })
+            if (response.ok) {
+                router.push('/home')
+            }
             const message = await response.json();
             setSuccessfulRegister(message.message);
         } catch (err) {
