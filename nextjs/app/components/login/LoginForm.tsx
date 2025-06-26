@@ -87,7 +87,7 @@ export default function RegisterForm() {
                     </button>
                 </div>
                 <p className="pt-3 text-red-800">{successfulLogin}</p>
-                <p>Don't have an account? Register <Link href="/register"><b>here</b></Link></p>
+                <p>Don&apos;t have an account? Register <Link href="/register"><b>here</b></Link></p>
             </div>
         </form>
     );

@@ -1,6 +1,6 @@
-import prisma from '../../../../lib/prisma';
+import prisma from '@/lib/prisma';
 import { hashPassword } from '@/lib/bcrypt'
-
+import { createSession } from '@/lib/session'
 import { NextResponse, NextRequest } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
@@ -24,7 +24,9 @@ export const POST = async (request: NextRequest) => {
                 password: hashedPassword,
             }
         })
-        return NextResponse.json({ message: 'Successfully registered!' }, { status: 200 });
+        await createSession(newUser.id);
+
+        return NextResponse.json({ message: 'Successfully registered and logged in!' }, { status: 200 });
 
     } catch (err) {
         console.log(err);

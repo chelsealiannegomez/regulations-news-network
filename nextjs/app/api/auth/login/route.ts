@@ -1,7 +1,6 @@
 import prisma from '@/lib/prisma';
 import { verifyPassword } from '@/lib/bcrypt'
 import { createSession } from '@/lib/session'
-
 import { NextResponse, NextRequest } from 'next/server';
 
 export const POST = async (request: NextRequest) => {
@@ -11,7 +10,6 @@ export const POST = async (request: NextRequest) => {
         const user = await prisma.user.findUnique({
             where: { email: email }
         });
-
 
         if (!user) {
             return NextResponse.json({ message: 'Email is not yet registered' }, { status: 409 });

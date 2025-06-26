@@ -1,6 +1,6 @@
 import 'server-only'
 import { SignJWT, jwtVerify } from 'jose';
-import { SessionPayLoad } from '@/app/lib/definitions';
+import { SessionPayLoad } from './definitions';
 import { cookies } from 'next/headers';
 
 const secretKey = process.env.SESSION_SECRET;
@@ -21,12 +21,12 @@ export async function decrypt(session: string | undefined = '') {
         });
         return payload;
     } catch (err) {
-        console.log('Failed to verify session');
+        console.log('Failed to verify session:', err);
     }
-}  
+} 
 
-export async function createSession(userId: string) {
-    const expiresAt = new Date(Date.now() + 60 * 1000);
+export async function createSession(userId: number) {
+    const expiresAt = Date.now() + 60 * 1000;
     const session = await encrypt ({ userId, expiresAt });
     const cookieStore = await cookies(); 
 
