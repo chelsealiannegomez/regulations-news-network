@@ -1,5 +1,8 @@
+import Link from 'next/link';
 
 export default function LoginForm() {
+
+
   return (
     <form className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
@@ -10,7 +13,6 @@ export default function LoginForm() {
           <div>
             <label
               className="mb-3 block text-xs font-medium text-gray-900"
-              htmlFor="email"
             >
               Email
             </label>
@@ -20,7 +22,7 @@ export default function LoginForm() {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="Enter your email address"
+                placeholder="Enter email address"
                 required
               />
             </div>
@@ -50,8 +52,7 @@ export default function LoginForm() {
             Log in
             </button>
         </div>
-        <div className="flex h-8 items-end space-x-1">
-        </div>
+        <p className="mt-4">No account? Register <Link href="/register" className="font-bold">here</Link></p>
       </div>
     </form>
   );
