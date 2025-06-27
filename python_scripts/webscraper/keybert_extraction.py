@@ -2,6 +2,7 @@ from keybert import KeyBERT
 
 model = KeyBERT()
 
+# Sample Text
 # text = [
 #             "The trend towards risk-based artificial intelligence legislation seems to have turned on its head. Instead of, or in addition to, focusing on managing risks to consumers, policymakers are trending to embrace AI as an economic engine of growth. This shift is evident in the EU, Japan and the U.S. where governments have reprioritized policies, proposed and rescinded legislation and increased AI-focused innovation funds.",
 #             "The changing tides of policies globally, however, has a profound impact on how organizations consider their internal AI governance, especially for the higher risk AI systems. Consumer protection- and rights-focused approaches to policy, like those in some of the EU\u2019s applicable laws, may lead to more uniform governance measures. Co-regulatory approaches, such as those implemented in Singapore, arguably leave more room for organizations to decide how they can best govern AI use and AI systems.",

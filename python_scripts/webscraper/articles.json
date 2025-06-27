@@ -1,5 +1,109 @@
 [
     {
+        "url": "https://iapp.org/news/a/how-proposed-ai-enforcement-moratorium-cuts-into-us-state-level-powers",
+        "title": "How proposed AI enforcement moratorium cuts into US state-level powers",
+        "location": "",
+        "date_published": "27 June 2025",
+        "keywords": [
+            [
+                "policymakers",
+                0.4644
+            ],
+            [
+                "congress",
+                0.4479
+            ],
+            [
+                "legislation",
+                0.435
+            ],
+            [
+                "moratorium",
+                0.4122
+            ],
+            [
+                "proposal",
+                0.3608
+            ]
+        ],
+        "description": "Public policy differences between the U.S. Congress and state legislatures are routine, especially with debates on digital policy. The latest example comes with U.S. Congress' proposed 10-year ban on enforcing state artificial intelligence laws, viewed by state lawmakers and enforcers as cutting into their respective authority and mission to serve their constituents.",
+        "content": [
+            "Public policy differences between the U.S. Congress and state legislatures are routine, especially with debates on digital policy. The latest example comes with U.S. Congress' proposed 10-year ban on enforcing state artificial intelligence laws, viewed by state lawmakers and enforcers as cutting into their respective authority and mission to serve their constituents.",
+            "The moratorium emerged from the U.S. House's budget reconciliation proposal in May and has withstood criticism and updates to reach a potential full Senate vote. The current iteration of the moratorium, characterized in the Senate bill as a \"temporary pause,\" moves away from an outright ban and ties states' compliance to their right to access a federal funding pool for broad infrastructure improvements.",
+            "IAPP Managing Director, Washington, D.C., Cobun Zweifel-Keegan, CIPP/US, CIPM, redlined the latest changes to the provision, which is still receiving bipartisan opposition in the Senate despite momentum toward inclusion in the final bill text. The Senate bill will require concurrence back in the House, where opposition now exists after the lower chamber's initial approval of the AI provision.",
+            "According to Politico, the Senate parliamentarian is asking the Senate Committee on Commerce, Science and Transportation to clarify the exact nature of the broadband funding tie before the provision can move forward. Confusion exists as to whether noncompliance would prohibit access to the full USD42 billion fund or a USD500 million allocation, with the former scenario likely to add to existing Senate Republican opposition.",
+            "The motivation behind the moratorium is clear: Avoid watering down a booming industry with fragmented regulation. U.S. Sen. Ted Cruz, R-Texas, has touted his AI proposal as necessary to support American leadership on AI innovation.",
+            "While Congress is focused on AI's potential, states are keeping consumer safety front and center.",
+            "States have been firm with their displeasure over the moratorium from the onset. State lawmakers and enforcers have sent multiple letterspleading their case against limiting states to establish AI governance requirements and mitigate harms that may crop up from AI development and use.",
+            "\"There's nothing to fall back on. This moratorium\u00a0actually reduces rights that people currently have,\" California Privacy Protection Agency Executive Director Tom Kemp told the IAPP. \"We've always believed, whether it's AI, automated decision-making or privacy, there should be a high floor. But even then, there should be an ability for states to go over and beyond to best address the needs of their constituents.\"",
+            "In the latest opposition letter, Kemp joined six state attorneys general to reiterate to Senate leadership how the proposal does not benefit consumer protection. They claimed the ban would \"create a regulatory vacuum that benefits AI developers at the expense of privacy rights\" and AI-driven technology \"demands the flexibility and responsiveness that only multi-level governance can provide.\"",
+            "Meanwhile, industry recognizes the appetite for firm guardrails, but largely views a potential state patchwork as unworkable.",
+            "OpenAI Associate General Counsel for AI Policy and Regulation Ben Rossen, CIPP/US, said the state patchwork on comprehensive privacy law is \"not ideal\" but has become \"manageable\" due to aligned concepts and provisions. However, he indicated the many interpretations of AI across state lines might not yield the same sense of harmonization.",
+            "\"The AI moratorium is actually a fascinating thing,\" Rossen said at the IAPP and Berkman Klein Center For Internet and Society's Digital Policy Leadership Retreat 2025. \"More than 1,000 bills have been proposed on AI in the past six months. Some of them really do kind of regulate these sort of fundamental national security questions. ... But a state-level patchwork of all these frontier (AI) regulations would also be really damaging.\"",
+            "State lawmakers are singing a consumer-focused refrain in their opposition to the moratorium.",
+            "In a 3 June letter to Congress, lawmakers harped on needing the ability and runway to support consumer concerns and risks. They wrote, \"AI will raise some of the most important public policy questions of our time, and it is critical that state policymakers maintain the ability to respond.\"",
+            "The letter also covered how states can be \"more nimble in their response\" to AI than Congress and a moratorium in this moment would \"would freeze policy innovation in developing the best practices for AI governance at a time when experimentation is vital.\"",
+            "\"Over the past several years, states across the country have enacted AI-related laws increasing consumer transparency, setting rules for the government acquisition of new technology, protecting patients in our health care system, and defending artists and creators,\" lawmakers wrote.",
+            "In prior remarks to the IAPP on the passing of the Texas Responsible Artificial Intelligence Governance Act, state Rep. Giovanni Capriglione, R-Texas, raised similar flags spelled out in the letter. He argued the vague and proscriptive nature of the current provision is not workable while Congress does not currently have an immediate federal fallback if issues arise in the next 10 years.",
+            "\"I appreciate all the federal government does. However, they have not really been able to work on super complicated, technical things like this for a long time and actually get them passed,\" Capriglione said. \"I would make the case (Congress) is still quite a ways away from having something in place that will sufficiently protect my constituents here in the state of Texas.\"",
+            "Hall Estill Partner Collin Walke served as Democrat member of the Oklahoma House from 2016-22, spearheading the state legislature's comprehensive privacy law efforts over multiple years. A common refrain in his side of debates was Oklahoma needed to act because Congress was not, an argument he insists is resurfacing here.",
+            "\"It's astounding that the federal government would prohibit states from taking up important issues affecting their citizens,\" Walke told the IAPP. \"We elect our officials to solve problems. If our federal delegation is unwilling to act, the states absolutely must.\"",
+            "There is a difference between an attempt to harmonize approaches versus the objective of the moratorium, according to Center for Democracy and Technology CEO Alexandra Reeve Givens. She told IAPP-Berkman Klein Center retreat attendees that the proposed ban can be viewed as 10-year \"free pass\" and supports state legislators fighting back.",
+            "\"You can't deny the rights of different jurisdictions, whether regulatory agencies or, in this case, states, to do their jobs and protect their citizens if people at the federal or harmonized level aren't doing so,\" she said.",
+            "State Rep. Steve Elkins, D-Minn., told the IAPP that Minnesota has AI-focused laws concerning deepfakes in elections and revenge porn that would clearly be paused under the moratorium. Minnesota's comprehensive privacy law, which Elkins authored and takes force 31 July, might also be a casualty based on its AI ties in definitions and provisions for \"profiling\" and \"legally consequential decisions.\"",
+            "\"These provisions would probably be preempted even though the words 'artificial intelligence' are nowhere to be found in these provisions,\" Elkins said. \"I think it's silly to try to define AI for this use case. There is a continuum of mathematical prediction techniques used to \"profile\" consumers, ranging from regression analysis to neural networks. Even within the neural network family of techniques there is a continuum with respect to transparency. No judge or jury will ever be able to find that boundary.\"",
+            "Unlike Elkins, Walke does not envision existing state privacy laws getting swept up in the budget provision.",
+            "\"That would be a big legal fight given the number of states that have enacted such legislation,\" he told the IAPP. \"And there's the fact that most companies are already able to comply with the data privacy laws on the books, so there is no longer a reason to push back.\"",
+            "Walke added the legal battles are likely to come from states with a \"heavy technological presence\" while others have \"little incentive\" to challenge because AI is not a legislative priority for them.",
+            "Joe Duball is the news editor for the IAPP."
+        ]
+    },
+    {
+        "url": "https://iapp.org/news/a/notes-from-the-iapp-canada-building-momentum-to-address-youth-privacy-issues",
+        "title": "Notes from the IAPP Canada: Building momentum to address youth privacy issues ",
+        "location": "",
+        "date_published": "27 June 2025",
+        "keywords": [
+            [
+                "conversations",
+                0.3771
+            ],
+            [
+                "privacy",
+                0.3597
+            ],
+            [
+                "presenters",
+                0.3591
+            ],
+            [
+                "interviewing",
+                0.3524
+            ],
+            [
+                "iapp",
+                0.3503
+            ]
+        ],
+        "description": "I was at an event last week focused on youth privacy issues and how young people are inheriting a whole new world that requires skills, knowledge and savvy to navigate. Privacy Commissioner of Canada Philippe Dufresne moderated the day's first panel which featured a handful of some of the most impactful speakers I've heard in a while.",
+        "content": [
+            "Editor's note: The IAPP is policy neutral. We publish contributed opinion and analysis pieces to enable our members to hear a broad spectrum of views in our domains.",
+            "I was at an event last week focused on youth privacy issues and how young people are inheriting a whole new world that requires skills, knowledge and savvy to navigate. Privacy Commissioner of Canada Philippe Dufresne moderated the day's first panel which featured a handful of some of the most impactful speakers I've heard in a while.",
+            "His panel involved interviewing a number of younger people \u2014 mid to older teens \u2014 about what they thought about privacy, privacy laws, artificial intelligence and data regulation, and it was fantastic. Their presentations were thoughtful, humorous, insightful and genuinely human. I'm going to enjoy watching from the sidelines as these individuals develop their careers.",
+            "What was cool was that these young people stuck around for the entire day and as different presentations were made on the main stage, at each turn, they asked from their table in the audience \u2014 over the microphone so that everyone could hear \u2014 some pointed and difficult questions of the presenters. And these, I would add, were not planted questions.",
+            "I thought it was particularly meaningful because the data protection authorities from the G7 countries were all listening and taking notes. I know from the final DPA remarks and the cocktail reception after the event that they were all influenced by the day's conversations and interactions. I shared quite a few details about the day in a LinkedIn post, so those who were not there could get a flavor of it.",
+            "Youth privacy is a big concern today and I'm totally on-board with creating a better environment for them as they explore this new frontier. Some of my clients are social media companies and I can see from working with them that they want to do right by our planet's youth. One of my clients has me do a weekly scan of anything that might be relevant to them just in this space alone \u2014 it's that important.",
+            "Late last week an opposition party member of Parliament introduced Bill C-216, a private-member's bill called \"An Act to enact the Protection of Minors in the Digital Age Act and to amend two Acts.\" Private member's bills rarely get through the legislative process. This one, however, may have some merit, so we will be watching it closely when Parliament resumes in the fall.",
+            "Here is a quick summary of the proposed new law:",
+            "Protection of Minors in the Digital Age Act",
+            "Mandatory reporting of child sexual abuse material",
+            "Criminal Code amendments",
+            "To say the least, partisan politics aside, this issue is a pressing and important one. In fact, it is one of the most important of our generation and the world we leave our kids and grandkids. (The youngest just graduated high school this week. I'm not in a rush; just sayin'.)",
+            "Let's collectively build on the momentum to figure out ways this can be done and done in a way that, as the young people said last week, respects their privacy but also their autonomy and ability to grow, explore, be creative and be human.",
+            "Kris Klein, CIPP/C, CIPM, FIP, is the managing director, Canada, for the IAPP."
+        ]
+    },
+    {
         "url": "https://iapp.org/news/a/navigate-2025-potential-eu-ai-act-pause-opens-new-questions-on-approach-to-global-regulation",
         "title": "Navigate 2025: Potential EU AI Act pause opens new questions on approach to global regulation",
         "location": "",
@@ -48,89 +152,6 @@
             "Policy makers are left to regulate what is \"being deployed in the public space,\" according to McNamara, making self-regulation a measure for developers' internal practices.",
             "\"What people do in the privacy of their own labs is a different matter,\" McNamara said. \"That's when their own regulation, boards, etc., come into play. And quite frankly, it's relationships that they have with states and nation states because there are close links.\"",
             "Joe Duball is the news editor for the IAPP."
-        ]
-    },
-    {
-        "url": "https://iapp.org/news/a/notes-from-the-iapp-europe-data-protection-and-ai-in-focus",
-        "title": "Notes from the IAPP Europe: Data protection and AI in focus",
-        "location": "",
-        "date_published": "26 June 2025",
-        "keywords": [
-            [
-                "eu",
-                0.4199
-            ],
-            [
-                "gdpr",
-                0.3993
-            ],
-            [
-                "legislation",
-                0.3642
-            ],
-            [
-                "disputed",
-                0.2725
-            ],
-            [
-                "deadlines",
-                0.2613
-            ]
-        ],
-        "description": "The end of June marks the wrap-up of Poland's six-month presidency of the Council of the European Union. Before it passes the baton to Denmark 1 July, Poland managed to bring to a close one of its priority files \u2014 a proposal for a regulation on additional procedural rules relating to enforcement of the EU General Data Protection Regulation. The council and the European Parliament reached a long-awaited provisional agreement on the file 16 June.",
-        "content": [
-            "Editor's note: The IAPP is policy neutral. We publish contributed opinion and analysis pieces to enable our members to hear a broad spectrum of views in our domains.",
-            "The end of June marks the wrap-up of Poland's six-month presidency of the Council of the European Union. Before it passes the baton to Denmark 1 July, Poland managed to bring to a close one of its priority files \u2014 a proposal for a regulation on additional procedural rules relating to enforcement of the EU General Data Protection Regulation. The council and the European Parliament reached a long-awaited provisional agreement on the file 16 June.",
-            "The proposed regulation aims to accelerate enforcement of cross-border cases, one of the most criticized aspects of the GDPR, by harmonizing some national procedural rules. The provisional agreement introduces binding deadlines for enforcement procedures and certain rights to both the complainant and the parties under investigation, such as the right to be heard during different stages of the procedure and the right of access to the case information. Without the final text, uncertainty remains surrounding resolution of some disputed topics, such as the European Data Protection Board's role in the dispute resolution mechanism.",
-            "The European Commission tabled this proposal in the summer of 2023. As a previous European Parliament's \"unfinished business\" file, it was carried over to the new parliamentary term last summer. The new rules aiming to improve GDPR enforcement will enter into force after the official adoption of the text by both institutions, fine-tuning by lawyer-linguists and publication in the Official Journal of the European Union.",
-            "Another development in the field of data protection: Receiving of Royal Assent last week, the Data (Use and Access) Act became law. This is an important moment in the evolution of the U.K.'s approach to data protection after Brexit, as the act introduces new data sharing rules, including on the access and use of health care information, consumer and traffic data, and rules on digital identity verification. According to the U.K. Government, the new legislation will \"unleash the power of data\" and make British people's \"day-to-day lives easier.\"",
-            "It remains to be seen whether these changes in the U.K. data protection regime will affect the EU adequacy decisions allowing free flows of personal data between the EU and U.K., which are up for review by the Commission at the end of this year.",
-            "Regarding the intersection between privacy and artificial intelligence, France's data protection authority, the Commission nationale de l'informatique et des libert\u00e9s, released new recommendations on development of AI systems. The advice focuses on the use of legitimate interest as a legal basis and includes an assessment that can be used to determine whether legitimate interest can be relied upon, specific cases in which it is allowed or not and examples of safeguards to be used, such as omitting the collection of certain data.",
-            "With the next batch of the EU AI Act's implementation deadlines approaching in August, the Commission launched a public consultation to gather input on implementing the regulation's rules on high-risk AI systems. Until 18 July, stakeholders are invited to share practical examples of AI systems and identify issues they want to be addressed in future commission guidelines, including the classification of high-risk AI systems, high-risk requirements and obligations and responsibilities along the AI value chain.",
-            "At the same time, the topic of possibly delaying the AI Act's implementation was widely discussed this month. Some believe that postponing the entry into application of certain AI Act rules would be appropriate, especially if relevant guidance and technical standards are not finalized. Head of Office and Digital Policy Adviser for MEP Axel Voss, European People's Party, in the European Parliament Kai Zenner and Resaro Chief Trust Officer Sebastian Hallensleben highlighted the risks of delaying the act's implementation and suggested certain next steps the Commission should take.",
-            "At least some of the uncertainty is hoped to be clarified in the next digital simplification omnibus, but the question is if it will happen soon enough, as important implementation deadlines are just around the corner.\u00a0 \u00a0",
-            "Laura Pliau\u0161kait\u0117 is European operations coordinator for the IAPP.",
-            "This article originally appeared in the Europe Data Protection Digest, a free weekly IAPP newsletter. Subscriptions to this and other IAPP newsletters can be found here."
-        ]
-    },
-    {
-        "url": "https://iapp.org/news/a/notes-from-the-asia-pacific-region-chinese-regulators-strengthen-ai-data-protection-governance",
-        "title": "Notes from the Asia-Pacific region: Chinese regulators strengthen AI, data protection governance",
-        "location": "",
-        "date_published": "26 June 2025",
-        "keywords": [
-            [
-                "enforcement",
-                0.4329
-            ],
-            [
-                "compliance",
-                0.4059
-            ],
-            [
-                "ai",
-                0.3356
-            ],
-            [
-                "cybersecurity",
-                0.3179
-            ],
-            [
-                "beijing",
-                0.3051
-            ]
-        ],
-        "description": "China has been in a heat wave since we stepped into June, and for companies falling short on artificial intelligence and data privacy compliance, the regulatory climate is just as intense. As temperatures rise, so does the pressure on organizations to meet increasingly stringent legal and regulatory standards.",
-        "content": [
-            "China has been in a heat wave since we stepped into June, and for companies falling short on artificial intelligence and data privacy compliance, the regulatory climate is just as intense. As temperatures rise, so does the pressure on organizations to meet increasingly stringent legal and regulatory standards.",
-            "In recent weeks, China's key regulatory authorities \u2014 including the Cyberspace Administration of China, the Ministry of Industry and Information Technology, the Ministry of Public Security, the People's Bank of China, the State Administration for Market Regulation and their regional counterparts \u2014 have launched a series of enforcement campaigns. These efforts are focused on a range of digital concerns, including mobile apps, generative AI technologies, internet fraud, cyberbullying, facial recognition systems, biometric data processing and cybersecurity risks.",
-            "In Shanghai, the CAC identified that several generative AI platforms failed to conduct mandatory security impact assessments. This oversight led to the generation of content involving pornography, violence, money laundering and violations of personal data rights. As a result, some companies were required to carry out comprehensive corrective actions and their AI services were suspended pending review.",
-            "Regulators in Beijing have requested AI companies and service providers strengthen compliance across the entire AI life cycle \u2014 including the filing of large language models, training data evaluation, content monitoring, regulating application programming interfaces, accountability of AI in health care and finance fields, and protection of children's information. Nearly 100 noncompliant AI accounts were recently shut down. With China's AI labeling rules set to take effect in October, the CAC is urging service providers to implement proper labeling for AI-generated content, including text, images, audio and video.",
-            "Beyond AI-specific measures, Beijing regulators are also intensifying their focus on consumer-facing sectors such as smart parking, online food delivery, hotel booking, education, entertainment ticketing, online medical platforms and even digital fuel stations. A recent random audit of 197 mobile apps \u2014 affecting more than 50,000 business operators \u2014 revealed various issues, including failure to disclose privacy policies, unauthorized collection of personal information, lack of adequate security measures, and improper API authorization processes. In response, the CAC plans to conduct routine inspections and has introduced a whistleblower hotline. A public blacklist of violators will also be published periodically.",
-            "Similar enforcement actions are underway in other major cities and provinces, including Tianjin, Guangdong, Zhejiang and Jiangsu, reinforcing a coordinated national approach.",
-            "These developments indicate a clear and consistent trajectory: China's regulators are significantly strengthening governance around AI and personal data protection. This trend is expected to continue. It is vital for businesses to stay informed of regulatory trends and take timely actions to align with compliance expectations.",
-            "Barbara Li, CIPP/E, is a partner at Reed Smith.",
-            "This article originally appeared in the Asia-Pacific Dashboard Digest, a free weekly IAPP newsletter. Subscriptions to this and other IAPP newsletters can be found here."
         ]
     }
 ]

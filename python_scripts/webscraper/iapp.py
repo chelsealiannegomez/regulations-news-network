@@ -2,10 +2,13 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import json
 
 from keybert_extraction import extract_keywords
+from insert_to_db import insert_json_to_db
 
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
@@ -26,7 +29,8 @@ class Article:
 DRIVER_PATH = '/Users/chelseagomez/Downloads/chromedriver-mac-arm64/chromedriver'
 
 # Set up the Chrome WebDriver
-driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+service = Service(executable_path=DRIVER_PATH)
+driver = webdriver.Chrome(service=service)
 
 # Scraper Function
 def load_articles(base_url, url_to_scrape):
@@ -113,7 +117,10 @@ def load_articles(base_url, url_to_scrape):
             # Find keywords using KeyBERT
             text_to_extract =  " ".join(content_text)
             keywords = extract_keywords(text_to_extract)
-            new_article.keywords = keywords
+
+            keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in keywords])
+        
+            new_article.keywords = keywords_json
             print(keywords)
             
             articles_list.append(new_article)
@@ -138,25 +145,4 @@ file_path = "articles.json"
 with open(file_path, 'w') as f:
     json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
 
-
-# Add to PostgreSQL DB
-
-import psycopg2
-import os
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-try:
-    conn = psycopg2.connect(DATABASE_URL)
-
-    cur = conn.cursor()
-<<<<<<< Updated upstream
-    cur.execute("INSERT INTO Article (url, title, date_posted, location, description, content, keywords)")
-=======
-
-    for article in iapp_articles:
-        cur.execute("INSERT INTO Article (url, title, date_posted, location, description, content, keywords) VALUES ({article.url}, {article.title}, {article.date_posted},{article.location},{article.description},{article.content},{article.keywords},)")
->>>>>>> Stashed changes
-
-except Exception as e:
-    print("Error connecting to database:", e)
+insert_json_to_db(iapp_articles)
