@@ -15,13 +15,18 @@ def insert_json_to_db(content):
         cursor = conn.cursor()
 
         for article in content:
-            query = 'INSERT INTO "Article" (url, title, date_posted, location, description, content, keywords) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-            values = (article.url, article.title, article.date_published, article.location, article.description, article.content, article.keywords)
-            cursor.execute(query, values)
+            cursor.execute('SELECT 1 FROM "Article" WHERE url=%s', (article.url,))
+            exists = cursor.fetchone()
 
-        print("Successfully added articles to database")
+            if exists:
+                print("Article already exists in the database")
 
-        conn.commit()
+            else:
+                query = 'INSERT INTO "Article" (url, title, date_posted, location, description, content, keywords) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                values = (article.url, article.title, article.date_published, article.location, article.description, article.content, article.keywords)
+                cursor.execute(query, values)
+                conn.commit()
+                print("Successfully added article to database")
 
         cursor.close()
         conn.close()
