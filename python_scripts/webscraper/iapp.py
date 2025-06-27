@@ -73,28 +73,22 @@ def load_articles(base_url, url_to_scrape):
 
             article_soup = BeautifulSoup(article_html, 'html.parser')
             
-            # Look for keywords
-            # keyword_class = article_soup.select('.css-1b4grjh')[0]
+            # Look for keywords (for location)
+            keyword_class = article_soup.select('.css-1b4grjh')[0]
 
-            # keywords = keyword_class.find_all('button')
+            keywords = keyword_class.find_all('button')
 
-            # article_keywords = []
-            # loc_count = 0
-
-            # if len(keywords) == 0:
-            #     raise ValueError('No keywords found')
-
-            # for keyword in keywords:
-            #     if keyword.text in locations: 
-            #         if loc_count == 0:
-            #             new_article.location = keyword.text
-            #             loc_count += 1
-            #         else:
-            #             new_article.location = new_article.location + ", " + keyword.text
-            #     else:
-            #         article_keywords.append(keyword.text)
-
-            # new_article.keywords = article_keywords
+            if len(keywords) == 0:
+                raise ValueError('No keywords found')
+            
+            loc_count = 0
+            for keyword in keywords:
+                if keyword.text in locations: 
+                    if loc_count == 0:
+                        new_article.location = keyword.text
+                        loc_count += 1
+                    else:
+                        new_article.location = new_article.location + ", " + keyword.text
 
             content = article_soup.select('.css-al1m8k')
 
