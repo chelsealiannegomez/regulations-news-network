@@ -4,28 +4,7 @@
         "title": "How proposed AI enforcement moratorium cuts into US state-level powers",
         "location": "",
         "date_published": "27 June 2025",
-        "keywords": [
-            [
-                "policymakers",
-                0.4644
-            ],
-            [
-                "congress",
-                0.4479
-            ],
-            [
-                "legislation",
-                0.435
-            ],
-            [
-                "moratorium",
-                0.4122
-            ],
-            [
-                "proposal",
-                0.3608
-            ]
-        ],
+        "keywords": "[{\"keyword\": \"policymakers\", \"score\": 0.4644}, {\"keyword\": \"congress\", \"score\": 0.4479}, {\"keyword\": \"legislation\", \"score\": 0.435}, {\"keyword\": \"moratorium\", \"score\": 0.4122}, {\"keyword\": \"proposal\", \"score\": 0.3608}]",
         "description": "Public policy differences between the U.S. Congress and state legislatures are routine, especially with debates on digital policy. The latest example comes with U.S. Congress' proposed 10-year ban on enforcing state artificial intelligence laws, viewed by state lawmakers and enforcers as cutting into their respective authority and mission to serve their constituents.",
         "content": [
             "Public policy differences between the U.S. Congress and state legislatures are routine, especially with debates on digital policy. The latest example comes with U.S. Congress' proposed 10-year ban on enforcing state artificial intelligence laws, viewed by state lawmakers and enforcers as cutting into their respective authority and mission to serve their constituents.",
@@ -63,28 +42,7 @@
         "title": "Notes from the IAPP Canada: Building momentum to address youth privacy issues ",
         "location": "",
         "date_published": "27 June 2025",
-        "keywords": [
-            [
-                "conversations",
-                0.3771
-            ],
-            [
-                "privacy",
-                0.3597
-            ],
-            [
-                "presenters",
-                0.3591
-            ],
-            [
-                "interviewing",
-                0.3524
-            ],
-            [
-                "iapp",
-                0.3503
-            ]
-        ],
+        "keywords": "[{\"keyword\": \"conversations\", \"score\": 0.3771}, {\"keyword\": \"privacy\", \"score\": 0.3597}, {\"keyword\": \"presenters\", \"score\": 0.3591}, {\"keyword\": \"interviewing\", \"score\": 0.3524}, {\"keyword\": \"iapp\", \"score\": 0.3503}]",
         "description": "I was at an event last week focused on youth privacy issues and how young people are inheriting a whole new world that requires skills, knowledge and savvy to navigate. Privacy Commissioner of Canada Philippe Dufresne moderated the day's first panel which featured a handful of some of the most impactful speakers I've heard in a while.",
         "content": [
             "Editor's note: The IAPP is policy neutral. We publish contributed opinion and analysis pieces to enable our members to hear a broad spectrum of views in our domains.",
@@ -108,28 +66,7 @@
         "title": "Navigate 2025: Potential EU AI Act pause opens new questions on approach to global regulation",
         "location": "",
         "date_published": "26 June 2025",
-        "keywords": [
-            [
-                "ai",
-                0.4309
-            ],
-            [
-                "regulation",
-                0.3961
-            ],
-            [
-                "delay",
-                0.3913
-            ],
-            [
-                "pause",
-                0.339
-            ],
-            [
-                "eu",
-                0.2416
-            ]
-        ],
+        "keywords": "[{\"keyword\": \"ai\", \"score\": 0.4309}, {\"keyword\": \"regulation\", \"score\": 0.3961}, {\"keyword\": \"delay\", \"score\": 0.3913}, {\"keyword\": \"pause\", \"score\": 0.339}, {\"keyword\": \"eu\", \"score\": 0.2416}]",
         "description": "The increasing sentiment around artificial intelligence regulation is global policy makers are being left to put a square peg in a round hole given the speed at which AI development is proliferating. It begs the question whether regulation can be done \"right\" and what that looks like, especially with the EU looking more and more likely to stop the clock on implementation of the landmark AI Act with an eye toward reassessing its regulatory approach.",
         "content": [
             "The increasing sentiment around artificial intelligence regulation is global policy makers are being left to put a square peg in a round hole given the speed at which AI development is proliferating. It begs the question whether regulation can be done \"right\" and what that looks like, especially with the EU looking more and more likely to stop the clock on implementation of the landmark AI Act with an eye toward reassessing its regulatory approach.",

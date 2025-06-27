@@ -121,7 +121,7 @@ def load_articles(base_url, url_to_scrape):
             keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in keywords])
         
             new_article.keywords = keywords_json
-            print(keywords)
+            print(keywords_json)
             
             articles_list.append(new_article)
         
