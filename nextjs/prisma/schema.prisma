@@ -1,0 +1,31 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id            Int          @id @default(autoincrement())  
+  email         String       @unique
+  firstName     String
+  lastName      String
+  password      String
+}
+
+model Article {
+  id            Int          @id @default(autoincrement())  
+  url           String       @unique
+  title         String
+  date_posted   String
+  location      String
+  description   String
+  content       String
+  keywords      Json
+}
