@@ -150,7 +150,13 @@ try:
     conn = psycopg2.connect(DATABASE_URL)
 
     cur = conn.cursor()
+<<<<<<< Updated upstream
     cur.execute("INSERT INTO Article (url, title, date_posted, location, description, content, keywords)")
+=======
+
+    for article in iapp_articles:
+        cur.execute("INSERT INTO Article (url, title, date_posted, location, description, content, keywords) VALUES ({article.url}, {article.title}, {article.date_posted},{article.location},{article.description},{article.content},{article.keywords},)")
+>>>>>>> Stashed changes
 
 except Exception as e:
     print("Error connecting to database:", e)
