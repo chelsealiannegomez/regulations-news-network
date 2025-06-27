@@ -137,3 +137,20 @@ iapp_articles = load_articles(BASE_URL, URL_TO_SCRAPE)
 file_path = "articles.json"
 with open(file_path, 'w') as f:
     json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
+
+
+# Add to PostgreSQL DB
+
+import psycopg2
+import os
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+try:
+    conn = psycopg2.connect(DATABASE_URL)
+
+    cur = conn.cursor()
+    cur.execute("INSERT INTO Article (url, title, date_posted, location, description, content, keywords)")
+
+except Exception as e:
+    print("Error connecting to database:", e)
