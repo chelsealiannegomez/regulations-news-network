@@ -1,6 +1,7 @@
 "use client";
 import { User, Article } from "@/lib/definitions";
 import { useState, useEffect } from "react";
+import ArticleCard from "./ArticleCard";
 
 type HomePageProps = {
     user: User;
@@ -22,13 +23,13 @@ export default function HomePage({ user }: HomePageProps) {
 
     return (
         <div>
-            <header className="h-20 flex justify-center items-center text-xl">
+            <header className="h-20 flex justify-center items-center text-2xl">
                 Regulations News Network
             </header>
             <div className="mx-5">
-                <p className="mb-5">Welcome, {user.firstName}</p>
+                <p className="mb-5 text-xl">Welcome, {user.firstName}</p>
                 {articles.map((article) => (
-                    <p key={article.id}>{article.title}</p>
+                    <ArticleCard article={article} key={article.id} />
                 ))}
             </div>
         </div>
