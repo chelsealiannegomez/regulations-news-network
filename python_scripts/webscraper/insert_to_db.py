@@ -21,6 +21,8 @@ def insert_json_to_db(content):
 
         print("Successfully added articles to database")
 
+        conn.commit()
+
         cursor.close()
         conn.close()
 
