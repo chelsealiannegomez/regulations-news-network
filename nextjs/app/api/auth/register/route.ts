@@ -7,7 +7,6 @@ export const POST = async (request: NextRequest) => {
     const { email, password, firstName, lastName } = await request.json();
 
     try {
-
         const user = await prisma.user.findUnique({
             where: { email: email }
         });

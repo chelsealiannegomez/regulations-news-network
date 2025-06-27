@@ -21,7 +21,7 @@ export default async function Page () {
         redirect('/login');
     }
 
-    const user: User = await prisma.user.findUnique({
+    const user: User | null = await prisma.user.findUnique({
         where: { id: payload.userId },
     })
 
