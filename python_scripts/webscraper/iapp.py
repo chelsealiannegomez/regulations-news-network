@@ -2,8 +2,13 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import json
+
+from keybert_extraction import extract_keywords
+from insert_to_db import insert_json_to_db
 
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
@@ -24,7 +29,8 @@ class Article:
 DRIVER_PATH = '/Users/chelseagomez/Downloads/chromedriver-mac-arm64/chromedriver'
 
 # Set up the Chrome WebDriver
-driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+service = Service(executable_path=DRIVER_PATH)
+driver = webdriver.Chrome(service=service)
 
 # Scraper Function
 def load_articles(base_url, url_to_scrape):
@@ -67,17 +73,15 @@ def load_articles(base_url, url_to_scrape):
 
             article_soup = BeautifulSoup(article_html, 'html.parser')
             
-            # Look for keywords
+            # Look for keywords (for location)
             keyword_class = article_soup.select('.css-1b4grjh')[0]
 
             keywords = keyword_class.find_all('button')
 
-            article_keywords = []
-            loc_count = 0
-
             if len(keywords) == 0:
                 raise ValueError('No keywords found')
-
+            
+            loc_count = 0
             for keyword in keywords:
                 if keyword.text in locations: 
                     if loc_count == 0:
@@ -85,10 +89,6 @@ def load_articles(base_url, url_to_scrape):
                         loc_count += 1
                     else:
                         new_article.location = new_article.location + ", " + keyword.text
-                else:
-                    article_keywords.append(keyword.text)
-
-            new_article.keywords = article_keywords
 
             content = article_soup.select('.css-al1m8k')
 
@@ -107,7 +107,15 @@ def load_articles(base_url, url_to_scrape):
                 new_article.description = content_text[1]
             else:
                 new_article.description = content_text[0]
-            
+
+            # Find keywords using KeyBERT
+            text_to_extract =  " ".join(content_text)
+            keywords = extract_keywords(text_to_extract)
+
+            keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in keywords])
+        
+            new_article.keywords = keywords_json
+                        
             articles_list.append(new_article)
         
         return articles_list
@@ -120,7 +128,7 @@ def load_articles(base_url, url_to_scrape):
         driver.quit()
 
 # IAPP Scraping Call
-NUM_ARTICLES = 10
+NUM_ARTICLES = 8
 BASE_URL = 'https://iapp.org'
 URL_TO_SCRAPE = f'{BASE_URL}/news?size=n_{NUM_ARTICLES}_n'
 
@@ -129,3 +137,5 @@ iapp_articles = load_articles(BASE_URL, URL_TO_SCRAPE)
 file_path = "articles.json"
 with open(file_path, 'w') as f:
     json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
+
+insert_json_to_db(iapp_articles)
