@@ -13,7 +13,7 @@ function parseArticleContent(input: string): string[] {
 }
 
 export default function ArticleCard({ article }: { article: Article }) {
-    const [seeMore, setSeeMore] = useState<Boolean>(false);
+    const [seeMore, setSeeMore] = useState<boolean>(false);
 
     const articleContent = parseArticleContent(article.content);
 
@@ -26,7 +26,6 @@ export default function ArticleCard({ article }: { article: Article }) {
             >
                 <h2>{article.title}</h2>
             </a>
-            {/* <p>{article.location}</p> */}
             <p className="italic mb-2">{article.date_posted}</p>
 
             {!seeMore ? (
@@ -40,10 +39,11 @@ export default function ArticleCard({ article }: { article: Article }) {
                     </button>
                 </div>
             ) : (
-                // <p>{articleContent}</p>
                 <div key={article.id}>
                     {articleContent.map((paragraph, index) => (
-                        <p className="mt-5">{paragraph}</p>
+                        <p className="mt-5" key={index}>
+                            {paragraph}
+                        </p>
                     ))}
                     <button
                         onClick={() => setSeeMore(false)}
