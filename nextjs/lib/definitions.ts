@@ -16,12 +16,12 @@ export interface User {
 
 export interface Article {
     id: number;
-    url: String;
-    title: String;
-    date_posted: String;
-    location: String;
-    description: String;
-    content: String;
+    url: string;
+    title: string;
+    date_posted: string;
+    location: string;
+    description: string;
+    content: string;
     keywords: Keyword[];
 }
 
