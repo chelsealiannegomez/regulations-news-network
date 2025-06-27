@@ -33,7 +33,7 @@ export default function ArticleCard({ article }: { article: Article }) {
                     <p>{article.description}</p>
                     <button
                         onClick={() => setSeeMore(true)}
-                        className="bg-gray-200 px-5 rounded-md mt-3"
+                        className="bg-gray-200 px-5 rounded-md mt-3 duration-500 transition-[background-color] hover:bg-gray-400 cursor-pointer"
                     >
                         Read more
                     </button>
@@ -47,7 +47,7 @@ export default function ArticleCard({ article }: { article: Article }) {
                     ))}
                     <button
                         onClick={() => setSeeMore(false)}
-                        className="bg-gray-200 px-5 rounded-md mt-3"
+                        className="bg-gray-200 px-5 rounded-md mt-3 duration-500 transition-[background-color] hover:bg-gray-400 cursor-pointer"
                     >
                         Close
                     </button>

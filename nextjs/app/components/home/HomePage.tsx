@@ -9,6 +9,11 @@ type HomePageProps = {
 
 export default function HomePage({ user }: HomePageProps) {
     const [articles, setArticles] = useState<Article[]>([]);
+    const [fadeIn, setFadeIn] = useState<boolean>(false);
+
+    useEffect(() => {
+        setFadeIn(true);
+    }, []);
 
     useEffect(() => {
         fetch("api/articles")
@@ -19,15 +24,19 @@ export default function HomePage({ user }: HomePageProps) {
             });
     }, []);
 
-    console.log(setArticles);
-
     return (
         <div>
             <header className="h-20 flex justify-center items-center text-2xl">
                 Regulations News Network
             </header>
             <div className="mx-5">
-                <p className="mb-5 text-xl">Welcome, {user.firstName}</p>
+                <p
+                    className={`mb-5 text-xl duration-2000 transition-opacity ${
+                        fadeIn ? "opacity-100" : "opacity-0"
+                    }`}
+                >
+                    Welcome, {user.firstName}
+                </p>
                 {articles.map((article) => (
                     <ArticleCard article={article} key={article.id} />
                 ))}

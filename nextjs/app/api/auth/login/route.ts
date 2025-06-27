@@ -22,10 +22,7 @@ export const POST = async (request: NextRequest) => {
 
         if (successfulLogin) {
             await createSession(user.id);
-            return NextResponse.json(
-                { message: "Successfully logged in!" },
-                { status: 200 }
-            );
+            return NextResponse.json({ message: "" }, { status: 200 });
         }
 
         return NextResponse.json(
