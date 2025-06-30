@@ -1,4 +1,3 @@
-import { parse } from "path";
 import { parseArticleContent } from "./parseArticle";
 
 describe("parseArticleContent function test", () => {
