@@ -1,16 +1,6 @@
 import { useState } from "react";
 import { Article } from "@/lib/definitions";
-
-function parseArticleContent(input: string): string[] {
-    let trimmed = input.trim();
-    if (trimmed.startsWith("{") && trimmed.endsWith("}")) {
-        trimmed = trimmed.slice(2, -2);
-    }
-
-    const newTrimmed = trimmed.replaceAll('\\"', '"');
-
-    return newTrimmed.split('","');
-}
+import { parseArticleContent } from "@/app/utils/parseArticle";
 
 export default function ArticleCard({ article }: { article: Article }) {
     const [seeMore, setSeeMore] = useState<boolean>(false);
