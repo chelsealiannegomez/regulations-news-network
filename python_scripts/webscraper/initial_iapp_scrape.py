@@ -49,7 +49,7 @@ def load_articles(base_url, url_to_scrape):
 
         for article in articles:
             new_article = Article()
-            new_article.url = base_url + article.get('href')
+            new_article.url = base_url + article.get('href')                
 
             content = article.find_all('p')
             if len(content) == 3:
