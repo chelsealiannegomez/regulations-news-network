@@ -114,9 +114,11 @@ def load_articles(base_url, url_to_scrape):
             text_to_extract =  " ".join(content_text)
             keywords = extract_keywords(text_to_extract)
 
-            keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in keywords])
+            top_three_keywords = [k, s in keywords[0:3]]
 
-            for k, s in keywords:
+            keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in top_three_keywords])
+
+            for k, s in top_three_keywords:
                 keywords_list.append(k)
         
             new_article.keywords = keywords_json
