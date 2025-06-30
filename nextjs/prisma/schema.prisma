@@ -17,6 +17,8 @@ model User {
   firstName     String
   lastName      String
   password      String
+  preferences   Int[]
+  locations     Int[]
 }
 
 model Article {
@@ -28,4 +30,9 @@ model Article {
   description   String
   content       String
   keywords      Json
+}
+
+model Preferences {
+  id            Int         @id @default(autoincrement())
+  topic         String
 }

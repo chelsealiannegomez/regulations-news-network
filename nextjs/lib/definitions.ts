@@ -29,3 +29,13 @@ export interface Keyword {
     score: number;
     keyword: string;
 }
+
+export interface Preference {
+    id: number;
+    topic: string;
+}
+
+export interface Location {
+    id: number;
+    location: string;
+}
