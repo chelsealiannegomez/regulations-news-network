@@ -12,6 +12,8 @@ from insert_to_db import insert_json_to_db
 
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
+keywords_list = []
+
 class Article:
     def __init__(self, url="", title="", location="", date_published="", keywords=[], description="", content=[]):
         self.url = url
@@ -113,6 +115,9 @@ def load_articles(base_url, url_to_scrape):
             keywords = extract_keywords(text_to_extract)
 
             keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in keywords])
+
+            for k, s in keywords:
+                keywords_list.append(k)
         
             new_article.keywords = keywords_json
                         
@@ -139,3 +144,5 @@ with open(file_path, 'w') as f:
     json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
 
 insert_json_to_db(iapp_articles)
+
+print(keywords_list)
