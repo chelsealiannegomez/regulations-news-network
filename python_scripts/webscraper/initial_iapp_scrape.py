@@ -114,12 +114,13 @@ def load_articles(base_url, url_to_scrape):
             text_to_extract =  " ".join(content_text)
             keywords = extract_keywords(text_to_extract)
 
-            top_three_keywords = [k, s in keywords[0:3]]
+            top_three_keywords = keywords[0:3]
 
             keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in top_three_keywords])
 
             for k, s in top_three_keywords:
-                keywords_list.append(k)
+                if k not in keywords_list:
+                    keywords_list.append(k)
         
             new_article.keywords = keywords_json
                         
@@ -127,8 +128,8 @@ def load_articles(base_url, url_to_scrape):
         
         return articles_list
 
-    except:
-        print("An error occured")
+    except Exception as e:
+        print("An error occured:", e)
 
     finally:
         # Quit Driver
