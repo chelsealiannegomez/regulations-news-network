@@ -44,8 +44,8 @@ export default function LocationSelection({
     return (
         <div>
             <p>
-                To get started, please select the locations you'd like to see
-                news from:
+                To get started, please select the locations you&apos;d like to
+                see news from:
             </p>
             <form className="flex" onSubmit={handleSubmit}>
                 {locations.map((location) => (

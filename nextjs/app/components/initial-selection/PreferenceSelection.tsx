@@ -40,7 +40,6 @@ export default function PreferenceSelection({
                 router.push("/home");
                 setStep((prev) => prev + 1);
             }
-            const message = await response.json();
         } catch (err) {
             console.error(err);
         }
@@ -48,7 +47,7 @@ export default function PreferenceSelection({
 
     return (
         <div>
-            <p>Next, select the topics you're interested in.</p>
+            <p>Next, select the topics you&apos;re interested in.</p>
             <form className="flex flex-wrap" onSubmit={handleSubmit}>
                 {preferences.map((preference) => (
                     <PreferenceButton
