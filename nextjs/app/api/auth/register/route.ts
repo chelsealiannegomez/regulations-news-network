@@ -1,6 +1,6 @@
-import prisma from '@/lib/prisma'
-import { hashPassword } from '@/lib/bcrypt'
-import { createSession } from '@/lib/session'
+import prisma from '@/lib/prisma';
+import { hashPassword } from '@/lib/bcrypt';
+import { createSession } from '@/lib/session';
 import { NextResponse, NextRequest } from 'next/server';
 
 export const POST = async (request: NextRequest) => {

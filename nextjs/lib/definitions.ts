@@ -12,6 +12,7 @@ export interface User {
     lastName: string;
     email: string;
     preferences?: number[];
+    locations?: number[];
 }
 
 export interface Article {

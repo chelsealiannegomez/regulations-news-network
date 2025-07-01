@@ -1,11 +1,11 @@
 export const locations = [
     {
         id: 1,
-        location: "NA",
+        location: "North America",
     },
     {
         id: 2,
-        location: "EU",
+        location: "European Union",
     },
     {
         id: 3,

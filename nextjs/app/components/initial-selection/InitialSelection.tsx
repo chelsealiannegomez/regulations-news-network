@@ -21,7 +21,7 @@ export default function InitialSelection({ user }: InitialSelectionProps) {
             <div className="mx-5">
                 <p className="mb-5">Welcome to Regulations News Network, {user.firstName}!</p>
                 {(step === 1) ? <LocationSelection setStep={setStep}/> : null}
-                {(step === 2) ? <PreferenceSelection setStep={setStep} /> : null}
+                {(step === 2) ? <PreferenceSelection setStep={setStep} user={user}/> : null}
 
             </div>
         </div>
