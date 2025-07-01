@@ -1,22 +1,30 @@
 export const locations = [
     {
         id: 1,
-        location: "North America",
-    },
-    {
-        id: 2,
-        location: "European Union",
-    },
-    {
-        id: 3,
-        location: "Asia",
-    },
-    {
-        id: 4,
         location: "Africa",
     },
     {
+        id: 2,
+        location: "Asia",
+    },
+    {
+        id: 3,
+        location: "Carribean",
+    },
+    {
+        id: 4,
+        location: "Central America",
+    },
+    {
         id: 5,
-        location: "Oceania",
+        location: "Europe",
+    },
+    {
+        id: 6,
+        location: "Middle East",
+    },
+    {
+        id: 7,
+        location: "South America",
     }
 ]

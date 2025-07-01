@@ -1,6 +1,6 @@
 "use client";
-import { User, Article } from "@/lib/definitions";
-import { useState, useEffect } from "react";
+import { User } from "@/lib/definitions";
+import { useState } from "react";
 import PreferenceSelection from "./PreferenceSelection";
 import LocationSelection from "./LocationSelection";
 

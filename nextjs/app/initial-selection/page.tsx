@@ -7,32 +7,25 @@ import InitialSelection from "../components/initial-selection/InitialSelection";
 export default async function Page() {
     const sessionCookie = (await cookies()).get("session")?.value;
 
-    // if (!sessionCookie) {
-    //     // No session found, redirect to login page
-    //     redirect("/login");
-    // }
+    if (!sessionCookie) {
+        // No session found, redirect to login page
+        redirect("/login");
+    }
 
-    // const payload = await decrypt(sessionCookie);
+    const payload = await decrypt(sessionCookie);
 
-    // if (!payload) {
-    //     // Session expired or invalid, redirect to login page
-    //     redirect("/login");
-    // }
+    if (!payload) {
+        // Session expired or invalid, redirect to login page
+        redirect("/login");
+    }
 
-    // const user =
-    //     typeof payload.userId === "number"
-    //         ? await prisma.user.findUnique({ where: { id: payload.userId } })
-    //         : null;
+    const user =
+        typeof payload.userId === "number"
+            ? await prisma.user.findUnique({ where: { id: payload.userId } })
+            : null;
 
-    // if (!user) {
-    //     redirect("/login");
-    // }
-
-    const user = {
-        id: 1,
-        email: "chelseagomez@gmail.com",
-        firstName: "Chelsea",
-        lastName: "Gomez",
+    if (!user) {
+        redirect("/login");
     }
 
     return (
