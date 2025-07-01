@@ -25,6 +25,14 @@ export const locations = [
     },
     {
         id: 7,
+        location: "North America",
+    },
+    {
+        id: 8,
+        location: "Oceania",
+    },
+    {
+        id: 9,
         location: "South America",
-    }
-]
+    },
+];

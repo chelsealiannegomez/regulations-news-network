@@ -3,29 +3,7 @@ import { useState } from "react";
 import PreferenceButton from "./PreferenceButton";
 import { User } from "@/lib/definitions";
 import { useRouter } from "next/navigation";
-
-const preferences = [
-    {
-        id: 1,
-        topic: "AI Governance",
-    },
-    {
-        id: 2,
-        topic: "Audit & Assurance",
-    },
-    {
-        id: 3,
-        topic: "Biometrics",
-    },
-    {
-        id: 4,
-        topic: "Budge & Salaries",
-    },
-    {
-        id: 5,
-        topic: "Children's Privacy",
-    },
-];
+import { preferences } from "@/lib/topics";
 
 type PreferenceSelectionProps = {
     setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -71,7 +49,7 @@ export default function PreferenceSelection({
     return (
         <div>
             <p>Next, select the topics you're interested in.</p>
-            <form className="flex" onSubmit={handleSubmit}>
+            <form className="flex flex-wrap" onSubmit={handleSubmit}>
                 {preferences.map((preference) => (
                     <PreferenceButton
                         preference={preference}

@@ -1,4 +1,4 @@
-import { parseArticleContent } from "./parseArticle";
+import { parseArticleContent } from "@/app/utils/parseArticle";
 
 describe("parseArticleContent function test", () => {
     it("returns empty array if input is empty", () => {
