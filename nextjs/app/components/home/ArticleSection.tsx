@@ -15,8 +15,8 @@ export default function ArticleSection() {
             });
     }, []);
     return (
-        <div className="mx-5">
-            <div className="text-2xl font-semibold my-5">News for You</div>
+        <div className="px-5 bg-gray-100">
+            <div className="text-2xl font-semibold py-5">News for You</div>
             {articles.map((article) => (
                 <ArticleCard article={article} key={article.id} />
             ))}

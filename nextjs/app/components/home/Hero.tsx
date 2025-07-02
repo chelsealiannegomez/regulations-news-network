@@ -28,7 +28,7 @@ export default function Hero({ user }: HomePageProps) {
 
     return (
         <div className="relative mx-auto bg-[url(/hero.jpg)] bg-fixed bg-cover">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white z-0"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-100 z-0"></div>
             <div className="relative h-[calc(100vh-4rem)] flex justify-center items-center flex-col text-center z-1">
                 <p
                     className={`mb-5 text-6xl duration-2000 transition-opacity${
