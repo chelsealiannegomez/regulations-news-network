@@ -12,6 +12,7 @@ export interface User {
     lastName: string;
     email: string;
     preferences?: number[];
+    locations?: number[];
 }
 
 export interface Article {
@@ -28,4 +29,14 @@ export interface Article {
 export interface Keyword {
     score: number;
     keyword: string;
+}
+
+export interface Preference {
+    id: number;
+    topic: string;
+}
+
+export interface Location {
+    id: number;
+    location: string;
 }

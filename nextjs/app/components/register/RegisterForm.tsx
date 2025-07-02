@@ -30,7 +30,7 @@ export default function RegisterForm() {
                 body: JSON.stringify( {firstName, lastName, email, password} )
             })
             if (response.ok) {
-                router.push('/home');
+                router.push('/initial-selection');
             }
             const message = await response.json();
             setSuccessfulRegister(message.message);
