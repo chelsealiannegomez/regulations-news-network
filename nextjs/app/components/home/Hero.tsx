@@ -1,5 +1,5 @@
 "use client";
-import { User, Article } from "@/lib/definitions";
+import { User } from "@/lib/definitions";
 import { useState, useEffect } from "react";
 
 type HomePageProps = {

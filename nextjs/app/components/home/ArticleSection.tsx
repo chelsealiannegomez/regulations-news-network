@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import ArticleCard from "./ArticleCard";
-import { User, Article } from "@/lib/definitions";
+import { Article } from "@/lib/definitions";
 
 export default function ArticleSection() {
     const [articles, setArticles] = useState<Article[]>([]);
