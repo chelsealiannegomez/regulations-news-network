@@ -37,7 +37,7 @@ export default function Hero({ user }: HomePageProps) {
                 >
                     Welcome, <b>{user.firstName}</b>.
                 </p>
-                <p className="max-w-2xl text-gray-600">
+                <p className="max-w-2xl text-gray-600 mt-2">
                     Your go-to source for clear, timely updates on{" "}
                     <span className="text-black font-semibold">
                         privacy regulations
@@ -52,7 +52,7 @@ export default function Hero({ user }: HomePageProps) {
                     </span>
                 </p>
                 <div
-                    className="bg-black text-white font-semibold py-3 px-5 rounded-xl mt-5 cursor-pointer"
+                    className="bg-black text-white font-semibold py-3 px-5 rounded-xl mt-7 cursor-pointer hover:bg-gray-800"
                     onClick={handleScroll}
                 >
                     See your personalized news feed
