@@ -1,46 +1,49 @@
 "use client";
-import { User, Article } from "@/lib/definitions";
-import { useState, useEffect } from "react";
-import ArticleCard from "./ArticleCard";
+import { useState } from "react";
+import Hero from "./Hero";
+import ArticleSection from "./ArticleSection";
+import { User } from "@/lib/definitions";
 
 type HomePageProps = {
     user: User;
 };
 
 export default function HomePage({ user }: HomePageProps) {
-    const [articles, setArticles] = useState<Article[]>([]);
-    const [fadeIn, setFadeIn] = useState<boolean>(false);
-
-    useEffect(() => {
-        setFadeIn(true);
-    }, []);
-
-    useEffect(() => {
-        fetch("api/articles")
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                setArticles(data.articles);
-            });
-    }, []);
+    const [page, setPage] = useState<string>("home");
 
     return (
-        <div>
-            <header className="h-20 flex justify-center items-center text-2xl">
-                Regulations News Network
-            </header>
-            <div className="mx-5">
-                <p
-                    className={`mb-5 text-xl duration-2000 transition-opacity ${
-                        fadeIn ? "opacity-100" : "opacity-0"
-                    }`}
-                >
-                    Welcome, {user.firstName}
-                </p>
-                {articles.map((article) => (
-                    <ArticleCard article={article} key={article.id} />
-                ))}
-            </div>
+        <div className="">
+            <nav className="flex mx-auto bg-gray-900 h-16 text-white justify-between items-center">
+                <div className="ml-5">Regulation News Network</div>
+                <ul className="flex space-x-4 mr-5">
+                    <li
+                        className={
+                            page === "home"
+                                ? "bg-gray-900 text-white rounded-md px-3 py-2 text-base font-medium underline"
+                                : "text-gray-300 hover:underline hover:text-white rounded-md px-3 py-2 text-base font-medium"
+                        }
+                        onClick={() => setPage("home")}
+                    >
+                        Home
+                    </li>
+                    <li
+                        className={
+                            page === "profile"
+                                ? "bg-gray-900 text-white rounded-md px-3 py-2 text-base font-medium underline"
+                                : "text-gray-300 hover:underline hover:text-white rounded-md px-3 py-2 text-base font-medium"
+                        }
+                        onClick={() => setPage("profile")}
+                    >
+                        Profile
+                    </li>
+                </ul>
+            </nav>
+            {page === "home" ? (
+                <div>
+                    <Hero user={user} />
+                    <ArticleSection />{" "}
+                </div>
+            ) : null}
         </div>
     );
 }
