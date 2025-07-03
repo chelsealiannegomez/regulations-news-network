@@ -118,11 +118,15 @@ def load_articles(base_url, url_to_scrape):
 
             keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in top_three_keywords])
 
-            for k, s in top_three_keywords:
+            for k, s in keywords:
                 if k not in keywords_list:
                     keywords_list.append(k)
+
+            article_keywords = []
+            for k, s in keywords:
+                article_keywords.append(k)
         
-            new_article.keywords = keywords_json
+            new_article.keywords = article_keywords
                         
             articles_list.append(new_article)
         
@@ -136,7 +140,7 @@ def load_articles(base_url, url_to_scrape):
         driver.quit()
 
 # IAPP Scraping Call
-NUM_ARTICLES = 8
+NUM_ARTICLES = 10
 BASE_URL = 'https://iapp.org'
 URL_TO_SCRAPE = f'{BASE_URL}/news?size=n_{NUM_ARTICLES}_n'
 
