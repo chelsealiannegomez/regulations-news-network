@@ -1,3 +1,5 @@
+import LogOut from "./LogOut";
+
 type SideBarProps = {
     setting: string;
     setSetting: React.Dispatch<React.SetStateAction<string>>;
@@ -41,6 +43,9 @@ export default function SideBar({ setting, setSetting }: SideBarProps) {
                 Preferences
             </div>
             <div className="bg-gray-200 w-[1px] h-full absolute right-0 top-5 bottom-5"></div>
+            <div className="self-start">
+                <LogOut />
+            </div>
         </div>
     );
 }
