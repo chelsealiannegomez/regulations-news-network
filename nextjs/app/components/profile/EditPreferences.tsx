@@ -1,7 +1,4 @@
 import Image from "next/image";
-import { useState } from "react";
-import PreferenceButton from "../initial-selection/PreferenceButton";
-import { preferences } from "@/lib/topics";
 import { User } from "@/lib/definitions";
 import PreferencesList from "./PreferencesList";
 
@@ -10,8 +7,6 @@ type ProfilePageProps = {
 };
 
 export default function EditPreferences({ user }: ProfilePageProps) {
-    const [preferenceSet, setPreferenceSet] = useState<Set<number>>(new Set());
-
     return (
         <div className="w-4/5 bg-white px-10">
             <h1 className="pt-10 text-2xl font-semibold mb-8">

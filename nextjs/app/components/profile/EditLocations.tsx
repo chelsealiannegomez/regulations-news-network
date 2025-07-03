@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useState } from "react";
 import LocationsList from "./LocationsList";
 import { User } from "@/lib/definitions";
 
@@ -8,8 +7,6 @@ type ProfilePageProps = {
 };
 
 export default function EditLocations({ user }: ProfilePageProps) {
-    const [locationSet, setLocationSet] = useState<Set<number>>(new Set());
-
     return (
         <div className="w-4/5 bg-white px-10">
             <h1 className="pt-10 text-2xl font-semibold mb-8">My Locations</h1>
