@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { User } from "@/lib/definitions";
-import Image from "next/Image";
+import Image from "next/image";
 
 type ProfilePageProps = {
     user: User;
