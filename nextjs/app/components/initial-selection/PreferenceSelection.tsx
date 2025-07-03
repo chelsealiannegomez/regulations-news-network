@@ -20,9 +20,7 @@ export default function PreferenceSelection({
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(preferenceSet);
         const preferenceArray = [...preferenceSet];
-        console.log(JSON.stringify(preferenceArray));
 
         try {
             const response = await fetch(

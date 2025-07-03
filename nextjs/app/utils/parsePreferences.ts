@@ -15,8 +15,6 @@ export function parsePreferences(input: number[]): {
             preferences.push(topic.topic);
         }
     });
-    console.log("original", input);
-    console.log(preferences.join(" and "));
 
     return {
         query: preferences.join(" and "),

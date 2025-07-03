@@ -21,7 +21,6 @@ export default function ArticleSection({ user }: HomePageProps) {
         fetch("api/articles")
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setArticles(data.articles);
             });
     }, []);
@@ -56,7 +55,6 @@ export default function ArticleSection({ user }: HomePageProps) {
                     );
 
                     setOrderedArticles(ordered);
-                    console.log("ordered", ordered);
                 }
             });
     }, [articles, user]);
