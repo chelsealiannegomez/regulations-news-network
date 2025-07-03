@@ -2,9 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import re 
-from collections import defaultdict
-import json
 import requests
 
 class VectorSearch:
