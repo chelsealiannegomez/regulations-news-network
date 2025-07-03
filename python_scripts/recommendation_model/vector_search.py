@@ -44,7 +44,14 @@ class VectorSearch:
 
         return results
 
-def demonstrate_search(search_engine, query):
+def demonstrate_search(query):
+
+    response = requests.get('http://localhost:3000/api/articles')
+    articles = response.json()["articles"]
+
+    search_engine = VectorSearch()
+    search_engine.add_documents(articles)
+
     print(f"\n Searching for: '{query}'")
 
     results = search_engine.search(query, top_k = len(search_engine.documents))
@@ -55,27 +62,3 @@ def demonstrate_search(search_engine, query):
         result_indexes.append(result["index"])
 
     return result_indexes
-
-
-def parseJson(filename):
-    with open(filename, 'r') as file:
-        json_list = json.load(file)
-
-
-    documents = []
-    for item in json_list:
-        paragraph_list = item['content']
-        documents.append({"content": " ".join(paragraph_list), "id": item["id"]})
-
-    return documents
-
-
-response = requests.get('http://localhost:3000/api/articles')
-articles = response.json()["articles"]
-
-search_engine = VectorSearch()
-search_engine.add_documents(articles)
-
-results = demonstrate_search(search_engine, "children's privacy")
-
-print(results)
