@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { decrypt } from "@/lib/session";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import HomePage from "../components/home/HomePage";
+import ProfilePage from "../components/profile/ProfilePage";
 
 export default async function Page() {
     const sessionCookie = (await cookies()).get("session")?.value;
@@ -28,5 +28,5 @@ export default async function Page() {
         redirect("/login");
     }
 
-    return <HomePage user={user} />;
+    return <ProfilePage user={user} />;
 }
