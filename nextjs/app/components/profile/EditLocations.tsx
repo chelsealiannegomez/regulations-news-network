@@ -1,9 +1,13 @@
 import Image from "next/image";
-import { locations } from "@/lib/locations";
-import LocationButton from "../initial-selection/LocationButton";
 import { useState } from "react";
+import LocationsList from "./LocationsList";
+import { User } from "@/lib/definitions";
 
-export default function EditLocations() {
+type ProfilePageProps = {
+    user: User;
+};
+
+export default function EditLocations({ user }: ProfilePageProps) {
     const [locationSet, setLocationSet] = useState<Set<number>>(new Set());
 
     return (
@@ -13,15 +17,11 @@ export default function EditLocations() {
                 <div className="relative border border-gray-300 rounded-3xl p-7 mb-8">
                     <h1 className="font-semibold mb-7 text-lg">Locations</h1>
                     <div className="flex">
-                        <form className="flex flex-wrap">
-                            {locations.map((location) => (
-                                <LocationButton
-                                    key={location.id}
-                                    location={location}
-                                    setLocationSet={setLocationSet}
-                                />
-                            ))}
-                        </form>
+                        {user?.locations ? (
+                            <LocationsList preferredIds={user.locations} />
+                        ) : (
+                            <p>An error occured</p>
+                        )}
                     </div>
                     <div className="absolute right-5 top-5 flex">
                         Edit{" "}

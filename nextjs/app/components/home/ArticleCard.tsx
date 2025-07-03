@@ -8,7 +8,7 @@ export default function ArticleCard({ article }: { article: Article }) {
     const articleContent = parseArticleContent(article.content);
 
     return (
-        <div className="border rounded-xl mb-5 px-5 py-3 bg-gray-50 border-gray-200 hover:border-gray-400">
+        <div className="border rounded-xl mb-5 px-7 py-5 bg-gray-50 border-gray-200 hover:border-gray-400 hover:bg-white">
             <a
                 href={article.url}
                 className="text-lg font-semibold hover:underline"
@@ -16,7 +16,7 @@ export default function ArticleCard({ article }: { article: Article }) {
             >
                 <h2>{article.title}</h2>
             </a>
-            <p className="italic mb-2">{article.date_posted}</p>
+            <p className="italic mb-4">{article.date_posted}</p>
 
             {!seeMore ? (
                 <div>

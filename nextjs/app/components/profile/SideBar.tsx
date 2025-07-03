@@ -4,34 +4,38 @@ type SideBarProps = {
 };
 
 export default function SideBar({ setting, setSetting }: SideBarProps) {
+    const baseClasses =
+        "text-xl mb-3 py-3 px-5 self-start rounded-3xl cursor-pointer";
+    const selectedClasses = "font-semibold bg-gray-200 text-black";
+    const unselectedClasses =
+        "text-gray-600 hover:bg-gray-200 hover:text-black";
+
     return (
         <div className="w-1/5 min-h-screen bg-white relative flex flex-col px-5 pt-8">
             <div
-                className={
-                    setting === "profile"
-                        ? "text-xl mb-3 py-3 px-5 self-start rounded-3xl bg-gray-200 text-black cursor-pointer"
-                        : "text-xl mb-3 text-gray-600 py-3 px-5 self-start rounded-3xl hover:bg-gray-200 hover:text-black cursor-pointer"
-                }
+                className={`${baseClasses} ${
+                    setting === "profile" ? selectedClasses : unselectedClasses
+                }`}
                 onClick={() => setSetting("profile")}
             >
                 My Profile
             </div>
             <div
-                className={
+                className={`${baseClasses} ${
                     setting === "locations"
-                        ? "text-xl mb-3 py-3 px-5 self-start rounded-3xl bg-gray-200 text-black cursor-pointer"
-                        : "text-xl mb-3 text-gray-600 py-3 px-5 self-start rounded-3xl hover:bg-gray-200 hover:text-black cursor-pointer"
-                }
+                        ? selectedClasses
+                        : unselectedClasses
+                }`}
                 onClick={() => setSetting("locations")}
             >
                 Locations
             </div>
             <div
-                className={
+                className={`${baseClasses} ${
                     setting === "preferences"
-                        ? "text-xl mb-3 py-3 px-5 self-start rounded-3xl bg-gray-200 text-black cursor-pointer"
-                        : "text-xl mb-3 text-gray-600 py-3 px-5 self-start rounded-3xl hover:bg-gray-200 hover:text-black cursor-pointer"
-                }
+                        ? selectedClasses
+                        : unselectedClasses
+                }`}
                 onClick={() => setSetting("preferences")}
             >
                 Preferences

@@ -2,8 +2,14 @@ import Image from "next/image";
 import { useState } from "react";
 import PreferenceButton from "../initial-selection/PreferenceButton";
 import { preferences } from "@/lib/topics";
+import { User } from "@/lib/definitions";
+import PreferencesList from "./PreferencesList";
 
-export default function EditPreferences() {
+type ProfilePageProps = {
+    user: User;
+};
+
+export default function EditPreferences({ user }: ProfilePageProps) {
     const [preferenceSet, setPreferenceSet] = useState<Set<number>>(new Set());
 
     return (
@@ -15,15 +21,11 @@ export default function EditPreferences() {
                 <div className="relative border border-gray-300 rounded-3xl p-7 mb-8">
                     <h1 className="font-semibold mb-7 text-lg">Preferences</h1>
                     <div className="flex">
-                        <form className="flex flex-wrap">
-                            {preferences.map((preference) => (
-                                <PreferenceButton
-                                    key={preference.id}
-                                    preference={preference}
-                                    setPreferenceSet={setPreferenceSet}
-                                />
-                            ))}
-                        </form>
+                        {user?.preferences ? (
+                            <PreferencesList preferredIds={user.preferences} />
+                        ) : (
+                            <p>An error occured</p>
+                        )}
                     </div>
                     <div className="absolute right-5 top-5 flex">
                         Edit{" "}

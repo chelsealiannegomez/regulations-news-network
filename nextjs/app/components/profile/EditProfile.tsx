@@ -1,6 +1,11 @@
+import { User } from "@/lib/definitions";
 import Image from "next/Image";
 
-export default function EditProfile() {
+type ProfilePageProps = {
+    user: User;
+};
+
+export default function EditProfile({ user }: ProfilePageProps) {
     return (
         <div className="w-4/5 bg-white px-10">
             <h1 className="pt-10 text-2xl font-semibold mb-8">My Profile</h1>
@@ -12,11 +17,11 @@ export default function EditProfile() {
                     <div className="flex">
                         <div className="w-1/2">
                             <p className="text-gray-500 text-sm">First Name</p>
-                            <p>Chelsea Lianne</p>
+                            <p>{user.firstName}</p>
                         </div>
                         <div className="w-1/2">
                             <p className="text-gray-500 text-sm">Last Name</p>
-                            <p>Gomez</p>
+                            <p>{user.lastName}</p>
                         </div>
                     </div>
                     <div className="absolute right-5 top-5 flex">
@@ -38,7 +43,7 @@ export default function EditProfile() {
                             <p className="text-gray-500 text-sm">
                                 Email Address
                             </p>
-                            <p>chelseagomez@gmail.com</p>
+                            <p>{user.email}</p>
                         </div>
                         <div className="absolute right-5 top-5 flex">
                             Edit{" "}
