@@ -5,6 +5,7 @@ import SideBar from "./SideBar";
 import EditProfile from "./EditProfile";
 import EditLocations from "./EditLocations";
 import EditPreferences from "./EditPreferences";
+import { useRouter } from "next/navigation";
 
 type ProfilePageProps = {
     user: User;
@@ -12,6 +13,8 @@ type ProfilePageProps = {
 
 export default function ProfilePage({ user }: ProfilePageProps) {
     const [setting, setSetting] = useState<string>("profile");
+    const router = useRouter();
+
     return (
         <div className="bg-gray-100 pb-10">
             <div className="mx-12 h-24 flex items-center font-bold">

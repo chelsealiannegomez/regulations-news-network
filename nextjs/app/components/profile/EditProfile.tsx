@@ -113,16 +113,22 @@ export default function EditProfile({ user }: ProfilePageProps) {
                         </div>
                         {isNameEdit ? (
                             <div className="flex absolute right-5 top-5">
-                                <button type="submit" className="mr-2">
+                                <button
+                                    type="submit"
+                                    className="mr-2 border border-gray-200 rounded-xl px-3 py-1 hover:bg-gray-200 cursor-pointer"
+                                >
                                     Save
                                 </button>
-                                <button onClick={handleNameCancel}>
+                                <button
+                                    onClick={handleNameCancel}
+                                    className="border border-gray-200 rounded-xl px-3 py-1 hover:bg-gray-200 cursor-pointer"
+                                >
                                     Cancel
                                 </button>
                             </div>
                         ) : (
                             <div
-                                className="absolute right-5 top-5 flex"
+                                className="absolute right-5 top-5 flex cursor-pointer bg-gray-200 rounded-xl py-2 px-3 opacity-85 hover:opacity-100 hover:bg-gray-300"
                                 onClick={() => setIsNameEdit((prev) => !prev)}
                             >
                                 Edit{" "}
@@ -160,16 +166,22 @@ export default function EditProfile({ user }: ProfilePageProps) {
 
                             {isEmailEdit ? (
                                 <div className="flex absolute right-5 top-5">
-                                    <button type="submit" className="mr-2">
+                                    <button
+                                        type="submit"
+                                        className="mr-2 border border-gray-200 rounded-xl px-3 py-1 hover:bg-gray-200 cursor-pointer"
+                                    >
                                         Save
                                     </button>
-                                    <button onClick={handleEmailCancel}>
+                                    <button
+                                        onClick={handleEmailCancel}
+                                        className="border border-gray-200 rounded-xl px-3 py-1 hover:bg-gray-200 cursor-pointer"
+                                    >
                                         Cancel
                                     </button>
                                 </div>
                             ) : (
                                 <div
-                                    className="absolute right-5 top-5 flex"
+                                    className="absolute right-5 top-5 flex cursor-pointer bg-gray-200 rounded-xl py-2 px-3 opacity-85 hover:opacity-100 hover:bg-gray-300"
                                     onClick={() =>
                                         setIsEmailEdit((prev) => !prev)
                                     }

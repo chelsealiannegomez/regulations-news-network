@@ -1,4 +1,4 @@
-import { preferences } from "@/lib/topics";
+import { topics } from "@/lib/topics";
 
 type PreferencesListProps = {
     preferredIds: number[];
@@ -7,11 +7,11 @@ type PreferencesListProps = {
 export default function PreferencesList({
     preferredIds,
 }: PreferencesListProps) {
-    const preferredLocations = preferences.filter((pref) =>
+    const preferredLocations = topics.filter((pref) =>
         preferredIds.includes(pref.id)
     );
 
-    const otherLocations = preferences.filter(
+    const otherLocations = topics.filter(
         (pref) => !preferredIds.includes(pref.id)
     );
 
