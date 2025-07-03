@@ -43,7 +43,7 @@ class VectorSearch:
 
 def demonstrate_search(query):
 
-    response = requests.get('http://localhost:3000/api/articles')
+    response = requests.get('https://regulations-news-network.vercel.app/api/articles')
     articles = response.json()["articles"]
 
     search_engine = VectorSearch()
