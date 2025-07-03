@@ -1,4 +1,4 @@
-export const preferences = [
+export const topics = [
     {
         id: 1,
         topic: "AI Governance",

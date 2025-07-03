@@ -16,7 +16,6 @@ export default function LocationSelection({
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(locationSet);
         const locationArray = [...locationSet];
 
         try {

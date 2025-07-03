@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import Hero from "./Hero";
 import ArticleSection from "./ArticleSection";
 import { User } from "@/lib/definitions";
@@ -9,13 +8,11 @@ type HomePageProps = {
 };
 
 export default function HomePage({ user }: HomePageProps) {
-    const [page, setPage] = useState<string>("home");
-
     return (
-        <div className="">
+        <div>
             <div>
                 <Hero user={user} />
-                <ArticleSection />{" "}
+                <ArticleSection />
             </div>
         </div>
     );
