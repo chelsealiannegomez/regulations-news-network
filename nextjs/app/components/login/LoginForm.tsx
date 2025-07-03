@@ -80,7 +80,7 @@ export default function RegisterForm() {
                         Login
                     </button>
                 </div>
-                <p className="pt-3 text-red-800">{successfulLogin}</p>
+                <p className="pt-3">{successfulLogin}</p>
                 <p>
                     Don&apos;t have an account? Register{" "}
                     <Link href="/register">
