@@ -57,7 +57,7 @@ export default function ArticleSection({ user }: HomePageProps) {
                     setOrderedArticles(ordered);
                 }
             });
-    }, [articles, user]);
+    }, [articles, user.preferences]);
 
     return (
         <div className="px-5 bg-gray-100">
