@@ -18,8 +18,7 @@ describe("parseArticleContent function test", () => {
     it('parses apostrophes \\" into just "', () => {
         const input =
             '{"This is \\"paragraph 1\\".","This is \\"paragraph 2\\".","This is \\"paragraph 3\\"."}';
-        console.log(input);
-        console.log(parseArticleContent(input));
+
         const result = parseArticleContent(input);
         expect(result).toEqual([
             'This is "paragraph 1".',

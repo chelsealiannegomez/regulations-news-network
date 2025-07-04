@@ -29,7 +29,7 @@ model Article {
   location      String
   description   String
   content       String
-  keywords      Json
+  keywords      String[]
 }
 
 model Preferences {

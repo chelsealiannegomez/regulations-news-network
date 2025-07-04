@@ -12,7 +12,7 @@ export default function HomePage({ user }: HomePageProps) {
         <div>
             <div>
                 <Hero user={user} />
-                <ArticleSection />
+                <ArticleSection user={user} />
             </div>
         </div>
     );
