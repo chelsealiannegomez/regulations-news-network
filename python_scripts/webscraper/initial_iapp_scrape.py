@@ -51,7 +51,7 @@ def load_articles(base_url, url_to_scrape):
 
         for article in articles:
             new_article = Article()
-            new_article.url = base_url + article.get('href')                
+            new_article.url = base_url + article.get('href')    
 
             content = article.find_all('p')
             if len(content) == 3:
@@ -80,23 +80,35 @@ def load_articles(base_url, url_to_scrape):
 
             keywords = keyword_class.find_all('button')
 
+            article_keywords = []
+
             if len(keywords) == 0:
-                raise ValueError('No keywords found')
-            
-            loc_count = 0
-            for keyword in keywords:
-                if keyword.text in locations: 
-                    if loc_count == 0:
-                        new_article.location = keyword.text
-                        loc_count += 1
+                article_keywords = []
+                print(new_article.url)
+
+            else: 
+                loc_count = 0
+                for keyword in keywords:
+                    if keyword.text in locations: 
+                        if loc_count == 0:
+                            new_article.location = keyword.text
+                            loc_count += 1
+                        else:
+                            new_article.location = new_article.location + ", " + keyword.text
                     else:
-                        new_article.location = new_article.location + ", " + keyword.text
+                        article_keywords.append(keyword.text)
+            
+            new_article.keywords = article_keywords
+
+            # Get content
 
             content = article_soup.select('.css-al1m8k')
 
             if len(content) == 0:
-                raise ValueError('No content found')
+                print("no content")
+                continue # go to next article
             
+            print("yes")
             content_text = []
             for i in content:
                 paragraph = i.find_all('p')
@@ -105,29 +117,16 @@ def load_articles(base_url, url_to_scrape):
 
             new_article.content = content_text
 
-            if "Editor's note" in content_text[0]: # If editor's note is first in content, use second line for description
-                new_article.description = content_text[1]
+            if len(content_text) > 1:
+                if "Editor's note" in content_text[0]: # If editor's note is first in content, use second line for description
+                    new_article.description = content_text[1]
+                else:
+                    new_article.description = content_text[0]
+
             else:
-                new_article.description = content_text[0]
+                continue
 
-            # Find keywords using KeyBERT
-            text_to_extract =  " ".join(content_text)
-            keywords = extract_keywords(text_to_extract)
-
-            top_three_keywords = keywords[0:3]
-
-            keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in top_three_keywords])
-
-            for k, s in keywords:
-                if k not in keywords_list:
-                    keywords_list.append(k)
-
-            article_keywords = []
-            for k, s in keywords:
-                article_keywords.append(k)
-        
-            new_article.keywords = article_keywords
-                        
+                                    
             articles_list.append(new_article)
         
         return articles_list
@@ -140,7 +139,7 @@ def load_articles(base_url, url_to_scrape):
         driver.quit()
 
 # IAPP Scraping Call
-NUM_ARTICLES = 10
+NUM_ARTICLES = 100
 BASE_URL = 'https://iapp.org'
 URL_TO_SCRAPE = f'{BASE_URL}/news?size=n_{NUM_ARTICLES}_n'
 
@@ -151,5 +150,3 @@ with open(file_path, 'w') as f:
     json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
 
 insert_json_to_db(iapp_articles)
-
-print(keywords_list)

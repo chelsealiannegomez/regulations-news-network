@@ -31,7 +31,6 @@ export default function ArticleSection({ user }: HomePageProps) {
             .then((res) => res.json())
             .then((data) => {
                 setArticles(data.articles);
-                setOrderedArticles(data.articles);
                 setTotalPages(
                     Math.ceil(data.articles.length / NUM_ARTICLES_PER_PAGE)
                 );
@@ -88,7 +87,7 @@ export default function ArticleSection({ user }: HomePageProps) {
             );
             setCurrentPageArticles(currentPageContents);
         }
-    }, [articles, currentPage]);
+    }, [articles, currentPage, orderedArticles]);
 
     return (
         <div className="px-5 bg-gray-100 pb-10">
