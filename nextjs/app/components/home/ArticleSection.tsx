@@ -87,7 +87,7 @@ export default function ArticleSection({ user }: HomePageProps) {
             );
             setCurrentPageArticles(currentPageContents);
         }
-    }, [articles, currentPage, orderedArticles]);
+    }, [articles, currentPage, orderedArticles, totalPages]);
 
     return (
         <div className="px-5 bg-gray-100 pb-10">
