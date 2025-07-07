@@ -10,7 +10,7 @@ export default function Pagination({
     setCurrentPage,
 }: PaginationProps) {
     const handleClick = (page: number) => {
-        setCurrentPage((prev) => page);
+        setCurrentPage(page);
     };
 
     return (
