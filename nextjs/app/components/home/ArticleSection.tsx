@@ -9,6 +9,11 @@ type HomePageProps = {
     user: User;
 };
 
+enum SortMode {
+    Relevance,
+    DatePosted,
+}
+
 const NUM_ARTICLES_PER_PAGE = 6;
 
 export default function ArticleSection({ user }: HomePageProps) {
@@ -22,9 +27,9 @@ export default function ArticleSection({ user }: HomePageProps) {
         []
     );
 
-    const [sortMode, setSortMode] = useState<string>("relevance");
-
     const [numArticles, setNumArticles] = useState<number>(0);
+
+    const [sortMode, setSortMode] = useState<SortMode>(SortMode.Relevance);
 
     useEffect(() => {
         let userQuery = "";
@@ -59,10 +64,10 @@ export default function ArticleSection({ user }: HomePageProps) {
 
     const handleSort = () => {
         setCurrentPage(1);
-        if (sortMode === "relevance") {
-            setSortMode("date posted");
+        if (sortMode === SortMode.Relevance) {
+            setSortMode(SortMode.DatePosted);
         } else {
-            setSortMode("relevance");
+            setSortMode(SortMode.Relevance);
         }
     };
 
@@ -74,7 +79,7 @@ export default function ArticleSection({ user }: HomePageProps) {
                     onClick={handleSort}
                     className="bg-gray-200 h-2/3 p-2 rounded-xl border border-gray-400 shadow-md hover:bg-gray-300 cursor-pointer my-auto"
                 >
-                    {sortMode === "relevance"
+                    {sortMode === SortMode.Relevance
                         ? "Sort by Relevance"
                         : "Sort by Date Posted"}
                 </div>

@@ -4,7 +4,7 @@ export const POST = async (request: NextRequest) => {
     const { query, page_num, num_articles_per_page } = await request.json();
     try {
         const articles = await fetch(
-            "http://0.0.0.0:8000/page_ordered_articles",
+            `${process.env.FASTAPI_DOMAIN}/page_ordered_articles`,
             {
                 method: "POST",
                 headers: {
