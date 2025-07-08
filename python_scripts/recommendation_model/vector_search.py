@@ -43,7 +43,7 @@ class VectorSearch:
 
         return results
 
-@lru_cache(maxsize=2)
+@lru_cache(maxsize=1)
 def demonstrate_search(query):
     print("hello")
     response = requests.get('https://regulations-news-network.vercel.app/api/articles')
@@ -60,6 +60,7 @@ def demonstrate_search(query):
 
     for result in results:
         ordered_articles.append(result["document"])
+        print(result["index"])
 
     return ordered_articles, len(articles)
 
@@ -75,11 +76,10 @@ def articles_per_page(page_num, num_articles_per_page, query):
 
     if page_num * num_articles_per_page > total_num_articles:
         first_id =  (page_num - 1) * num_articles_per_page  + 1
-        last_id = total_num_articles
+        last_id = total_num_articles 
 
     else:
         first_id = (page_num - 1) * num_articles_per_page + 1
         last_id = page_num * num_articles_per_page
-    print(first_id, last_id)
 
-    return ordered_articles[first_id : last_id + 1]
+    return ordered_articles[first_id - 1: last_id], len(ordered_articles)

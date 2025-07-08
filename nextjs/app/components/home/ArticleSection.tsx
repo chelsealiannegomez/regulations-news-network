@@ -14,10 +14,6 @@ const NUM_ARTICLES_PER_PAGE = 6;
 export default function ArticleSection({ user }: HomePageProps) {
     const [query, setQuery] = useState<string>("");
 
-    const [articles, setArticles] = useState<Article[]>([]);
-
-    const [orderedArticles, setOrderedArticles] = useState<Article[]>([]);
-
     const [totalPages, setTotalPages] = useState<number>(1);
 
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -28,18 +24,7 @@ export default function ArticleSection({ user }: HomePageProps) {
 
     const [sortMode, setSortMode] = useState<string>("relevance");
 
-    // const [articlesToDisplay, setArticlesToDisplay] = useState<Article[]>([]);
-
-    useEffect(() => {
-        fetch("api/articles")
-            .then((res) => res.json())
-            .then((data) => {
-                setArticles(data.articles);
-                setTotalPages(
-                    Math.ceil(data.articles.length / NUM_ARTICLES_PER_PAGE)
-                );
-            });
-    }, []);
+    const [numArticles, setNumArticles] = useState<number>(0);
 
     useEffect(() => {
         let userQuery = "";
@@ -48,68 +33,29 @@ export default function ArticleSection({ user }: HomePageProps) {
             userQuery = parsePreferences(user.preferences).query;
         }
 
-        fetch(
-            "https://fastapi-recommendation-model.onrender.com/recommendation_model",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ query: userQuery }),
-            }
-        )
+        fetch("api/articles/ordered", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: userQuery,
+                page_num: currentPage,
+                num_articles_per_page: NUM_ARTICLES_PER_PAGE,
+            }),
+        })
             .then((res) => res.json())
             .then((data) => {
-                if (articles) {
-                    const idToObjectMap = new Map();
-                    articles.forEach((article) => {
-                        idToObjectMap.set(article.id, article);
-                    });
-
-                    const ordered = data.results.map((id: number) =>
-                        idToObjectMap.get(id)
-                    );
-
-                    setOrderedArticles(ordered);
-                }
+                setCurrentPageArticles(data.articles.results);
+                console.log(data.articles.results);
+                setTotalPages(
+                    Math.ceil(
+                        data.articles.total_articles / NUM_ARTICLES_PER_PAGE
+                    )
+                );
+                setNumArticles(data.articles.total_articles);
             });
-    }, [articles, user.preferences]);
-
-    useEffect(() => {
-        if (sortMode === "relevance") {
-            if (currentPage < totalPages) {
-                const currentPageContents = [...orderedArticles].slice(
-                    currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
-                    currentPage * NUM_ARTICLES_PER_PAGE
-                );
-
-                console.log(currentPageContents);
-                setCurrentPageArticles(currentPageContents);
-            } else {
-                const currentPageContents = [...orderedArticles].slice(
-                    currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
-                    articles.length
-                );
-                setCurrentPageArticles(currentPageContents);
-            }
-        } else {
-            if (currentPage < totalPages) {
-                const currentPageContents = [...articles].slice(
-                    currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
-                    currentPage * NUM_ARTICLES_PER_PAGE
-                );
-
-                console.log(currentPageContents);
-                setCurrentPageArticles(currentPageContents);
-            } else {
-                const currentPageContents = [...articles].slice(
-                    currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
-                    articles.length
-                );
-                setCurrentPageArticles(currentPageContents);
-            }
-        }
-    }, [articles, currentPage, orderedArticles, totalPages, sortMode]);
+    }, [currentPage, user.preferences]);
 
     const handleSort = () => {
         setCurrentPage(1);
@@ -134,7 +80,7 @@ export default function ArticleSection({ user }: HomePageProps) {
                 </div>
             </div>
             <p className="mb-3">Showing results for: {query}</p>
-            {currentPageArticles[0] === undefined ? (
+            {currentPageArticles === undefined ? (
                 <p>Loading...</p>
             ) : (
                 <div>
@@ -146,7 +92,7 @@ export default function ArticleSection({ user }: HomePageProps) {
                             totalPages={totalPages}
                             currentPage={currentPage}
                             setCurrentPage={setCurrentPage}
-                            totalArticles={articles.length}
+                            totalArticles={numArticles}
                         />
                     </div>
                 </div>

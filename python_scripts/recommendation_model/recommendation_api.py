@@ -28,12 +28,11 @@ class QueryParams(BaseModel):
     
 @app.post("/page_ordered_articles")
 async def get_page_ordered_articles(data: QueryParams):
-    print(data)
     if not data.query:
         raise HTTPException(status_code=400, detail="Query missing")
     if not data.page_num:
         raise HTTPException(status_code=400, detail="Page number missing")
     if not data.num_articles_per_page:
         raise HTTPException(status_code=400, detail="Number of articles per page missing")
-    results = articles_per_page(data.page_num, data.num_articles_per_page, data.query)
-    return {"results": results}
+    results, total_articles = articles_per_page(data.page_num, data.num_articles_per_page, data.query)
+    return {"results": results, "total_articles": total_articles}
