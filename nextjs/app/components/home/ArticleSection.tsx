@@ -26,6 +26,10 @@ export default function ArticleSection({ user }: HomePageProps) {
         []
     );
 
+    const [sortMode, setSortMode] = useState<string>("relevance");
+
+    // const [articlesToDisplay, setArticlesToDisplay] = useState<Article[]>([]);
+
     useEffect(() => {
         fetch("api/articles")
             .then((res) => res.json())
@@ -72,26 +76,63 @@ export default function ArticleSection({ user }: HomePageProps) {
     }, [articles, user.preferences]);
 
     useEffect(() => {
-        if (currentPage < totalPages) {
-            const currentPageContents = [...orderedArticles].slice(
-                currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
-                currentPage * NUM_ARTICLES_PER_PAGE
-            );
+        if (sortMode === "relevance") {
+            if (currentPage < totalPages) {
+                const currentPageContents = [...orderedArticles].slice(
+                    currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
+                    currentPage * NUM_ARTICLES_PER_PAGE
+                );
 
-            console.log(currentPageContents);
-            setCurrentPageArticles(currentPageContents);
+                console.log(currentPageContents);
+                setCurrentPageArticles(currentPageContents);
+            } else {
+                const currentPageContents = [...orderedArticles].slice(
+                    currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
+                    articles.length
+                );
+                setCurrentPageArticles(currentPageContents);
+            }
         } else {
-            const currentPageContents = [...orderedArticles].slice(
-                currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
-                orderedArticles.length
-            );
-            setCurrentPageArticles(currentPageContents);
+            if (currentPage < totalPages) {
+                const currentPageContents = [...articles].slice(
+                    currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
+                    currentPage * NUM_ARTICLES_PER_PAGE
+                );
+
+                console.log(currentPageContents);
+                setCurrentPageArticles(currentPageContents);
+            } else {
+                const currentPageContents = [...articles].slice(
+                    currentPage * NUM_ARTICLES_PER_PAGE - NUM_ARTICLES_PER_PAGE,
+                    articles.length
+                );
+                setCurrentPageArticles(currentPageContents);
+            }
         }
-    }, [articles, currentPage, orderedArticles, totalPages]);
+    }, [articles, currentPage, orderedArticles, totalPages, sortMode]);
+
+    const handleSort = () => {
+        setCurrentPage(1);
+        if (sortMode === "relevance") {
+            setSortMode("date posted");
+        } else {
+            setSortMode("relevance");
+        }
+    };
 
     return (
         <div className="px-5 bg-gray-100 pb-10">
-            <div className="text-2xl font-semibold py-5">News for You</div>
+            <div className="flex justify-between align-center">
+                <h1 className="text-2xl font-semibold py-5">News for You</h1>
+                <div
+                    onClick={handleSort}
+                    className="bg-gray-200 h-2/3 p-2 rounded-xl border border-gray-400 shadow-md hover:bg-gray-300 cursor-pointer my-auto"
+                >
+                    {sortMode === "relevance"
+                        ? "Sort by Relevance"
+                        : "Sort by Date Posted"}
+                </div>
+            </div>
             <p className="mb-3">Showing results for: {query}</p>
             {currentPageArticles[0] === undefined ? (
                 <p>Loading...</p>
@@ -100,15 +141,16 @@ export default function ArticleSection({ user }: HomePageProps) {
                     {currentPageArticles.map((article) => (
                         <ArticleCard article={article} key={article.id} />
                     ))}
+                    <div className="flex">
+                        <Pagination
+                            totalPages={totalPages}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                            totalArticles={articles.length}
+                        />
+                    </div>
                 </div>
             )}
-            <div className="flex">
-                <Pagination
-                    totalPages={totalPages}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                />
-            </div>
         </div>
     );
 }
