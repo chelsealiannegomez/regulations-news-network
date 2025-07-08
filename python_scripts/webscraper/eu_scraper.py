@@ -36,7 +36,7 @@ def load_articles(base_url, page_number):
     articles_list = []
     try:
         # Wait for up to 20 seconds until the element with ID "view-row-content" is present in the DOM (articles container)
-        url_to_scrape = f'{BASE_URL}/news/news_en?page={PAGE}'
+        url_to_scrape = f'{base_url}/news/news_en?page={page_number}'
 
         driver.get(url_to_scrape)
 
@@ -52,7 +52,6 @@ def load_articles(base_url, page_number):
             link = container.find('a')
             complete_link = base_url + link.get('href')
             print(complete_link)
-
 
         return articles_list
 

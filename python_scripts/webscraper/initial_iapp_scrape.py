@@ -95,7 +95,7 @@ def load_articles(base_url, url_to_scrape):
             content = article_soup.select('.css-al1m8k')
 
             if len(content) == 0:
-                raise ValueError('No content found')
+                continue # go to next article
             
             content_text = []
             for i in content:
