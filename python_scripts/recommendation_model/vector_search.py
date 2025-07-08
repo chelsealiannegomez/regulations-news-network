@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import requests
+from functools import lru_cache
+import math
 
 class VectorSearch:
     def __init__(self):
@@ -41,8 +43,9 @@ class VectorSearch:
 
         return results
 
+@lru_cache(maxsize=2)
 def demonstrate_search(query):
-
+    print("hello")
     response = requests.get('https://regulations-news-network.vercel.app/api/articles')
     articles = response.json()["articles"]
 
@@ -53,9 +56,30 @@ def demonstrate_search(query):
 
     results = search_engine.search(query, top_k = len(search_engine.documents))
 
-    result_indexes = []
+    ordered_articles = []
 
     for result in results:
-        result_indexes.append(result["index"])
+        ordered_articles.append(result["document"])
 
-    return result_indexes
+    return ordered_articles, len(articles)
+
+def articles_per_page(page_num, num_articles_per_page, query):
+    ordered_articles, total_num_articles = demonstrate_search(query)
+
+    first_id, last_id = -1, -1
+
+    max_page_num = math.ceil(total_num_articles / num_articles_per_page)
+
+    if page_num > max_page_num or page_num < 1:
+        return "Page invalid"
+
+    if page_num * num_articles_per_page > total_num_articles:
+        first_id =  (page_num - 1) * num_articles_per_page  + 1
+        last_id = total_num_articles
+
+    else:
+        first_id = (page_num - 1) * num_articles_per_page + 1
+        last_id = page_num * num_articles_per_page
+    print(first_id, last_id)
+
+    return ordered_articles[first_id : last_id + 1]
