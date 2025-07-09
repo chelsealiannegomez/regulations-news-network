@@ -53,7 +53,7 @@ export type PreferencesList = {
     user: User;
 };
 
-export type LocationsListProps = {
+export type EditLocationsListProps = {
     preferredIds: number[];
 };
 

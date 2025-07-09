@@ -5,6 +5,7 @@ import { Article } from "@/lib/definitions";
 import { parsePreferences } from "@/app/utils/parsePreferences";
 import Pagination from "./Pagination";
 import type { HomePageProps } from "@/lib/types";
+import { NUM_ARTICLES_PER_PAGE } from "@/lib/env";
 
 enum SortMode {
     Relevance,
@@ -26,11 +27,7 @@ export default function ArticleSection({ user }: HomePageProps) {
 
     const [sortMode, setSortMode] = useState<SortMode>(SortMode.Relevance);
 
-    console.log("env", process.env.NUM_ARTICLES_PER_PAGE);
-
-    const NUM_ARTICLES_PER_PAGE = process.env.NUM_ARTICLES_PER_PAGE
-        ? process.env.NUM_ARTICLES_PER_PAGE
-        : 4;
+    console.log("env", process.env.NEXT_PUBLIC_NUM_ARTICLES_PER_PAGE);
 
     useEffect(() => {
         let userQuery = "";
