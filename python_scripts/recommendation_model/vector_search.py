@@ -5,6 +5,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 import requests
 from functools import lru_cache
 import math
+import os 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class VectorSearch:
     def __init__(self):
@@ -45,8 +49,8 @@ class VectorSearch:
 
 @lru_cache(maxsize=1)
 def demonstrate_search(query):
-    print("hello")
-    response = requests.get('https://regulations-news-network.vercel.app/api/articles')
+    response = requests.get(f'{os.getenv('FASTAPI_DOMAIN')}/api/articles')
+    print(response)
     articles = response.json()["articles"]
 
     search_engine = VectorSearch()
@@ -60,7 +64,6 @@ def demonstrate_search(query):
 
     for result in results:
         ordered_articles.append(result["document"])
-        print(result["index"])
 
     return ordered_articles, len(articles)
 
@@ -83,3 +86,4 @@ def articles_per_page(page_num, num_articles_per_page, query):
         last_id = page_num * num_articles_per_page
 
     return ordered_articles[first_id - 1: last_id], len(ordered_articles)
+
