@@ -5,7 +5,7 @@ import { Article } from "@/lib/definitions";
 import { parsePreferences } from "@/app/utils/parsePreferences";
 import Pagination from "./Pagination";
 import type { HomePageProps } from "@/lib/types";
-import { NUM_ARTICLES_PER_PAGE } from "@/lib/env";
+import { envClientSchema } from "@/lib/clientEnvSchema";
 
 enum SortMode {
     Relevance,
@@ -13,6 +13,9 @@ enum SortMode {
 }
 
 export default function ArticleSection({ user }: HomePageProps) {
+    const NUM_ARTICLES_PER_PAGE =
+        envClientSchema.NEXT_PUBLIC_NUM_ARTICLES_PER_PAGE;
+
     const [query, setQuery] = useState<string>("");
 
     const [totalPages, setTotalPages] = useState<number>(1);

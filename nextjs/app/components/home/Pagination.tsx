@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import type { PaginationProps } from "@/lib/types";
+import { envClientSchema } from "@/lib/clientEnvSchema";
 
 export default function Pagination({
     totalPages,
@@ -10,7 +11,8 @@ export default function Pagination({
     const [leftDisabled, setLeftDisabled] = useState<boolean>(true);
     const [rightDisabled, setRightDisabled] = useState<boolean>(false);
 
-    const NUM_ARTICLES_PER_PAGE = 4;
+    const NUM_ARTICLES_PER_PAGE =
+        envClientSchema.NEXT_PUBLIC_NUM_ARTICLES_PER_PAGE;
 
     useEffect(() => {
         if (currentPage === 1) {
