@@ -1,20 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 import ArticleCard from "./ArticleCard";
-import { User, Article } from "@/lib/definitions";
+import { Article } from "@/lib/definitions";
 import { parsePreferences } from "@/app/utils/parsePreferences";
 import Pagination from "./Pagination";
-
-type HomePageProps = {
-    user: User;
-};
+import type { HomePageProps } from "@/lib/types";
 
 enum SortMode {
     Relevance,
     DatePosted,
 }
-
-const NUM_ARTICLES_PER_PAGE = 6;
 
 export default function ArticleSection({ user }: HomePageProps) {
     const [query, setQuery] = useState<string>("");
@@ -30,6 +25,12 @@ export default function ArticleSection({ user }: HomePageProps) {
     const [numArticles, setNumArticles] = useState<number>(0);
 
     const [sortMode, setSortMode] = useState<SortMode>(SortMode.Relevance);
+
+    console.log("env", process.env.NUM_ARTICLES_PER_PAGE);
+
+    const NUM_ARTICLES_PER_PAGE = process.env.NUM_ARTICLES_PER_PAGE
+        ? process.env.NUM_ARTICLES_PER_PAGE
+        : 4;
 
     useEffect(() => {
         let userQuery = "";
@@ -70,6 +71,8 @@ export default function ArticleSection({ user }: HomePageProps) {
             setSortMode(SortMode.Relevance);
         }
     };
+
+    console.log("current page", currentPage);
 
     return (
         <div className="px-5 bg-gray-100 pb-10">

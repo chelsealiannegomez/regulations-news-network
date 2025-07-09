@@ -1,8 +1,5 @@
 import { locations } from "@/lib/locations";
-
-type LocationsListProps = {
-    preferredIds: number[];
-};
+import type { LocationsListProps } from "@/lib/types";
 
 export default function LocationsList({ preferredIds }: LocationsListProps) {
     const preferredLocations = locations.filter((loc) =>

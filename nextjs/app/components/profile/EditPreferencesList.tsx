@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { topics } from "@/lib/topics";
-import { User } from "@/lib/definitions";
-
-type PreferencesList = {
-    preferredIds: number[];
-    setPreferredIds: React.Dispatch<React.SetStateAction<number[]>>;
-    setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-    user: User;
-};
-
-type topic = {
-    id: number;
-    topic: string;
-};
+import { Preference } from "@/lib/definitions";
+import type { PreferencesList } from "@/lib/types";
 
 export default function EditPreferencesList({
     preferredIds,
@@ -27,11 +16,11 @@ export default function EditPreferencesList({
     const otherTopics = topics.filter((top) => !preferredIds.includes(top.id));
 
     const [preferredTopicsArray, setPreferredTopicsArray] =
-        useState<topic[]>(preferredTopics);
+        useState<Preference[]>(preferredTopics);
     const [otherTopicsArray, setOtherTopicsArray] =
-        useState<topic[]>(otherTopics);
+        useState<Preference[]>(otherTopics);
 
-    const handleDeselect = (top: topic) => {
+    const handleDeselect = (top: Preference) => {
         const preferredTemp = [...preferredTopicsArray].filter(
             (item) => item !== top
         );
@@ -42,7 +31,7 @@ export default function EditPreferencesList({
         setOtherTopicsArray(othersTemp);
     };
 
-    const handleSelect = (top: topic) => {
+    const handleSelect = (top: Preference) => {
         const othersTemp = [...otherTopicsArray].filter((item) => item !== top);
         setOtherTopicsArray(othersTemp);
 

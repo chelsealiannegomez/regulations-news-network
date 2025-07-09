@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-type PaginationProps = {
-    totalPages: number;
-    currentPage: number;
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-    totalArticles: number;
-};
-
-const NUM_ARTICLES_PER_PAGE = 6;
+import type { PaginationProps } from "@/lib/types";
 
 export default function Pagination({
     totalPages,
@@ -16,6 +9,8 @@ export default function Pagination({
 }: PaginationProps) {
     const [leftDisabled, setLeftDisabled] = useState<boolean>(true);
     const [rightDisabled, setRightDisabled] = useState<boolean>(false);
+
+    const NUM_ARTICLES_PER_PAGE = 4;
 
     useEffect(() => {
         if (currentPage === 1) {

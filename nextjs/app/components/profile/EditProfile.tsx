@@ -1,10 +1,6 @@
 import { useState } from "react";
-import { User } from "@/lib/definitions";
 import Image from "next/image";
-
-type ProfilePageProps = {
-    user: User;
-};
+import type { ProfilePageProps } from "@/lib/types";
 
 export default function EditProfile({ user }: ProfilePageProps) {
     const [isNameEdit, setIsNameEdit] = useState<boolean>(false);
