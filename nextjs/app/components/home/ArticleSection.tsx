@@ -27,8 +27,6 @@ export default function ArticleSection({ user }: HomePageProps) {
 
     const [sortMode, setSortMode] = useState<SortMode>(SortMode.Relevance);
 
-    console.log("env", process.env.NEXT_PUBLIC_NUM_ARTICLES_PER_PAGE);
-
     useEffect(() => {
         let userQuery = "";
         if (user.preferences) {
@@ -50,7 +48,6 @@ export default function ArticleSection({ user }: HomePageProps) {
             .then((res) => res.json())
             .then((data) => {
                 setCurrentPageArticles(data.articles.results);
-                console.log(data.articles.results);
                 setTotalPages(
                     Math.ceil(
                         data.articles.total_articles / NUM_ARTICLES_PER_PAGE
@@ -68,8 +65,6 @@ export default function ArticleSection({ user }: HomePageProps) {
             setSortMode(SortMode.Relevance);
         }
     };
-
-    console.log("current page", currentPage);
 
     return (
         <div className="px-5 bg-gray-100 pb-10">
