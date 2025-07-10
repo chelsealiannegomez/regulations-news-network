@@ -53,7 +53,7 @@ def demonstrate_search(query, locations):
     response = requests.get('http://localhost:3000/api/articles')
     articles = response.json()["articles"]
 
-    filtered_articles = list(filter(lambda article: article['location'] in preferred_locations, articles))
+    filtered_articles = list(filter(lambda article: any(loc in preferred_locations for loc in article['location'].split(", ")), articles))
     
     search_engine = VectorSearch()
     search_engine.add_documents(filtered_articles)
