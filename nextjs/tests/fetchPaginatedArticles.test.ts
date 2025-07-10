@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-import { POST } from "@/app/api/articles/ordered/route";
+import { POST } from "@/app/api/articles/relevance/route";
 import { envClientSchema } from "@/lib/clientEnvSchema";
 
 const NUM_ARTICLES_PER_PAGE = envClientSchema.NEXT_PUBLIC_NUM_ARTICLES_PER_PAGE;
