@@ -1,9 +1,5 @@
 import LogOut from "./LogOut";
-
-type SideBarProps = {
-    setting: string;
-    setSetting: React.Dispatch<React.SetStateAction<string>>;
-};
+import type { SideBarProps } from "@/lib/types";
 
 export default function SideBar({ setting, setSetting }: SideBarProps) {
     const baseClasses =

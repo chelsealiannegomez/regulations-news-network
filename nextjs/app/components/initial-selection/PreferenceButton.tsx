@@ -1,10 +1,5 @@
-import { Preference } from "@/lib/definitions";
 import { useState } from "react";
-
-type PreferenceProps = {
-    preference: Preference;
-    setPreferenceSet: React.Dispatch<React.SetStateAction<Set<number>>>;
-};
+import type { PreferenceProps } from "@/lib/types";
 
 export default function PreferenceButton({
     preference,

@@ -1,10 +1,6 @@
 "use client";
-import { User } from "@/lib/definitions";
 import { useState, useEffect } from "react";
-
-type HomePageProps = {
-    user: User;
-};
+import type { HomePageProps } from "@/lib/types";
 
 export default function Hero({ user }: HomePageProps) {
     const [fadeIn, setFadeIn] = useState<boolean>(false);

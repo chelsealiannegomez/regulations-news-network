@@ -1,14 +1,9 @@
 "use client";
 import { useState } from "react";
 import PreferenceButton from "./PreferenceButton";
-import { User } from "@/lib/definitions";
 import { useRouter } from "next/navigation";
 import { topics } from "@/lib/topics";
-
-type PreferenceSelectionProps = {
-    setStep: React.Dispatch<React.SetStateAction<number>>;
-    user: User;
-};
+import type { PreferenceSelectionProps } from "@/lib/types";
 
 export default function PreferenceSelection({
     setStep,

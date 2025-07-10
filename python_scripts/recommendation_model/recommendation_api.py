@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-from vector_search import demonstrate_search
+from vector_search import demonstrate_search, articles_per_page
 
 app = FastAPI()
 
@@ -23,10 +23,16 @@ app.add_middleware(
 
 class QueryParams(BaseModel):
     query: str
-
-@app.post("/recommendation_model")
-async def get_recommendation(data: QueryParams):
+    page_num: int
+    num_articles_per_page: int
+    
+@app.post("/page_ordered_articles")
+async def get_page_ordered_articles(data: QueryParams):
     if not data.query:
         raise HTTPException(status_code=400, detail="Query missing")
-    results = demonstrate_search(data.query)
-    return {"results": results}
+    if not data.page_num:
+        raise HTTPException(status_code=400, detail="Page number missing")
+    if not data.num_articles_per_page:
+        raise HTTPException(status_code=400, detail="Number of articles per page missing")
+    results, total_articles = articles_per_page(data.page_num, data.num_articles_per_page, data.query)
+    return {"results": results, "total_articles": total_articles}

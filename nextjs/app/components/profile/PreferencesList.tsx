@@ -1,8 +1,5 @@
 import { topics } from "@/lib/topics";
-
-type PreferencesListProps = {
-    preferredIds: number[];
-};
+import type { PreferencesListProps } from "@/lib/types";
 
 export default function PreferencesList({
     preferredIds,

@@ -1,20 +1,16 @@
 "use client";
 import { useState } from "react";
-import { User } from "@/lib/definitions";
 import SideBar from "./SideBar";
 import EditProfile from "./EditProfile";
 import EditLocations from "./EditLocations";
 import EditPreferences from "./EditPreferences";
-
-type ProfilePageProps = {
-    user: User;
-};
+import type { ProfilePageProps } from "@/lib/types";
 
 export default function ProfilePage({ user }: ProfilePageProps) {
     const [setting, setSetting] = useState<string>("profile");
 
     return (
-        <div className="bg-gray-100 pb-10">
+        <div className="bg-gray-100 pb-10 text-black">
             <div className="mx-12 h-24 flex items-center font-bold">
                 <h1 className="text-3xl">Account Settings</h1>
             </div>
