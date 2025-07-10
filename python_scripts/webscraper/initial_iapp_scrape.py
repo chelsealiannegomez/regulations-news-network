@@ -6,9 +6,11 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import json
+from datetime import date
 
 from keybert_extraction import extract_keywords
 from insert_to_db import insert_json_to_db
+from parse_date import parse_date_DMY
 
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
@@ -55,10 +57,12 @@ def load_articles(base_url, url_to_scrape):
 
             content = article.find_all('p')
             if len(content) == 3:
-                new_article.date_published = content[1].text
+                year, month, day = parse_date_DMY(content[1].text)
+                new_article.date_published = date(year, month, day)
                 new_article.title = content[2].text
             elif len(content) == 2:
-                new_article.date_published = content[0].text
+                year, month, day = parse_date_DMY(content[0].text)
+                new_article.date_published = date(year, month, day)
                 new_article.title = content[1].text
             else:
                 raise ValueError('Article format is unexpected')
@@ -139,14 +143,14 @@ def load_articles(base_url, url_to_scrape):
         driver.quit()
 
 # IAPP Scraping Call
-NUM_ARTICLES = 100
+NUM_ARTICLES = 101
 BASE_URL = 'https://iapp.org'
 URL_TO_SCRAPE = f'{BASE_URL}/news?size=n_{NUM_ARTICLES}_n'
 
 iapp_articles = load_articles(BASE_URL, URL_TO_SCRAPE)
 
-file_path = "articles.json"
-with open(file_path, 'w') as f:
-    json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
+# file_path = "articles.json"
+# with open(file_path, 'w') as f:
+#     json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
 
 insert_json_to_db(iapp_articles)

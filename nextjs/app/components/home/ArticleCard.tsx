@@ -7,6 +7,13 @@ export default function ArticleCard({ article }: { article: Article }) {
 
     const articleContent = parseArticleContent(article.content);
 
+    const date = new Date(article.date_posted).toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        timeZone: "UTC",
+    });
+
     return (
         <div className="border rounded-xl mb-5 px-7 py-5 bg-gray-50 border-gray-200 hover:border-gray-400 hover:bg-white">
             <a
@@ -16,7 +23,7 @@ export default function ArticleCard({ article }: { article: Article }) {
             >
                 <h2>{article.title}</h2>
             </a>
-            <p className="italic mb-4">{article.date_posted}</p>
+            <p className="italic mb-4">{date}</p>
 
             {!seeMore ? (
                 <div>
