@@ -42,31 +42,53 @@ export default function ArticleSection({ user }: HomePageProps) {
             user.locations ? user.locations : []
         );
 
-        console.log(userLocations);
-
-        fetch("api/articles/ordered", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                query: userQuery,
-                page_num: currentPage,
-                num_articles_per_page: NUM_ARTICLES_PER_PAGE,
-                locations: userLocations,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setCurrentPageArticles(data.articles.results);
-                setTotalPages(
-                    Math.ceil(
-                        data.articles.total_articles / NUM_ARTICLES_PER_PAGE
-                    )
-                );
-                setNumArticles(data.articles.total_articles);
-            });
-    }, [currentPage, user.preferences]);
+        if (sortMode === SortMode.Relevance) {
+            fetch("api/articles/relevance", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    query: userQuery,
+                    page_num: currentPage,
+                    num_articles_per_page: NUM_ARTICLES_PER_PAGE,
+                    locations: userLocations,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setCurrentPageArticles(data.articles.results);
+                    setTotalPages(
+                        Math.ceil(
+                            data.articles.total_articles / NUM_ARTICLES_PER_PAGE
+                        )
+                    );
+                    setNumArticles(data.articles.total_articles);
+                });
+        } else if (sortMode === SortMode.DatePosted) {
+            fetch("api/articles/date_posted", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    page_num: currentPage,
+                    num_articles_per_page: NUM_ARTICLES_PER_PAGE,
+                    locations: userLocations,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setCurrentPageArticles(data.articles.results);
+                    setTotalPages(
+                        Math.ceil(
+                            data.articles.total_articles / NUM_ARTICLES_PER_PAGE
+                        )
+                    );
+                    setNumArticles(data.articles.total_articles);
+                });
+        }
+    }, [currentPage, user.preferences, sortMode]);
 
     const handleSort = () => {
         setCurrentPage(1);
