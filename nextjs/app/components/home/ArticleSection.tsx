@@ -33,9 +33,10 @@ export default function ArticleSection({ user }: HomePageProps) {
 
     useEffect(() => {
         let userQuery = "";
+        console.log(user.preferences);
         if (user.preferences) {
-            setQuery(parsePreferences(user.preferences).display);
-            userQuery = parsePreferences(user.preferences).query;
+            userQuery = user.preferences.join(" and ");
+            setQuery(user.preferences.join(", "));
         }
 
         const userLocations = parseLocations(

@@ -47,8 +47,8 @@ export type LocationsListProps = {
 };
 
 export type PreferencesList = {
-    preferredIds: number[];
-    setPreferredIds: React.Dispatch<React.SetStateAction<number[]>>;
+    preferences: string[];
+    setPreferences: React.Dispatch<React.SetStateAction<string[]>>;
     setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
     user: User;
 };
@@ -58,7 +58,7 @@ export type EditLocationsListProps = {
 };
 
 export type PreferencesListProps = {
-    preferredIds: number[];
+    preferences: string[];
 };
 
 export type SideBarProps = {

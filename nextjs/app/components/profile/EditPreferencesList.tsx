@@ -1,52 +1,39 @@
-import { useState } from "react";
-import { topics } from "@/lib/topics";
-import { Preference } from "@/lib/definitions";
+import { useState, MouseEventHandler } from "react";
 import type { PreferencesList } from "@/lib/types";
 
 export default function EditPreferencesList({
-    preferredIds,
-    setPreferredIds,
+    preferences,
+    setPreferences,
     setIsEdit,
     user,
 }: PreferencesList) {
-    const preferredTopics = topics.filter((top) =>
-        preferredIds.includes(top.id)
-    );
+    const [input, setInput] = useState<string>("");
 
-    const otherTopics = topics.filter((top) => !preferredIds.includes(top.id));
+    const [preferencesCopy, setPreferencesCopy] =
+        useState<string[]>(preferences);
 
-    const [preferredTopicsArray, setPreferredTopicsArray] =
-        useState<Preference[]>(preferredTopics);
-    const [otherTopicsArray, setOtherTopicsArray] =
-        useState<Preference[]>(otherTopics);
-
-    const handleDeselect = (top: Preference) => {
-        const preferredTemp = [...preferredTopicsArray].filter(
+    const handleDeselect = (top: string) => {
+        const preferredTemp = [...preferencesCopy].filter(
             (item) => item !== top
         );
-        setPreferredTopicsArray(preferredTemp);
-
-        const othersTemp = [...otherTopicsArray];
-        othersTemp.push(top);
-        setOtherTopicsArray(othersTemp);
+        setPreferencesCopy(preferredTemp);
     };
 
-    const handleSelect = (top: Preference) => {
-        const othersTemp = [...otherTopicsArray].filter((item) => item !== top);
-        setOtherTopicsArray(othersTemp);
-
-        const preferredTemp = [...preferredTopicsArray];
-        preferredTemp.push(top);
-        setPreferredTopicsArray(preferredTemp);
+    const handleSelect: React.MouseEventHandler<HTMLDivElement> = (event) => {
+        if (input.length === 0) {
+            alert("Cannot be empty");
+        } else {
+            const preferredTemp = [...preferencesCopy];
+            preferredTemp.push(input);
+            setPreferencesCopy(preferredTemp);
+            setInput("");
+            console.log(preferredTemp);
+        }
     };
 
     const handleSave = async (e: React.MouseEvent<HTMLDivElement>) => {
+        setPreferences(preferencesCopy);
         e.preventDefault();
-
-        const preferredTopicIds = preferredTopicsArray.map((top) => top.id);
-
-        setPreferredIds(preferredTopicIds);
-
         try {
             const response = await fetch(`/api/edit/preferences/${user.id}`, {
                 method: "PATCH",
@@ -54,7 +41,7 @@ export default function EditPreferencesList({
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    preferences: preferredTopicIds,
+                    preferences: preferencesCopy,
                 }),
             });
 
@@ -70,14 +57,14 @@ export default function EditPreferencesList({
 
     return (
         <div>
-            <p className="font-semibold mb-2">Selected:</p>
+            <p className="font-semibold mb-2">Current Keywords:</p>
             <div className="flex flex-col">
-                {preferredTopicsArray.map((top) => (
+                {preferencesCopy.map((top) => (
                     <div
-                        key={top.id}
+                        key={preferencesCopy.indexOf(top)}
                         className="self-start bg-gray-100 py-2 px-5 my-1 rounded-xl cursor-pointer hover:bg-gray-300"
                     >
-                        {top.topic}{" "}
+                        {top}{" "}
                         <span
                             className="text-gray-400 ml-2 text-2xl hover:text-gray-800 cursor-pointer"
                             onClick={() => handleDeselect(top)}
@@ -88,18 +75,19 @@ export default function EditPreferencesList({
                 ))}
             </div>
             <br></br>
-            <p className="font-semibold mb-2">Not Selected:</p>
-            <div className="flex flex-col">
-                {otherTopicsArray.map((top) => (
-                    <div
-                        key={top.id}
-                        className="self-start bg-gray-200 py-2 px-5 my-1 rounded-xl cursor-pointer hover:bg-gray-300"
-                        onClick={() => handleSelect(top)}
-                    >
-                        {top.topic}{" "}
-                    </div>
-                ))}
-            </div>
+            <p className="font-semibold mb-2">Add Keyword:</p>
+            <form className="flex">
+                <input
+                    type="text"
+                    onChange={(e) => setInput(e.target.value)}
+                    minLength={2}
+                    value={input}
+                    className="self-start bg-gray-100 py-2 px-5 my-1 rounded-xl"
+                ></input>
+                <div onClick={handleSelect} className="ml-2 my-auto">
+                    Submit
+                </div>
+            </form>
             <div
                 className="absolute right-5 top-5 flex cursor-pointer border border-gray-200 rounded-xl px-3 py-1 hover:bg-gray-200 cursor-pointer"
                 onClick={handleSave}

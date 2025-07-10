@@ -1,28 +1,13 @@
-import { topics } from "@/lib/topics";
 import type { PreferencesListProps } from "@/lib/types";
 
-export default function PreferencesList({
-    preferredIds,
-}: PreferencesListProps) {
-    const preferredLocations = topics.filter((pref) =>
-        preferredIds.includes(pref.id)
-    );
-
-    const otherLocations = topics.filter(
-        (pref) => !preferredIds.includes(pref.id)
-    );
-
+export default function PreferencesList({ preferences }: PreferencesListProps) {
     return (
         <div>
             <p className="font-semibold mb-2">Selected:</p>
-            {preferredLocations.map((pref) => (
-                <div key={pref.id}>{pref.topic}</div>
+            {preferences?.map((pref) => (
+                <div key={preferences.indexOf(pref)}>{pref}</div>
             ))}
             <br></br>
-            <p className="font-semibold mb-2">Not Selected:</p>
-            {otherLocations.map((pref) => (
-                <div key={pref.id}>{pref.topic}</div>
-            ))}
         </div>
     );
 }
