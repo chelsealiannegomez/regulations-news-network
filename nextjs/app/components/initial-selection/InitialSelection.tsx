@@ -8,12 +8,12 @@ export default function InitialSelection({ user }: InitialSelectionProps) {
     const [step, setStep] = useState<number>(1);
 
     return (
-        <div>
-            <header className="h-20 flex justify-center items-center text-xl">
-                Regulations News Network
-            </header>
-            <div className="mx-5">
-                <p className="mb-5">
+        <div className="bg-white text-black h-screen">
+            <nav className="flex mx-auto bg-gray-900 h-16 text-white justify-between items-center">
+                <div className="ml-5">Regulation News Network</div>
+            </nav>
+            <div className="mx-5 my-5">
+                <p className="mb-5 text-xl">
                     Welcome to Regulations News Network, {user.firstName}!
                 </p>
                 {step === 1 ? (
