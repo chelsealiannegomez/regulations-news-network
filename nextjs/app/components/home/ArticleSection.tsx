@@ -6,6 +6,7 @@ import { parsePreferences } from "@/app/utils/parsePreferences";
 import Pagination from "./Pagination";
 import type { HomePageProps } from "@/lib/types";
 import { envClientSchema } from "@/lib/clientEnvSchema";
+import parseLocations from "@/app/utils/parseLocations";
 
 enum SortMode {
     Relevance,
@@ -37,6 +38,12 @@ export default function ArticleSection({ user }: HomePageProps) {
             userQuery = parsePreferences(user.preferences).query;
         }
 
+        const userLocations = parseLocations(
+            user.locations ? user.locations : []
+        );
+
+        console.log(userLocations);
+
         fetch("api/articles/ordered", {
             method: "POST",
             headers: {
@@ -46,6 +53,7 @@ export default function ArticleSection({ user }: HomePageProps) {
                 query: userQuery,
                 page_num: currentPage,
                 num_articles_per_page: NUM_ARTICLES_PER_PAGE,
+                locations: userLocations,
             }),
         })
             .then((res) => res.json())

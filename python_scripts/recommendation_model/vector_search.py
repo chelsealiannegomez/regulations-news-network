@@ -44,13 +44,19 @@ class VectorSearch:
         return results
 
 @lru_cache(maxsize=1)
-def demonstrate_search(query):
-    print("hello")
-    response = requests.get('https://regulations-news-network.vercel.app/api/articles')
+def demonstrate_search(query, locations):
+    split_locations = list(locations.strip().split(" "))
+    preferred_locations = [loc.replace("_", " ") for loc in split_locations]
+
+    print(preferred_locations)
+
+    response = requests.get('http://localhost:3000/api/articles')
     articles = response.json()["articles"]
 
+    filtered_articles = list(filter(lambda article: article['location'] in preferred_locations, articles))
+    
     search_engine = VectorSearch()
-    search_engine.add_documents(articles)
+    search_engine.add_documents(filtered_articles)
 
     print(f"\n Searching for: '{query}'")
 
@@ -64,8 +70,9 @@ def demonstrate_search(query):
 
     return ordered_articles, len(articles)
 
-def articles_per_page(page_num, num_articles_per_page, query):
-    ordered_articles, total_num_articles = demonstrate_search(query)
+def articles_per_page(page_num, num_articles_per_page, query, locations):
+
+    ordered_articles, total_num_articles = demonstrate_search(query, locations)
 
     first_id, last_id = -1, -1
 
