@@ -1,7 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-    const { query, page_num, num_articles_per_page } = await request.json();
+    const { query, page_num, num_articles_per_page, locations } =
+        await request.json();
     try {
         const articles = await fetch(
             `${process.env.FASTAPI_DOMAIN}/page_ordered_articles`,
@@ -14,6 +15,7 @@ export const POST = async (request: NextRequest) => {
                     query: query,
                     page_num: page_num,
                     num_articles_per_page: num_articles_per_page,
+                    locations: locations,
                 }),
             }
         );

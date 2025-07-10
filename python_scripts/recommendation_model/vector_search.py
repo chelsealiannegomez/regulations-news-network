@@ -42,15 +42,24 @@ class VectorSearch:
             })
 
         return results
+    
+@lru_cache(maxsize=1)
+def get_articles():
+    response = requests.get('http://localhost:3000/api/articles')
+    return response
 
 @lru_cache(maxsize=1)
-def demonstrate_search(query):
-    print("hello")
-    response = requests.get('https://regulations-news-network.vercel.app/api/articles')
+def demonstrate_search(query, locations):
+    split_locations = list(locations.strip().split(" "))
+    preferred_locations = [loc.replace("_", " ") for loc in split_locations]
+
+    response = get_articles()
     articles = response.json()["articles"]
 
+    filtered_articles = list(filter(lambda article: any(loc in preferred_locations for loc in article['location'].split(", ")), articles))
+    
     search_engine = VectorSearch()
-    search_engine.add_documents(articles)
+    search_engine.add_documents(filtered_articles)
 
     print(f"\n Searching for: '{query}'")
 
@@ -60,12 +69,43 @@ def demonstrate_search(query):
 
     for result in results:
         ordered_articles.append(result["document"])
-        print(result["index"])
 
     return ordered_articles, len(articles)
 
-def articles_per_page(page_num, num_articles_per_page, query):
-    ordered_articles, total_num_articles = demonstrate_search(query)
+def articles_per_page(page_num, num_articles_per_page, query, locations):
+
+    ordered_articles, total_num_articles = demonstrate_search(query, locations)
+
+    first_id, last_id = -1, -1
+
+    max_page_num = math.ceil(total_num_articles / num_articles_per_page)
+
+    if page_num > max_page_num or page_num < 1:
+        return "Page invalid"
+
+    if page_num * num_articles_per_page > total_num_articles:
+        first_id =  (page_num - 1) * num_articles_per_page  + 1
+        last_id = total_num_articles 
+
+    else:
+        first_id = (page_num - 1) * num_articles_per_page + 1
+        last_id = page_num * num_articles_per_page
+
+    return ordered_articles[first_id - 1: last_id], len(ordered_articles)
+
+def articles_per_page_by_date(page_num, num_articles_per_page, locations):
+
+    split_locations = list(locations.strip().split(" "))
+    preferred_locations = [loc.replace("_", " ") for loc in split_locations]
+
+    response = get_articles()
+    articles = response.json()["articles"]
+
+    filtered_articles = list(filter(lambda article: any(loc in preferred_locations for loc in article['location'].split(", ")), articles))
+
+    sorted_articles = sorted(filtered_articles, key=lambda obj: obj['date_posted'], reverse=True)
+
+    ordered_articles, total_num_articles = sorted_articles, len(sorted_articles)
 
     first_id, last_id = -1, -1
 

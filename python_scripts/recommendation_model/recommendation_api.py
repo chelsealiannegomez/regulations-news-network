@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-from vector_search import demonstrate_search, articles_per_page
+from vector_search import articles_per_page, articles_per_page_by_date
 
 app = FastAPI()
 
@@ -25,6 +25,12 @@ class QueryParams(BaseModel):
     query: str
     page_num: int
     num_articles_per_page: int
+    locations: str
+
+class DateParams(BaseModel):
+    page_num: int
+    num_articles_per_page: int
+    locations: str
     
 @app.post("/page_ordered_articles")
 async def get_page_ordered_articles(data: QueryParams):
@@ -34,5 +40,19 @@ async def get_page_ordered_articles(data: QueryParams):
         raise HTTPException(status_code=400, detail="Page number missing")
     if not data.num_articles_per_page:
         raise HTTPException(status_code=400, detail="Number of articles per page missing")
-    results, total_articles = articles_per_page(data.page_num, data.num_articles_per_page, data.query)
+    if not data.locations:
+        raise HTTPException(status_code=400, detail="Locations missing")
+    results, total_articles = articles_per_page(data.page_num, data.num_articles_per_page, data.query, data.locations)
+    return {"results": results, "total_articles": total_articles}
+
+
+@app.post("/page_date_articles")
+async def get_page_ordered_articles(data: DateParams):
+    if not data.page_num:
+        raise HTTPException(status_code=400, detail="Page number missing")
+    if not data.num_articles_per_page:
+        raise HTTPException(status_code=400, detail="Number of articles per page missing")
+    if not data.locations:
+        raise HTTPException(status_code=400, detail="Locations missing")
+    results, total_articles = articles_per_page_by_date(data.page_num, data.num_articles_per_page, data.locations)
     return {"results": results, "total_articles": total_articles}

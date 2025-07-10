@@ -6,6 +6,7 @@ import { parsePreferences } from "@/app/utils/parsePreferences";
 import Pagination from "./Pagination";
 import type { HomePageProps } from "@/lib/types";
 import { envClientSchema } from "@/lib/clientEnvSchema";
+import parseLocations from "@/app/utils/parseLocations";
 
 enum SortMode {
     Relevance,
@@ -37,28 +38,57 @@ export default function ArticleSection({ user }: HomePageProps) {
             userQuery = parsePreferences(user.preferences).query;
         }
 
-        fetch("api/articles/ordered", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                query: userQuery,
-                page_num: currentPage,
-                num_articles_per_page: NUM_ARTICLES_PER_PAGE,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setCurrentPageArticles(data.articles.results);
-                setTotalPages(
-                    Math.ceil(
-                        data.articles.total_articles / NUM_ARTICLES_PER_PAGE
-                    )
-                );
-                setNumArticles(data.articles.total_articles);
-            });
-    }, [currentPage, user.preferences]);
+        const userLocations = parseLocations(
+            user.locations ? user.locations : []
+        );
+
+        if (sortMode === SortMode.Relevance) {
+            fetch("api/articles/relevance", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    query: userQuery,
+                    page_num: currentPage,
+                    num_articles_per_page: NUM_ARTICLES_PER_PAGE,
+                    locations: userLocations,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setCurrentPageArticles(data.articles.results);
+                    setTotalPages(
+                        Math.ceil(
+                            data.articles.total_articles / NUM_ARTICLES_PER_PAGE
+                        )
+                    );
+                    setNumArticles(data.articles.total_articles);
+                });
+        } else if (sortMode === SortMode.DatePosted) {
+            fetch("api/articles/date_posted", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    page_num: currentPage,
+                    num_articles_per_page: NUM_ARTICLES_PER_PAGE,
+                    locations: userLocations,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setCurrentPageArticles(data.articles.results);
+                    setTotalPages(
+                        Math.ceil(
+                            data.articles.total_articles / NUM_ARTICLES_PER_PAGE
+                        )
+                    );
+                    setNumArticles(data.articles.total_articles);
+                });
+        }
+    }, [currentPage, user.preferences, sortMode]);
 
     const handleSort = () => {
         setCurrentPage(1);
