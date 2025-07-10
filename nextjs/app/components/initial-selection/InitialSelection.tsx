@@ -1,12 +1,8 @@
 "use client";
-import { User } from "@/lib/definitions";
 import { useState } from "react";
 import PreferenceSelection from "./PreferenceSelection";
 import LocationSelection from "./LocationSelection";
-
-type InitialSelectionProps = {
-    user: User;
-};
+import type { InitialSelectionProps } from "@/lib/types";
 
 export default function InitialSelection({ user }: InitialSelectionProps) {
     const [step, setStep] = useState<number>(1);

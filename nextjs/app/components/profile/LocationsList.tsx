@@ -1,10 +1,9 @@
 import { locations } from "@/lib/locations";
+import type { EditLocationsListProps } from "@/lib/types";
 
-type LocationsListProps = {
-    preferredIds: number[];
-};
-
-export default function LocationsList({ preferredIds }: LocationsListProps) {
+export default function LocationsList({
+    preferredIds,
+}: EditLocationsListProps) {
     const preferredLocations = locations.filter((loc) =>
         preferredIds.includes(loc.id)
     );

@@ -1,18 +1,7 @@
 import { useState } from "react";
 import { locations } from "@/lib/locations";
-import { User } from "@/lib/definitions";
-
-type LocationsListProps = {
-    preferredIds: number[];
-    setPreferredIds: React.Dispatch<React.SetStateAction<number[]>>;
-    setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-    user: User;
-};
-
-type location = {
-    id: number;
-    location: string;
-};
+import { Location } from "@/lib/definitions";
+import type { LocationsListProps } from "@/lib/types";
 
 export default function EditLocationsList({
     preferredIds,
@@ -29,11 +18,11 @@ export default function EditLocationsList({
     );
 
     const [preferredLocationsArray, setPreferredLocationsArray] =
-        useState<location[]>(preferredLocations);
+        useState<Location[]>(preferredLocations);
     const [otherLocationsArray, setOtherLocationsArray] =
-        useState<location[]>(otherLocations);
+        useState<Location[]>(otherLocations);
 
-    const handleDeselect = (loc: location) => {
+    const handleDeselect = (loc: Location) => {
         const preferredTemp = [...preferredLocationsArray].filter(
             (item) => item !== loc
         );
@@ -44,7 +33,7 @@ export default function EditLocationsList({
         setOtherLocationsArray(othersTemp);
     };
 
-    const handleSelect = (loc: location) => {
+    const handleSelect = (loc: Location) => {
         const othersTemp = [...otherLocationsArray].filter(
             (item) => item !== loc
         );

@@ -1,11 +1,7 @@
 "use client";
 import Hero from "./Hero";
 import ArticleSection from "./ArticleSection";
-import { User } from "@/lib/definitions";
-
-type HomePageProps = {
-    user: User;
-};
+import type { HomePageProps } from "@/lib/types";
 
 export default function HomePage({ user }: HomePageProps) {
     return (

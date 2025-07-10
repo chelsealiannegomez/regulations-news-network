@@ -1,12 +1,7 @@
 import { useState } from "react";
 import LocationButton from "./LocationButton";
 import { locations } from "@/lib/locations";
-import { User } from "@/lib/definitions";
-
-type LocationSelectionProps = {
-    setStep: React.Dispatch<React.SetStateAction<number>>;
-    user: User;
-};
+import type { LocationSelectionProps } from "@/lib/types";
 
 export default function LocationSelection({
     setStep,
