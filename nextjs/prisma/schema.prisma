@@ -17,7 +17,7 @@ model User {
   firstName     String
   lastName      String
   password      String
-  preferences   Int[]
+  preferences   String[]
   locations     Int[]
 }
 

@@ -7,10 +7,9 @@ import type { ProfilePageProps } from "@/lib/types";
 export default function EditPreferences({ user }: ProfilePageProps) {
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
-    const preferredTopicsIds = user.preferences ? user.preferences : [];
-
-    const [preferredIds, setPreferredIds] =
-        useState<number[]>(preferredTopicsIds);
+    const [preferences, setPreferences] = useState<string[]>(
+        user.preferences ? user.preferences : []
+    );
 
     return (
         <div className="w-4/5 bg-white px-10">
@@ -23,9 +22,9 @@ export default function EditPreferences({ user }: ProfilePageProps) {
                     {!isEdit ? (
                         <div>
                             <div className="flex">
-                                {user?.locations ? (
+                                {preferences ? (
                                     <PreferencesList
-                                        preferredIds={preferredIds}
+                                        preferences={preferences}
                                     />
                                 ) : (
                                     <p>An error occured</p>
@@ -46,10 +45,10 @@ export default function EditPreferences({ user }: ProfilePageProps) {
                         </div>
                     ) : (
                         <div>
-                            {user?.locations ? (
+                            {user?.preferences ? (
                                 <EditPreferencesList
-                                    preferredIds={preferredIds}
-                                    setPreferredIds={setPreferredIds}
+                                    preferences={preferences}
+                                    setPreferences={setPreferences}
                                     setIsEdit={setIsEdit}
                                     user={user}
                                 />
