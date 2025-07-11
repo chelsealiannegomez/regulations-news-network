@@ -24,3 +24,16 @@ def parse_date_DMY(date):
         return year, month, day
     except Exception as e:
         print("Error in parsing date:", e)
+
+def parse_date_MDY(date):
+    try:
+        dateList = date.replace(",","").split(" ")
+        
+        day = int(dateList[1])
+        month = months.index(dateList[0]) + 1
+        year = int(dateList[2])
+
+        return year, month, day
+    
+    except Exception as e:
+        print("Error in parsing date:", e)
