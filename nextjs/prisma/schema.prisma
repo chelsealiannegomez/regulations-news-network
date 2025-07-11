@@ -25,7 +25,7 @@ model Article {
   id            Int          @id @default(autoincrement())  
   url           String       @unique
   title         String
-  date_posted   String
+  date_posted   DateTime     @db.Date
   location      String
   description   String
   content       String
