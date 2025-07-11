@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import ArticleCard from "./ArticleCard";
 import { Article } from "@/lib/definitions";
-import { parsePreferences } from "@/app/utils/parsePreferences";
 import Pagination from "./Pagination";
 import type { HomePageProps } from "@/lib/types";
 import { envClientSchema } from "@/lib/clientEnvSchema";
@@ -89,7 +88,13 @@ export default function ArticleSection({ user }: HomePageProps) {
                     setNumArticles(data.articles.total_articles);
                 });
         }
-    }, [currentPage, user.preferences, sortMode]);
+    }, [
+        currentPage,
+        user.preferences,
+        sortMode,
+        NUM_ARTICLES_PER_PAGE,
+        user.locations,
+    ]);
 
     const handleSort = () => {
         setCurrentPage(1);

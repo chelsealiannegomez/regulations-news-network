@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import PreferencesList from "./PreferencesList";
 import EditPreferencesList from "./EditPreferencesList";

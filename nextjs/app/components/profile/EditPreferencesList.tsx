@@ -24,7 +24,8 @@ export default function EditPreferencesList({
         setPreferencesCopy(preferredTemp);
     };
 
-    const handleSelect: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    const handleSelect: React.MouseEventHandler<HTMLDivElement> = (e) => {
+        e.preventDefault();
         if (input.length === 0) {
             alert("Cannot be empty");
         } else {
