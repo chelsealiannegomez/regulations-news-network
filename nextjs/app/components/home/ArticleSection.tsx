@@ -104,6 +104,7 @@ export default function ArticleSection({ user }: HomePageProps) {
         <div className="px-5 bg-gray-100 pb-10">
             <div className="flex justify-between align-center">
                 <h1 className="text-2xl font-semibold py-5">News for You</h1>
+
                 <div
                     onClick={handleSort}
                     className="bg-gray-200 h-2/3 p-2 rounded-xl border border-gray-400 shadow-md hover:bg-gray-300 cursor-pointer my-auto"
@@ -115,7 +116,7 @@ export default function ArticleSection({ user }: HomePageProps) {
             </div>
             <p className="mb-3">Showing results for: {query}</p>
             {currentPageArticles === undefined ? (
-                <p>Loading...</p>
+                <span className="loading loading-infinity loading-xl"></span>
             ) : (
                 <div>
                     {currentPageArticles.map((article) => (
