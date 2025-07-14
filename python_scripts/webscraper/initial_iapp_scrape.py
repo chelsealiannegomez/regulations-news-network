@@ -88,7 +88,6 @@ def load_articles(base_url, url_to_scrape):
 
             if len(keywords) == 0:
                 article_keywords = []
-                print(new_article.url)
 
             else: 
                 loc_count = 0
@@ -112,7 +111,6 @@ def load_articles(base_url, url_to_scrape):
                 print("no content")
                 continue # go to next article
             
-            print("yes")
             content_text = []
             for i in content:
                 paragraph = i.find_all('p')

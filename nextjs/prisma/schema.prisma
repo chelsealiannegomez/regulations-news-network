@@ -28,7 +28,7 @@ model Article {
   date_posted   DateTime     @db.Date
   location      String
   description   String
-  content       String
+  content       String[]
   keywords      String[]
 }
 
