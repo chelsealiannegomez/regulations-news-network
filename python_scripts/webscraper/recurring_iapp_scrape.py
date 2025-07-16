@@ -72,7 +72,7 @@ def load_articles(base_url, url_to_scrape):
                 new_article.date_published = content[0].text
                 new_article.title = content[1].text
             else:
-                raise ValueError('Article format is unexpected')
+                continue # Article format is unexpected, skip to next article
 
             # Visit article URL
 

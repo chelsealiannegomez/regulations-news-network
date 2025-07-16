@@ -110,12 +110,13 @@ def get_data():
             words.add(word)
 
     # Map each word to a unique ID
-    word2int = {}
-    for i, word in enumerate(words):
-        word2int[word] = i
+    word2int = {"<PAD>": 0, "<UNK>": 1}
 
-    # for key in word2int.keys():
-    #     print(key, word2int[key])
+    index = 2
+    for i, word in enumerate(words):
+        if word not in word2int:
+            word2int[word] = i
+            index += 1
 
     # Convert documents to a list of word indices in a document
     data = []
@@ -130,18 +131,15 @@ def get_data():
     eval_documents = articles[len(articles) * 7 // 10 :]
     eval_corpus = remove_stop_words(eval_documents)
 
-    not_included_words = set()
     eval_data = []
     for index, content in enumerate(eval_corpus):
         temp = []
         for word in content.split(" "):
             if word not in word2int.keys():
-                not_included_words.add(word)
-                pass
+                temp.append(1)
             else:
                 temp.append(word2int[word])
         eval_data.append(temp)
-    print(not_included_words)
 
     return data, eval_data, vocab_size
 

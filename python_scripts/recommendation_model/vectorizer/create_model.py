@@ -38,6 +38,7 @@ def create_model(num_docs, vocab_size):
     word_embedding = tf.keras.layers.Embedding(
         input_dim = vocab_size,
         output_dim = embedding_dim,
+        mask_zero=True
     )(word_input)
 
     word_embedding = ReduceMeanLayer(name="reduce_mean_context")(word_embedding) # Averages the vectors of the context words to create a single vector that represents the overall context of the target word
@@ -108,7 +109,7 @@ if __name__ == '__main__':
     doc_ids = np.array(doc_ids)
     target_words = np.array(target_words)
     
-    EPOCHS = 20
+    EPOCHS = 10
     BATCH_SIZE = 32
 
     trained_model = train_model(contexts, doc_ids, target_words, epochs=EPOCHS, batch_size=BATCH_SIZE)
