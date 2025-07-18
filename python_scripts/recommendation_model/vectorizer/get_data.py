@@ -6,7 +6,9 @@ def get_articles():
     response = requests.get('http://localhost:3000/api/articles')
     articles = response.json()["articles"]
 
+    # documents = [{article['id']: article['content']} for article in articles] - will change it to this to preserve id 
     documents = [article['content'] for article in articles]
+
     return documents
 
 # Normalize text
@@ -128,30 +130,9 @@ def get_data():
     # Corpus: documents without stop words
     corpus = remove_stop_words(documents)
 
-    # Words: set of unique words in corpus
-    # words = set()
-    # for text in corpus:
-    #     for word in text.split():
-    #         words.add(word)
-
-    # # Map each word to a unique ID
-    # word2int = {"<PAD>": 0, "<UNK>": 1}
-
-    # index = 2
-    # for i, word in enumerate(words):
-    #     if word not in word2int:
-    #         word2int[word] = index
-    #         index += 1
-    # print("vocab_size", len(word2int))
-    # # Convert documents to a list of word indices in a document
-    # data = []
-    # for index, content in enumerate(corpus):
-    #     temp = []
-    #     for word in content.split():
-    #         temp.append(word2int[word])
-    #     data.append(temp)
-
     data, word2int = replace_rare_words(corpus)
+
+    print(articles[404])
 
     with open("word2int.json", "w") as json_file:
         json.dump(word2int, json_file, indent=4)
@@ -174,4 +155,6 @@ def get_data():
     print("vocab_size", vocab_size)
     print(len(corpus))
 
-    return data, eval_data, vocab_size
+    return data, eval_data, word2int
+
+get_data()

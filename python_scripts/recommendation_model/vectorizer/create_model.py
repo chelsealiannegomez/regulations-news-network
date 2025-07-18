@@ -4,14 +4,22 @@ from tensorflow.keras.utils import register_keras_serializable
 from tensorflow.keras.models import load_model
 from tensorflow.keras import regularizers
 
-
 from get_data import get_data
 
 @register_keras_serializable()
 class ReduceMeanLayer(tf.keras.layers.Layer):
-    def __init__(self, input_dim, output_dim, **kwargs):
+    def __init__(self, input_dim, output_dim, embedding_matrix=None, **kwargs):
         super().__init__(**kwargs)
-        self.embedding = tf.keras.layers.Embedding(input_dim, output_dim, mask_zero=True)
+        if embedding_matrix is not None:
+            self.embedding = tf.keras.layers.Embedding(
+                input_dim = input_dim,
+                output_dim = output_dim,
+                weights = [embedding_matrix],
+                trainable = True,
+                mask_zero = True
+            )
+        else:
+            self.embedding = tf.keras.layers.Embedding(input_dim, output_dim, mask_zero=True)
         self.supports_masking = True
     def call(self, inputs, mask=None):
         if mask is None:
@@ -41,14 +49,41 @@ class SqueezeLayer(tf.keras.layers.Layer):
         return tf.squeeze(inputs, axis=1)
     def compute_output_shape(self, input_shape):
         return (input_shape[0], input_shape[2])
+    
+context_size = 3
 
-def create_model(num_docs, vocab_size):
+def load_glove_embeddings(glove_file_path, word_index, embedding_dim=100):
+
+    embeddings_index = {}
+    with open(glove_file_path, 'r', encoding='utf8') as f:
+        for line in f:
+            values = line.split()
+            word = values[0]
+            coeffs = np.asarray(values[1:], dtype='float32')
+            embeddings_index[word] = coeffs
+
+    hits = sum(1 for word in word2int if word in embeddings_index)
+    print(f"{hits} / {len(word2int)} words found in GloVe")
+
+    vocab_size = len(word_index) + 1
+    embedding_matrix = np.random.normal(size=(vocab_size, embedding_dim)) * 0.01
+
+    for word, i in word2int.items():
+        vector = embeddings_index.get(word)
+        if vector is not None:
+            embedding_matrix[i] = vector
+    np.save('embedding_matrix.npy', embedding_matrix)
+    return embedding_matrix
+    
+def create_model(num_docs, word2int):
     
     # Model Parameters
     embedding_dim = 100
-    context_size = 5
-    vocab_size = vocab_size
+    vocab_size = len(word2int) + 1
     num_docs = num_docs 
+
+    embedding_matrix = load_glove_embeddings('./glove.6B.100d.txt', word2int, embedding_dim)
+
 
     # Building the model
 
@@ -59,26 +94,30 @@ def create_model(num_docs, vocab_size):
 
     # Embeddings - turns positive integers (indexes) into dense vectors of fixed size
 
-    word_embedding = ReduceMeanLayer(input_dim=vocab_size, output_dim=embedding_dim,name="reduce_mean_context")(word_input) # Averages the vectors of the context words to create a single vector that represents the overall context of the target word
+    word_embedding = ReduceMeanLayer(input_dim=vocab_size, output_dim=embedding_dim,embedding_matrix=embedding_matrix, name="reduce_mean_context")(word_input) # Averages the vectors of the context words to create a single vector that represents the overall context of the target word
 
     doc_embedding = tf.keras.layers.Embedding(
         input_dim = num_docs,
         output_dim = embedding_dim,
+        name = "doc_embedding"
     )(doc_input)
 
     doc_embedding = SqueezeLayer(name="squeeze_doc")(doc_embedding) # Removes dimensions of size 1 from the shape of the tensor - prepares it for concatenation with context vector
 
     combined_embedding = tf.keras.layers.Concatenate()([word_embedding, doc_embedding]) # Concatenate word_embedding and doc_embedding
 
+    combined_embedding = tf.keras.layers.Dropout(0.3)(combined_embedding)
+
     output_layer = tf.keras.layers.Dense(
         vocab_size,
         activation="softmax",
         kernel_regularizer=regularizers.l2(0.0001)
     )(combined_embedding)
+    
 
     model = tf.keras.Model(inputs=[word_input, doc_input], outputs=output_layer)
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate = 0.002)
+    optimizer = tf.keras.optimizers.Adam(learning_rate = 0.001)
 
     model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
@@ -97,7 +136,7 @@ def generate_testing_samples(docs, context_size):
                 context_words.append(0)
             yield context_words, doc_id, word
 
-def train_model(contexts, doc_ids, target_words, epochs, batch_size):
+def train_model(model, contexts, doc_ids, target_words, epochs, batch_size):
     early_stop = tf.keras.callbacks.EarlyStopping(
         monitor='loss',
         patience=1,
@@ -120,28 +159,45 @@ def evaluate_model(eval_samples):
     doc_ids = np.array(doc_ids)
     target_words = np.array(target_words)
 
-    model = load_model('my_model.keras', safe_mode=False)
+    # model = load_model('my_model.keras', safe_mode=False)
 
     results = model.evaluate([contexts, doc_ids], target_words, verbose=1)
+    return results
 
 if __name__ == '__main__':
-    data, eval_data, vocab_size = get_data()
+    data, eval_data, word2int = get_data()
 
-    testing_samples = generate_testing_samples(data, context_size = 5)
-    eval_samples = generate_testing_samples(eval_data, context_size = 5)
+    testing_samples = generate_testing_samples(data, context_size)
+    eval_samples = generate_testing_samples(eval_data, context_size)
 
-    model = create_model(len(data), vocab_size)
+    model = create_model(len(data), word2int)
 
     contexts, doc_ids, target_words = zip(*testing_samples)
     contexts = np.array(contexts) # Convert to numpy arrays
     doc_ids = np.array(doc_ids)
     target_words = np.array(target_words)
     
-    EPOCHS = 50
-    BATCH_SIZE = 64
+    EPOCHS = 20
+    BATCH_SIZE = 32
 
-    trained_model = train_model(contexts, doc_ids, target_words, epochs=EPOCHS, batch_size=BATCH_SIZE)
+    trained_model = train_model(model, contexts, doc_ids, target_words, epochs=EPOCHS, batch_size=BATCH_SIZE)
 
-    trained_model.save('my_model.keras')
+    word_embeddings = model.get_layer("reduce_mean_context").embedding.get_weights()[0]
 
-    evaluate_model(eval_samples)
+    doc_embeddings = model.get_layer("doc_embedding").get_weights()[0]
+
+    np.save('doc_embeddings.npy', doc_embeddings)
+    np.savetxt('doc_embeddings.csv', doc_embeddings, delimiter=',')
+
+    np.save('word_embeddings.npy', word_embeddings)
+    np.savetxt('word_embeddings.csv', word_embeddings, delimiter=',')
+
+
+    # trained_model.save('my_model.keras')
+
+    # Evaluate Data
+    contexts, doc_ids, target_words = zip(*eval_samples)
+    contexts = np.array(contexts) # Convert to numpy arrays
+    doc_ids = np.array(doc_ids)
+    target_words = np.array(target_words)
+    results = model.evaluate([contexts, doc_ids], target_words, verbose=1)
