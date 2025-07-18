@@ -1,5 +1,6 @@
 import requests
 import math
+import json
 
 def get_articles():
     response = requests.get('http://localhost:3000/api/articles')
@@ -18,21 +19,15 @@ def remove_stop_words(documents):
     for text in documents:
         # Text is an array of paragraphs
         temp = []
-        is_spanish = False
         for paragraph in text:
             words = paragraph.split(" ")
-            if "el" in words:
-                is_spanish = True
-                break
             
             for word in words:
                 if word not in stop_words:
                     word = word.lower().replace('"', "").replace(".","").replace(",","").replace(":","").replace("'","").replace(";","").replace("?","").replace("(","").replace(")","").replace("'s","")
                     if word.isalpha():
                         temp.append(word.lower())
-            
-        if is_spanish:
-            continue
+        
         results.append(" ".join(temp))
 
     return results
@@ -158,6 +153,9 @@ def get_data():
 
     data, word2int = replace_rare_words(corpus)
 
+    with open("word2int.json", "w") as json_file:
+        json.dump(word2int, json_file, indent=4)
+
     vocab_size = len(word2int)
 
     eval_documents = articles[math.floor(len(articles) * 0.8) :]
@@ -174,6 +172,6 @@ def get_data():
         eval_data.append(temp)
 
     print("vocab_size", vocab_size)
+    print(len(corpus))
 
     return data, eval_data, vocab_size
-

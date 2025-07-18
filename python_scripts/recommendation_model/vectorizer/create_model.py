@@ -14,9 +14,11 @@ class ReduceMeanLayer(tf.keras.layers.Layer):
         self.embedding = tf.keras.layers.Embedding(input_dim, output_dim, mask_zero=True)
         self.supports_masking = True
     def call(self, inputs, mask=None):
+        if mask is None:
+            mask = self.embedding.compute_mask(inputs)
         x = self.embedding(inputs)
         if mask is not None:
-            mask = tf.cast(mask.tf.float32)
+            mask = tf.cast(mask, tf.float32)
             mask = tf.expand_dims(mask, axis=-1)
 
             x_masked = x * mask
@@ -25,6 +27,8 @@ class ReduceMeanLayer(tf.keras.layers.Layer):
             mean = sum_x / count
             return mean
         return tf.reduce_mean(x, axis=1)
+    def compute_mask(self, inputs, mask=None):
+        return mask
     def build(self, input_shape):
         self.embedding.build(input_shape)
         self.built
@@ -42,9 +46,9 @@ def create_model(num_docs, vocab_size):
     
     # Model Parameters
     embedding_dim = 100
-    context_size = 2
+    context_size = 5
     vocab_size = vocab_size
-    num_docs = num_docs
+    num_docs = num_docs 
 
     # Building the model
 
@@ -54,11 +58,6 @@ def create_model(num_docs, vocab_size):
     doc_input = tf.keras.layers.Input(shape=(1,), dtype='int32') 
 
     # Embeddings - turns positive integers (indexes) into dense vectors of fixed size
-    # word_embedding = tf.keras.layers.Embedding(
-    #     input_dim = vocab_size,
-    #     output_dim = embedding_dim,
-    #     mask_zero=True
-    # )(word_input)
 
     word_embedding = ReduceMeanLayer(input_dim=vocab_size, output_dim=embedding_dim,name="reduce_mean_context")(word_input) # Averages the vectors of the context words to create a single vector that represents the overall context of the target word
 
@@ -79,7 +78,7 @@ def create_model(num_docs, vocab_size):
 
     model = tf.keras.Model(inputs=[word_input, doc_input], outputs=output_layer)
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate = 0.001)
+    optimizer = tf.keras.optimizers.Adam(learning_rate = 0.002)
 
     model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
@@ -87,7 +86,6 @@ def create_model(num_docs, vocab_size):
 
 # Generate testing samples
 def generate_testing_samples(docs, context_size):
-    testing_samples = []
     # Iterate through each word in each document and return testing sample of:
     # ([context_words], doc_id, target_word)
     for doc_id, doc in enumerate(docs):
@@ -95,7 +93,7 @@ def generate_testing_samples(docs, context_size):
             pre_context_words = doc[max(0, index - context_size) : index]
             post_context_words = doc[index + 1 : min(len(doc), index + context_size + 1)]
             context_words = pre_context_words + post_context_words
-            while len(context_words) < 4:
+            while len(context_words) < context_size * 2:
                 context_words.append(0)
             yield context_words, doc_id, word
 
@@ -129,8 +127,8 @@ def evaluate_model(eval_samples):
 if __name__ == '__main__':
     data, eval_data, vocab_size = get_data()
 
-    testing_samples = generate_testing_samples(data, context_size = 2)
-    eval_samples = generate_testing_samples(eval_data, context_size = 2)
+    testing_samples = generate_testing_samples(data, context_size = 5)
+    eval_samples = generate_testing_samples(eval_data, context_size = 5)
 
     model = create_model(len(data), vocab_size)
 
@@ -139,8 +137,8 @@ if __name__ == '__main__':
     doc_ids = np.array(doc_ids)
     target_words = np.array(target_words)
     
-    EPOCHS = 30
-    BATCH_SIZE = 32
+    EPOCHS = 50
+    BATCH_SIZE = 64
 
     trained_model = train_model(contexts, doc_ids, target_words, epochs=EPOCHS, batch_size=BATCH_SIZE)
 
