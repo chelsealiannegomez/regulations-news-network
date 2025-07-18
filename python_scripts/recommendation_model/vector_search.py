@@ -5,6 +5,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import requests
 from functools import lru_cache
 import math
+from datetime import datetime, date
 
 class VectorSearch:
     def __init__(self):
@@ -52,6 +53,7 @@ def get_articles():
 def demonstrate_search(query, locations):
     split_locations = list(locations.strip().split(" "))
     preferred_locations = [loc.replace("_", " ") for loc in split_locations]
+    preferred_locations.append("")
 
     response = get_articles()
     articles = response.json()["articles"]
@@ -65,12 +67,30 @@ def demonstrate_search(query, locations):
 
     results = search_engine.search(query, top_k = len(search_engine.documents))
 
+    curr_dt = int(datetime.now().timestamp())
+
     ordered_articles = []
+    weighted_articles = []
 
     for result in results:
         ordered_articles.append(result["document"])
+        dt_str = result['document']['date_posted']
+        dt = datetime.fromisoformat(dt_str.replace("Z", "+00:00"))
+        print("title and similarity score", result['document']['title'], result['similarity'])
 
-    return ordered_articles, len(articles)
+        article_dt = int(dt.timestamp())
+        date_weight = float(1) / (curr_dt - article_dt)
+        total_weight = result['similarity'] * 0.7 + date_weight * 0.3
+        weighted_articles.append((result["document"], total_weight))
+
+    sorted_weighted_articles = sorted(weighted_articles, key=lambda pair: pair[1], reverse=True)
+    
+    for i in sorted_weighted_articles:
+        print("final date posted", i[0]['title'], i[0]['date_posted'], i[1])
+    
+
+
+    return [i[0] for i in sorted_weighted_articles], len(sorted_weighted_articles)
 
 def articles_per_page(page_num, num_articles_per_page, query, locations):
 
@@ -97,6 +117,7 @@ def articles_per_page_by_date(page_num, num_articles_per_page, locations):
 
     split_locations = list(locations.strip().split(" "))
     preferred_locations = [loc.replace("_", " ") for loc in split_locations]
+    preferred_locations.append("")
 
     response = get_articles()
     articles = response.json()["articles"]
