@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Article } from "@/lib/definitions";
-import { parseArticleContent } from "@/app/utils/parseArticle";
 
 export default function ArticleCard({ article }: { article: Article }) {
     const [seeMore, setSeeMore] = useState<boolean>(false);
