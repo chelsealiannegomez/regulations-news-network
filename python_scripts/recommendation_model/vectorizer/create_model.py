@@ -151,19 +151,6 @@ def train_model(model, contexts, doc_ids, target_words, epochs, batch_size):
     
     return model
 
-
-def evaluate_model(eval_samples):
-
-    contexts, doc_ids, target_words = zip(*eval_samples)
-    contexts = np.array(contexts) # Convert to numpy arrays
-    doc_ids = np.array(doc_ids)
-    target_words = np.array(target_words)
-
-    # model = load_model('my_model.keras', safe_mode=False)
-
-    results = model.evaluate([contexts, doc_ids], target_words, verbose=1)
-    return results
-
 if __name__ == '__main__':
     data, eval_data, word2int = get_data()
 
@@ -191,9 +178,6 @@ if __name__ == '__main__':
 
     np.save('word_embeddings.npy', word_embeddings)
     np.savetxt('word_embeddings.csv', word_embeddings, delimiter=',')
-
-
-    # trained_model.save('my_model.keras')
 
     # Evaluate Data
     contexts, doc_ids, target_words = zip(*eval_samples)
