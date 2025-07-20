@@ -16,8 +16,6 @@ def get_query_embedding(query, word2int, embedding_matrix):
                 results.append(word.lower())
     print(" ".join(results))
         
-    # results.append(" ".join(results))
-
     indices = [word2int.get(word, 1) for word in words if word2int.get(word, 1) != 0]
 
     if not indices:
@@ -47,7 +45,7 @@ query = "Cybersecurity and AI governance and children's privacy"
 query_vec = get_query_embedding(query, word2int, embedding_matrix)
 normalized_query_embed = normalize(query_vec.reshape(1, -1))
 
-with open('word2int.json', 'r') as f:
+with open('doc_ids.json', 'r') as f:
     doc_ids = json.load(f)
 
 if query_vec is not None:
