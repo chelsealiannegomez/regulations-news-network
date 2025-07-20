@@ -1,6 +1,7 @@
 import requests
 import math
 import json
+import numpy as np
 
 def get_articles():
     response = requests.get('http://localhost:3000/api/articles')
@@ -9,7 +10,12 @@ def get_articles():
     # documents = [{article['id']: article['content']} for article in articles] - will change it to this to preserve id 
     documents = [article['content'] for article in articles]
 
-    return documents
+    doc_ids = {i: articles[i]['id'] for i in range(len(articles))}
+
+    with open("doc_ids.json", "w") as json_file:
+        json.dump(doc_ids, json_file, indent=4)
+
+    return doc_ids, documents
 
 # Normalize text
 
@@ -33,66 +39,6 @@ def remove_stop_words(documents):
         results.append(" ".join(temp))
 
     return results
-
-def get_training_data():
-    articles = get_articles()
-    documents = articles[0: len(articles) * 7 // 10]
-
-    # Corpus: documents without stop words
-    corpus = remove_stop_words(documents)
-
-    # Words: set of unique words in corpus
-    words = set()
-    for text in corpus:
-        for word in text.split(" "):
-            words.add(word)
-
-    # Map each word to a unique ID
-    word2int = {}
-    for i, word in enumerate(words):
-        word2int[word] = i
-
-    # Convert documents to a list of word indices in a document
-    data = []
-    for index, content in enumerate(corpus):
-        temp = []
-        for word in content.split(" "):
-            temp.append(word2int[word])
-        data.append(temp)
-
-    vocab_size = len(word2int)
-
-    return data, vocab_size
-
-def get_evaluation_data():
-    articles = get_articles()
-    documents = articles[len(articles) * 7 // 10 :]
-
-    # Corpus: documents without stop words
-    corpus = remove_stop_words(documents)
-
-    # Words: set of unique words in corpus
-    words = set()
-    for text in corpus:
-        for word in text.split(" "):
-            words.add(word)
-
-    # Map each word to a unique ID
-    word2int = {}
-    for i, word in enumerate(words):
-        word2int[word] = i
-
-    # Convert documents to a list of word indices in a document
-    data = []
-    for index, content in enumerate(corpus):
-        temp = []
-        for word in content.split(" "):
-            temp.append(word2int[word])
-        data.append(temp)
-
-    vocab_size = len(word2int)
-
-    return data, vocab_size
 
 def replace_rare_words(corpus, min_freq=5):
     # Count word frequencies
@@ -124,15 +70,15 @@ def replace_rare_words(corpus, min_freq=5):
     return data, word2int
 
 def get_data():
-    articles = get_articles()
+    doc_ids, articles = get_articles()
+
+    np.save('doc_ids.npy', doc_ids)
     documents = articles[0: math.floor(len(articles) * 0.8)]
 
     # Corpus: documents without stop words
     corpus = remove_stop_words(documents)
 
     data, word2int = replace_rare_words(corpus)
-
-    print(articles[404])
 
     with open("word2int.json", "w") as json_file:
         json.dump(word2int, json_file, indent=4)

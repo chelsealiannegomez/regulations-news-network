@@ -177,7 +177,7 @@ if __name__ == '__main__':
     doc_ids = np.array(doc_ids)
     target_words = np.array(target_words)
     
-    EPOCHS = 20
+    EPOCHS = 30
     BATCH_SIZE = 32
 
     trained_model = train_model(model, contexts, doc_ids, target_words, epochs=EPOCHS, batch_size=BATCH_SIZE)

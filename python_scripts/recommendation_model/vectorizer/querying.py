@@ -47,8 +47,12 @@ query = "Cybersecurity and AI governance and children's privacy"
 query_vec = get_query_embedding(query, word2int, embedding_matrix)
 normalized_query_embed = normalize(query_vec.reshape(1, -1))
 
+with open('word2int.json', 'r') as f:
+    doc_ids = json.load(f)
+
 if query_vec is not None:
     results = find_similar_articles(normalized_query_embed, normalized_doc_embeds, top_k=10)
     for doc_id, score in results:
-        print(f"Doc {doc_id} with similarity {score}")
+        article_id = doc_ids[str(doc_id)]
+        print(f"Doc {article_id} with similarity {score}")
 
