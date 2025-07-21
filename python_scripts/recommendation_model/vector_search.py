@@ -18,7 +18,7 @@ class VectorSearch:
 
     def add_documents(self, docs):
         self.documents.extend(docs)
-        texts = [doc["content"] for doc in self.documents]
+        texts = [" ".join(doc["content"]) for doc in self.documents]
         self.vectors = self.vectorizer.fit_transform(texts)
         print(f"Added {len(docs)} documents. Total: {len(self.documents)}")
         print(f"Vector shape: {self.vectors.shape}")
@@ -45,7 +45,7 @@ class VectorSearch:
     
 @lru_cache(maxsize=1)
 def get_articles():
-    response = requests.get('https://regulations-news-network.vercel.app/api/articles')
+    response = requests.get('http://localhost:3000/api/articles')
     return response
 
 @lru_cache(maxsize=1)

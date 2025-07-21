@@ -22,7 +22,7 @@ export interface Article {
     date_posted: string;
     location: string;
     description: string;
-    content: string;
+    content: string[];
     keywords: Keyword[];
 }
 
