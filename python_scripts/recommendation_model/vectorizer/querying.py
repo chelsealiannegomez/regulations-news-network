@@ -2,6 +2,7 @@ import numpy as np
 import json
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import normalize
+from stop_words import stop_words
 
 def get_query_embedding(query, word2int, embedding_matrix):
     indices = [word2int.get(word, 1) for word in query if word2int.get(word, 1) != 0]
@@ -16,10 +17,13 @@ def get_query_embedding(query, word2int, embedding_matrix):
     return query_embedding
 
 
-with open('doc_contents.json', 'r') as f:
-    doc_contents = json.load(f)
+def get_doc_contents():
+    with open('doc_contents.json', 'r') as f:
+        doc_contents = json.load(f)
 
-def compute_tf(doc_id, query):
+    return doc_contents
+
+def compute_tf(doc_id, query, doc_contents):
 
     contents = doc_contents[str(doc_id)]
 
@@ -27,16 +31,17 @@ def compute_tf(doc_id, query):
 
     total_count = 0
 
-
     for word in contents.split(" "):
         if word in query:
             count += 1
         total_count += 1
 
-    return float(count)
+
+    return float(count)/(25*len(query)) # Max count in training data
 
 
 def find_similar_articles(query, query_embedding, doc_embeddings, top_k=10):
+    doc_contents = get_doc_contents()
     similarities = cosine_similarity(query_embedding, doc_embeddings)[0]
 
     scores = []
@@ -44,13 +49,13 @@ def find_similar_articles(query, query_embedding, doc_embeddings, top_k=10):
     max_count = 0
 
     for doc_id, score in enumerate(similarities):
-        count = compute_tf(doc_id, query)
+        count = compute_tf(doc_id, query, doc_contents)
         if count > max_count:
             max_count = count
         scores.append([count, score])
 
 
-    weighted_score = [scores[i][0]/float(max_count) * 0.25 + scores[i][1] * 0.75 for i in range(len(scores))]
+    weighted_score = [scores[i][0]/float(max_count) * 0.2 + scores[i][1] * 0.8 for i in range(len(scores))]
 
     weighted_score = np.array(weighted_score)
    
@@ -73,8 +78,6 @@ def get_recommended_articles(query):
     normalized_doc_embeds = normalize(doc_embeddings)
 
     words = query.lower().split()
-
-    stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
 
     cleaned_query = []
     for word in words:    
