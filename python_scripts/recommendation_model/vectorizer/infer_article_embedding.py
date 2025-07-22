@@ -72,20 +72,11 @@ def infer_article(article):
         json.dump(doc_ids, json_file, indent=4)
 
     testing_samples = generate_context(process_article, new_doc_index, context_size=3)
-    contexts, doc_ids, target_words = zip(*testing_samples)
-    contexts = np.array(contexts) # Convert to numpy arrays
-    doc_ids = np.array(doc_ids)
-    target_words = np.array(target_words)
+    contexts, _, _ = zip(*testing_samples)
+    contexts = np.array(contexts)
 
 
     model = tf.keras.models.load_model('doc2vec_model.keras', custom_objects={'ReduceMeanLayer': ReduceMeanLayer})
-
-    # doc_embedding_model = tf.keras.Model(inputs=model.inputs, outputs=model.get_layer("doc_embedding").output)
-
-    # word_input_batch = contexts
-    # doc_input_batch = np.zeros((contexts.shape[0], 1))
-
-    # new_doc_embedding = doc_embedding_model.predict([word_input_batch, doc_input_batch])
 
     context_encoder = tf.keras.Model(
         inputs=model.input[0],
