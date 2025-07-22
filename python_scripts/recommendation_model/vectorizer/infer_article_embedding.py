@@ -80,14 +80,23 @@ def infer_article(article):
 
     model = tf.keras.models.load_model('doc2vec_model.keras', custom_objects={'ReduceMeanLayer': ReduceMeanLayer})
 
-    doc_embedding_model = tf.keras.Model(inputs=model.inputs, outputs=model.get_layer("doc_embedding").output)
+    # doc_embedding_model = tf.keras.Model(inputs=model.inputs, outputs=model.get_layer("doc_embedding").output)
+
+    # word_input_batch = contexts
+    # doc_input_batch = np.zeros((contexts.shape[0], 1))
+
+    # new_doc_embedding = doc_embedding_model.predict([word_input_batch, doc_input_batch])
+
+    context_encoder = tf.keras.Model(
+        inputs=model.input[0],
+        outputs=model.get_layer("reduce_mean_context").output
+    )
 
     word_input_batch = contexts
-    doc_input_batch = np.zeros((contexts.shape[0], 1))
-
-    new_doc_embedding = doc_embedding_model.predict([word_input_batch, doc_input_batch])
-
+    context_embeddings = context_encoder.predict(word_input_batch)
+    new_doc_embedding = np.mean(context_embeddings, axis=0)
     print(new_doc_embedding)
+    return new_doc_embedding
 
         
 # Test Sample Article

@@ -4,7 +4,7 @@ import json
 import numpy as np
 
 def get_articles():
-    response = requests.get('http://localhost:3000/api/articles')
+    response = requests.get('https://regulations-news-network.vercel.app/api/articles')
     articles = response.json()["articles"]
 
     # documents = [{article['id']: article['content']} for article in articles] - will change it to this to preserve id 
