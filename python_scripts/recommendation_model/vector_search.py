@@ -46,7 +46,7 @@ class VectorSearch:
     
 @lru_cache(maxsize=1)
 def get_articles():
-    response = requests.get('http://localhost:3000/api/articles')
+    response = requests.get('https://regulations-news-network.vercel.app/api/articles')
     return response
 
 @lru_cache(maxsize=1)
