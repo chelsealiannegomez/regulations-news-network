@@ -5,7 +5,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-import json
+from parse_date import parse_date_DMY
+from datetime import date
+from insert_to_db import insert_json_to_db
 
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
@@ -36,7 +38,7 @@ def load_articles(base_url, page_number):
     articles_list = []
     try:
         # Wait for up to 20 seconds until the element with ID "view-row-content" is present in the DOM (articles container)
-        url_to_scrape = f'{BASE_URL}/news/news_en?page={PAGE}'
+        url_to_scrape = f'{base_url}/news/news_en?page={page_number}'
 
         driver.get(url_to_scrape)
 
@@ -49,10 +51,62 @@ def load_articles(base_url, page_number):
         article_containers = soup.select('.views-row')
 
         for container in article_containers:
+            new_article = Article()
             link = container.find('a')
             complete_link = base_url + link.get('href')
-            print(complete_link)
+            driver.get(complete_link)
+            new_article.url = complete_link
 
+            element = WebDriverWait(driver, 20).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "clearfix"))
+            )
+
+            article_html = driver.page_source
+
+            article_soup = BeautifulSoup(article_html, 'html.parser')
+
+            year, month, day = parse_date_DMY(article_soup.select_one(".news-date").text)
+            new_article.date_published = date(year, month, day)
+
+            element = article_soup.select_one('.clearfix.text-formatted.field.field--name-field-edpb-body.field--type-text-with-summary.field--label-hidden.field__item')
+
+            title = article_soup.select_one('.article-title').text
+            new_article.title = title
+
+            children = list(element.children)
+
+            content = []
+
+            for i in children:
+                if i == '\n':
+                    continue
+
+                children_content = i.text.split('\n')
+                for j in children_content:
+                    content.append(j)
+
+            new_article.content = content
+            for i in content:
+                if ("Key words:" in i):
+                    keyword_list = list(i[11::].split(','))
+                    cleaned = [el.strip(' \xa0') for el in keyword_list]
+                    new_article.keywords = cleaned
+                    
+
+            if (new_article.keywords == []):
+                topic_list = article_soup.select_one('.topic-list.field__items.d-inline-block.pl-0.mb-1')
+                if topic_list:
+                    topics = topic_list.find_all('li')
+                    new_article.keywords = [topic.text for topic in topics]
+
+            new_article.location = "Europe"
+            if ("Background information" not in content[0]):
+                divs = element.find('p').text
+                new_article.description = divs
+            else:
+                new_article.description = ""
+
+            articles_list.append(new_article)
 
         return articles_list
 
@@ -64,12 +118,9 @@ def load_articles(base_url, page_number):
         driver.quit()
 
 
-PAGE = 0
 BASE_URL = 'https://www.edpb.europa.eu'
 
-iapp_articles = load_articles(BASE_URL, PAGE)
+for page in range(10):
+    eu_articles = load_articles(BASE_URL, page)
 
-file_path = "articles.json"
-with open(file_path, 'w') as f:
-    json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
-
+    insert_json_to_db(eu_articles)

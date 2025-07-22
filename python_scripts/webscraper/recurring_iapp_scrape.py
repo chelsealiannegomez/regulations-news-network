@@ -72,7 +72,7 @@ def load_articles(base_url, url_to_scrape):
                 new_article.date_published = content[0].text
                 new_article.title = content[1].text
             else:
-                raise ValueError('Article format is unexpected')
+                continue # Article format is unexpected, skip to next article
 
             # Visit article URL
 
@@ -91,22 +91,32 @@ def load_articles(base_url, url_to_scrape):
 
             keywords = keyword_class.find_all('button')
 
+            article_keywords = []
+
             if len(keywords) == 0:
-                raise ValueError('No keywords found')
-            
-            loc_count = 0
-            for keyword in keywords:
-                if keyword.text in locations: 
-                    if loc_count == 0:
-                        new_article.location = keyword.text
-                        loc_count += 1
+                article_keywords = []
+
+            else: 
+                loc_count = 0
+                for keyword in keywords:
+                    if keyword.text in locations: 
+                        if loc_count == 0:
+                            new_article.location = keyword.text
+                            loc_count += 1
+                        else:
+                            new_article.location = new_article.location + ", " + keyword.text
                     else:
-                        new_article.location = new_article.location + ", " + keyword.text
+                        article_keywords.append(keyword.text)
+            
+            new_article.keywords = article_keywords
+
+            # Get content
 
             content = article_soup.select('.css-al1m8k')
 
             if len(content) == 0:
-                raise ValueError('No content found')
+                print("no content")
+                continue # go to next article
             
             content_text = []
             for i in content:
@@ -120,14 +130,6 @@ def load_articles(base_url, url_to_scrape):
                 new_article.description = content_text[1]
             else:
                 new_article.description = content_text[0]
-
-            # Find keywords using KeyBERT
-            text_to_extract =  " ".join(content_text)
-            keywords = extract_keywords(text_to_extract)
-
-            keywords_json = json.dumps([{"keyword": k, "score": s} for k, s in keywords])
-        
-            new_article.keywords = keywords_json
 
             # Append new article to DB
             query = 'INSERT INTO "Article" (url, title, date_posted, location, description, content, keywords) VALUES (%s, %s, %s, %s, %s, %s, %s)'

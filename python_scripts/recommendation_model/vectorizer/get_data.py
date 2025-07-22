@@ -1,0 +1,106 @@
+import requests
+import math
+import json
+import numpy as np
+
+def get_articles():
+    response = requests.get('http://localhost:3000/api/articles')
+    articles = response.json()["articles"]
+
+    # documents = [{article['id']: article['content']} for article in articles] - will change it to this to preserve id 
+    documents = [article['content'] for article in articles]
+
+    doc_ids = {i: articles[i]['id'] for i in range(len(articles))}
+
+    with open("doc_ids.json", "w") as json_file:
+        json.dump(doc_ids, json_file, indent=4)
+
+    return doc_ids, documents
+
+# Normalize text
+
+# Stop words taken from https://gist.github.com/sebleier/554280
+stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
+
+def remove_stop_words(documents):
+    results = []
+    for text in documents:
+        # Text is an array of paragraphs
+        temp = []
+        for paragraph in text:
+            words = paragraph.split(" ")
+            
+            for word in words:
+                if word not in stop_words:
+                    word = word.lower().replace('"', "").replace(".","").replace(",","").replace(":","").replace("'","").replace(";","").replace("?","").replace("(","").replace(")","").replace("'s","")
+                    if word.isalpha():
+                        temp.append(word.lower())
+        
+        results.append(" ".join(temp))
+
+    return results
+
+def replace_rare_words(corpus, min_freq=5):
+    # Count word frequencies
+    word_freq = {}
+    for doc in corpus:
+        for word in doc.split():
+            word_freq[word] = word_freq.get(word, 0) + 1
+    print("len word freq", len(word_freq))
+
+    # Build fixed vocab with frequent words only
+    word2int = {"<PAD>": 0, "<UNK>": 1}
+    index = 2
+    for word, freq in word_freq.items():
+        if freq >= min_freq:
+            word2int[word] = index
+            index += 1
+
+    # Convert corpus to indices, replacing rare words with <UNK>
+    data = []
+    for doc in corpus:
+        word_indices = []
+        for word in doc.split():
+            if word in word2int:
+                word_indices.append(word2int[word])
+            else:
+                word_indices.append(word2int["<UNK>"])
+        data.append(word_indices)
+
+    return data, word2int
+
+def get_data():
+    doc_ids, articles = get_articles()
+
+    np.save('doc_ids.npy', doc_ids)
+    documents = articles[0: math.floor(len(articles) * 0.8)]
+
+    # Corpus: documents without stop words
+    corpus = remove_stop_words(documents)
+
+    data, word2int = replace_rare_words(corpus)
+
+    with open("word2int.json", "w") as json_file:
+        json.dump(word2int, json_file, indent=4)
+
+    vocab_size = len(word2int)
+
+    eval_documents = articles[math.floor(len(articles) * 0.8) :]
+    eval_corpus = remove_stop_words(eval_documents)
+
+    eval_data = []
+    for index, content in enumerate(eval_corpus):
+        temp = []
+        for word in content.split():
+            if word not in word2int:
+                temp.append(1)
+            else:
+                temp.append(word2int[word])
+        eval_data.append(temp)
+
+    print("vocab_size", vocab_size)
+    print(len(corpus))
+
+    return data, eval_data, word2int
+
+get_data()

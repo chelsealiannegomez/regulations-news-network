@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Article } from "@/lib/definitions";
-import { parseArticleContent } from "@/app/utils/parseArticle";
 
 export default function ArticleCard({ article }: { article: Article }) {
     const [seeMore, setSeeMore] = useState<boolean>(false);
 
-    const articleContent = parseArticleContent(article.content);
+    // const articleContent = parseArticleContent(article.content);
 
     const date = new Date(article.date_posted).toLocaleString("en-US", {
         month: "long",
@@ -23,7 +22,7 @@ export default function ArticleCard({ article }: { article: Article }) {
                 className="text-lg font-semibold hover:underline"
                 target="_blank"
             >
-                <h2>{article.title}</h2>
+                <h2 className="text-xl">{article.title}</h2>
             </a>
             <p className="italic mb-4">{date}</p>
 
@@ -42,7 +41,7 @@ export default function ArticleCard({ article }: { article: Article }) {
 
             {!seeMore ? (
                 <div>
-                    <p>{article.description}</p>
+                    <p className="text-lg">{article.description}</p>
                     <button
                         onClick={() => setSeeMore(true)}
                         className="bg-gray-200 px-5 rounded-md mt-3 duration-500 transition-[background-color] hover:bg-gray-400 cursor-pointer"
@@ -52,8 +51,8 @@ export default function ArticleCard({ article }: { article: Article }) {
                 </div>
             ) : (
                 <div key={article.id}>
-                    {articleContent.map((paragraph, index) => (
-                        <p className="mt-5" key={index}>
+                    {article.content.map((paragraph, index) => (
+                        <p className="mt-5 text-lg" key={index}>
                             {paragraph}
                         </p>
                     ))}
