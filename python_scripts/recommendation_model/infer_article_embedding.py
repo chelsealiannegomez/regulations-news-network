@@ -2,7 +2,9 @@ import json
 import tensorflow as tf
 import numpy as np
 
-from stop_words import stop_words
+from nltk.corpus import stopwords
+
+stop_words = set(stopwords.words('english'))
 
 from create_model import ReduceMeanLayer
 
