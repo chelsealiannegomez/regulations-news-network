@@ -125,7 +125,11 @@ export default function ArticleSection({ user }: HomePageProps) {
             ) : (
                 <div>
                     {currentPageArticles.map((article) => (
-                        <ArticleCard article={article} key={article.id} />
+                        <ArticleCard
+                            article={article}
+                            key={article.id}
+                            user={user}
+                        />
                     ))}
                     <div className="flex">
                         <Pagination
