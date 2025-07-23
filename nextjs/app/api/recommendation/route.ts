@@ -12,6 +12,7 @@ type Log = {
     article_id: number;
     time: Date;
 };
+
 dotenv.config();
 
 let wordEmbeddings: number[][] = [];

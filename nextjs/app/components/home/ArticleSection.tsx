@@ -31,7 +31,6 @@ export default function ArticleSection({ user }: HomePageProps) {
     useEffect(() => {
         setCurrentPageArticles(undefined);
         let userQuery = "";
-        console.log(user.preferences);
         if (user.preferences) {
             userQuery = user.preferences.join(" and ");
             setQuery(user.preferences.join(", "));
@@ -57,7 +56,6 @@ export default function ArticleSection({ user }: HomePageProps) {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log("Data", data);
                     setCurrentPageArticles(data.articles);
                     setTotalPages(
                         Math.ceil(data.total_articles / NUM_ARTICLES_PER_PAGE)

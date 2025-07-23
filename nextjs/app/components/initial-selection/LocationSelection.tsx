@@ -29,7 +29,6 @@ export default function LocationSelection({
                 setStep((prev) => prev + 1);
             }
             const message = await response.json();
-            console.log(message.message);
         } catch (err) {
             console.error(err);
         }
