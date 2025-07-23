@@ -90,15 +90,9 @@ def get_ordered_articles(query, user_locations_string):
         
         locations = location_string.split(',')
         user_locations_unstripped = user_locations_string.split(',')
-        user_locations = [loc.strip() for loc in user_locations_unstripped]
-
-        is_location = False
-        for location in user_locations:
-            if location.strip() in locations:
-                is_location = True
-                break
-        
-        if not is_location:
+        user_locations = {loc.strip() for loc in user_locations_unstripped}
+        found_location  = any(x in user_locations for x in locations)
+        if not found_location:
             continue # Location of article is not wanted by user, skip
 
         today = date.today()
