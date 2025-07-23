@@ -187,9 +187,6 @@ const getQueryEmbedding = (query: string, word2int: Record<string, number>, embe
         .filter(index => index && index > 0);
 
     if (indices.length === 0) return null;
-
-
-
     
 }
 
