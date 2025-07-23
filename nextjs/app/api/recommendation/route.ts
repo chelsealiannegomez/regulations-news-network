@@ -87,7 +87,7 @@ const pool = new Pool({
     },
 });
 
-export const POST = async (request: NextRequest, res: NextResponse) => {
+export const POST = async (request: NextRequest) => {
     const { query, locations } = await request.json();
 
     if (!query || !locations) {
