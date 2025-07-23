@@ -45,5 +45,3 @@ def parse_date_DMY(date):
         return year, month, day
     except Exception as e:
         print("Error in parsing date:", e)
-
-parse_date_DMY("25 Sept. 2024")

@@ -9,6 +9,8 @@ from get_data import get_data
 @register_keras_serializable()
 class ReduceMeanLayer(tf.keras.layers.Layer):
     def __init__(self, input_dim, output_dim, embedding_matrix=None, **kwargs):
+        self.input_dim = input_dim
+        self.output_dim = output_dim
         super().__init__(**kwargs)
         if embedding_matrix is not None:
             self.embedding = tf.keras.layers.Embedding(
@@ -35,6 +37,13 @@ class ReduceMeanLayer(tf.keras.layers.Layer):
             mean = sum_x / count
             return mean
         return tf.reduce_mean(x, axis=1)
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "input_dim": self.input_dim,
+            "output_dim": self.output_dim
+        })
+        return config
     def compute_mask(self, inputs, mask=None):
         return mask
     def build(self, input_shape):
@@ -50,8 +59,6 @@ class SqueezeLayer(tf.keras.layers.Layer):
     def compute_output_shape(self, input_shape):
         return (input_shape[0], input_shape[2])
     
-context_size = 3
-
 def load_glove_embeddings(glove_file_path, word_index, embedding_dim=100):
 
     embeddings_index = {}
@@ -75,7 +82,7 @@ def load_glove_embeddings(glove_file_path, word_index, embedding_dim=100):
     np.save('embedding_matrix.npy', embedding_matrix)
     return embedding_matrix
     
-def create_model(num_docs, word2int):
+def create_model(num_docs, word2int, context_size):
     
     # Model Parameters
     embedding_dim = 100
@@ -154,10 +161,12 @@ def train_model(model, contexts, doc_ids, target_words, epochs, batch_size):
 if __name__ == '__main__':
     data, eval_data, word2int = get_data()
 
+    context_size = 3
+
     testing_samples = generate_testing_samples(data, context_size)
     eval_samples = generate_testing_samples(eval_data, context_size)
 
-    model = create_model(len(data), word2int)
+    model = create_model(len(data), word2int, context_size)
 
     contexts, doc_ids, target_words = zip(*testing_samples)
     contexts = np.array(contexts) # Convert to numpy arrays
@@ -178,6 +187,8 @@ if __name__ == '__main__':
 
     np.save('word_embeddings.npy', word_embeddings)
     np.savetxt('word_embeddings.csv', word_embeddings, delimiter=',')
+
+    model.save('doc2vec_model.keras')
 
     # Evaluate Data
     contexts, doc_ids, target_words = zip(*eval_samples)
