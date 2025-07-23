@@ -5,10 +5,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-import json
-
-from keybert_extraction import extract_keywords
-from insert_to_db import insert_json_to_db
 
 import psycopg2
 from dotenv import load_dotenv
@@ -136,7 +132,6 @@ def load_articles(base_url, url_to_scrape):
             values = (new_article.url, new_article.title, new_article.date_published, new_article.location, new_article.description, new_article.content, new_article.keywords)
             cursor.execute(query, values)
             conn.commit()
-            print("Successfully added article to database")
                         
             articles_list.append(new_article)
         
@@ -172,9 +167,3 @@ BASE_URL = 'https://iapp.org'
 URL_TO_SCRAPE = f'{BASE_URL}/news?size=n_{NUM_ARTICLES}_n'
 
 iapp_articles = load_articles(BASE_URL, URL_TO_SCRAPE)
-
-file_path = "articles.json"
-with open(file_path, 'w') as f:
-    json.dump(iapp_articles, f, indent=4, default=lambda o: o.__dict__)
-
-# insert_json_to_db(iapp_articles)
