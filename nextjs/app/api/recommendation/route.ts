@@ -10,9 +10,7 @@ import prisma from "@/lib/prisma";
 type Log = {
     user_id: number;
     article_id: number;
-    time: {
-        gte: Date;
-    };
+    time: Date;
 };
 dotenv.config();
 
