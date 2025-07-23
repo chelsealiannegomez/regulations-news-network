@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from vector_search import articles_per_page, articles_per_page_by_date
 
+from query import get_ordered_articles
+
 app = FastAPI()
 
 origins = [
@@ -31,28 +33,43 @@ class DateParams(BaseModel):
     page_num: int
     num_articles_per_page: int
     locations: str
+
+class RecommendationParams(BaseModel):
+    query: str
+    locations: str
     
-@app.post("/page_ordered_articles")
-async def get_page_ordered_articles(data: QueryParams):
+# @app.post("/page_ordered_articles")
+# async def get_page_ordered_articles(data: QueryParams):
+#     if not data.query:
+#         raise HTTPException(status_code=400, detail="Query missing")
+#     if not data.page_num:
+#         raise HTTPException(status_code=400, detail="Page number missing")
+#     if not data.num_articles_per_page:
+#         raise HTTPException(status_code=400, detail="Number of articles per page missing")
+#     if not data.locations:
+#         raise HTTPException(status_code=400, detail="Locations missing")
+#     results, total_articles = articles_per_page(data.page_num, data.num_articles_per_page, data.query, data.locations)
+#     return {"results": results, "total_articles": total_articles}
+
+
+# @app.post("/page_date_articles")
+# async def get_page_ordered_articles(data: DateParams):
+#     if not data.page_num:
+#         raise HTTPException(status_code=400, detail="Page number missing")
+#     if not data.num_articles_per_page:
+#         raise HTTPException(status_code=400, detail="Number of articles per page missing")
+#     if not data.locations:
+#         raise HTTPException(status_code=400, detail="Locations missing")
+#     results, total_articles = articles_per_page_by_date(data.page_num, data.num_articles_per_page, data.locations)
+#     return {"results": results, "total_articles": total_articles}
+
+
+@app.post("/ordered_articles")
+async def get_page_ordered_articles(data: RecommendationParams):
     if not data.query:
         raise HTTPException(status_code=400, detail="Query missing")
-    if not data.page_num:
-        raise HTTPException(status_code=400, detail="Page number missing")
-    if not data.num_articles_per_page:
-        raise HTTPException(status_code=400, detail="Number of articles per page missing")
     if not data.locations:
-        raise HTTPException(status_code=400, detail="Locations missing")
-    results, total_articles = articles_per_page(data.page_num, data.num_articles_per_page, data.query, data.locations)
-    return {"results": results, "total_articles": total_articles}
-
-
-@app.post("/page_date_articles")
-async def get_page_ordered_articles(data: DateParams):
-    if not data.page_num:
-        raise HTTPException(status_code=400, detail="Page number missing")
-    if not data.num_articles_per_page:
-        raise HTTPException(status_code=400, detail="Number of articles per page missing")
-    if not data.locations:
-        raise HTTPException(status_code=400, detail="Locations missing")
-    results, total_articles = articles_per_page_by_date(data.page_num, data.num_articles_per_page, data.locations)
-    return {"results": results, "total_articles": total_articles}
+        raise HTTPException(status_code=400, detail="Query missing")
+    
+    results = get_ordered_articles(data.query, data.locations)
+    return {"results": results}
