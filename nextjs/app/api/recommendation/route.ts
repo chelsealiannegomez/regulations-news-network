@@ -5,6 +5,8 @@ import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
 import { stopWords } from "@/lib/stopwords";
+import prisma from "@/lib/prisma";
+
 dotenv.config();
 
 let wordEmbeddings: number[][] = [];
@@ -76,6 +78,32 @@ const getQueryEmbedding = (
     return meanVector.map((v) => v / indices.length);
 };
 
+const getAllUserLogs = async (user_id: number) => {
+    try {
+        const numDays = 10;
+        const daysSinceSeen = new Date();
+        daysSinceSeen.setDate(daysSinceSeen.getDate() - numDays);
+        const logs = await prisma.log.findMany({
+            where: {
+                user_id: user_id,
+                time: {
+                    gte: daysSinceSeen,
+                },
+            },
+        });
+    } catch (err) {
+        return [];
+    }
+};
+
+const getArticleSeenWeight = (logs: number) => {
+    if (logs > 3) {
+        return 0;
+    } else {
+        return 1;
+    }
+};
+
 const pool = new Pool({
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
@@ -88,13 +116,26 @@ const pool = new Pool({
 });
 
 export const POST = async (request: NextRequest) => {
-    const { query, locations } = await request.json();
+    const { query, locations, user_id } = await request.json();
 
     if (!query || !locations) {
         return NextResponse.json(
             { message: "Missing query/location" },
             { status: 401 }
         );
+    }
+    const logs = await getAllUserLogs(user_id);
+
+    const map = new Map();
+
+    if (logs) {
+        for (const log of logs) {
+            if (map.has(log.article_id)) {
+                map.set(log.article_id, map.get(log.article_id) + 1);
+            } else {
+                map.set(log.article_id, 1);
+            }
+        }
     }
 
     loadEmbeddings();
@@ -133,7 +174,13 @@ export const POST = async (request: NextRequest) => {
                 queryVector ?? [],
                 articleVector
             );
-            const finalScore = similarity * 0.8 + recencyWeight(daysOld) * 0.2;
+
+            const articleSeenWeight = getArticleSeenWeight(map.get(article_id));
+
+            const finalScore =
+                similarity * 0.7 +
+                recencyWeight(daysOld) * 0.2 +
+                articleSeenWeight * 0.1;
 
             scoredArticles.push({ id: article_id, score: finalScore });
         }

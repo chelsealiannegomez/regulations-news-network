@@ -52,6 +52,7 @@ export default function ArticleSection({ user }: HomePageProps) {
                     page_num: currentPage,
                     num_articles_per_page: NUM_ARTICLES_PER_PAGE,
                     locations: userLocations,
+                    user_id: user.id,
                 }),
             })
                 .then((res) => res.json())
