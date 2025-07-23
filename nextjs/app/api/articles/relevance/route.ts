@@ -31,7 +31,7 @@ export const POST = async (request: NextRequest) => {
 
         const ordered_ids = response.results;
 
-        let articles = [];
+        const articles = [];
 
         let firstId = -1;
         let lastId = -1;
