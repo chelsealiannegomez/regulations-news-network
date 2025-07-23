@@ -93,6 +93,7 @@ export default function ArticleSection({ user }: HomePageProps) {
         sortMode,
         NUM_ARTICLES_PER_PAGE,
         user.locations,
+        user.id,
     ]);
 
     const handleSort = () => {

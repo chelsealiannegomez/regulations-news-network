@@ -7,6 +7,13 @@ import { parse } from "csv-parse/sync";
 import { stopWords } from "@/lib/stopwords";
 import prisma from "@/lib/prisma";
 
+type Log = {
+    user_id: number;
+    article_id: number;
+    time: {
+        gte: Date;
+    };
+};
 dotenv.config();
 
 let wordEmbeddings: number[][] = [];
@@ -83,7 +90,7 @@ const getAllUserLogs = async (user_id: number) => {
         const numDays = 10;
         const daysSinceSeen = new Date();
         daysSinceSeen.setDate(daysSinceSeen.getDate() - numDays);
-        const logs = await prisma.log.findMany({
+        const logs: Log[] = await prisma.log.findMany({
             where: {
                 user_id: user_id,
                 time: {
@@ -91,6 +98,7 @@ const getAllUserLogs = async (user_id: number) => {
                 },
             },
         });
+        return logs;
     } catch (err) {
         return [];
     }
