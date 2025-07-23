@@ -72,23 +72,25 @@ def get_ordered_articles(query, user_locations_string):
 
     query_vector = get_query_embedding(query, word2int, trained_embedding_matrix)
 
-    cursor.execute("SELECT * FROM embeddings;")
+    cursor.execute('SELECT date_posted, location, article_id, vector FROM "Article" INNER JOIN embeddings ON "Article".id = embeddings.article_id;')
     articles = cursor.fetchall()
+    print(len(articles))
     # Rows of tuples: primary id, article id, vector
 
     weighted_articles = []
 
     for article in articles:
-        primary_id, article_id, vector_string = article
+        date_posted, location_string, article_id, vector_string = article
         vector = np.array(eval(vector_string), dtype=np.float32)
 
-        cursor.execute('SELECT date_posted, location FROM "Article" WHERE id=%s', (article_id,))
-        row = cursor.fetchone() # Tuple: primary id, url, date_posted, location, description, content, keywords
+        # cursor.execute('SELECT date_posted, location FROM "Article" WHERE id=%s', (article_id,))
+        # row = cursor.fetchone() # Tuple: primary id, url, date_posted, location, description, content, keywords
 
-        date_posted, location_string = row
+        # date_posted, location_string = row
         
         locations = location_string.split(',')
-        user_locations = user_locations_string.split(',')
+        user_locations_unstripped = user_locations_string.split(',')
+        user_locations = [loc.strip() for loc in user_locations_unstripped]
 
         is_location = False
         for location in user_locations:
@@ -115,5 +117,3 @@ def get_ordered_articles(query, user_locations_string):
         print(i)
 
     return [i[0] for i in sorted_articles]
-
-get_ordered_articles("AI governance", "North America")

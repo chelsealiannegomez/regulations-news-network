@@ -102,3 +102,5 @@ def get_data():
     print(len(corpus))
 
     return data, eval_data, word2int
+
+get_data()
