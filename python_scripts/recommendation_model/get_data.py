@@ -2,6 +2,7 @@ import requests
 import math
 import json
 import numpy as np
+from stop_words import stop_words
 
 from nltk.corpus import stopwords
 
@@ -12,10 +13,9 @@ def get_articles():
     response = requests.get('https://regulations-news-network.vercel.app/api/articles')
     articles = response.json()["articles"]
 
-    # documents = [{article['id']: article['content']} for article in articles] - will change it to this to preserve id 
     documents = [article['content'] for article in articles]
 
-    doc_ids = {i: articles[i]['id'] for i in range(len(articles))}
+    doc_ids = {i: articles[i]['id'] for i in range(math.floor(len(articles) * 0.8))}
 
     with open("doc_ids.json", "w") as json_file:
         json.dump(doc_ids, json_file, indent=4)
@@ -30,6 +30,7 @@ def remove_stop_words(documents):
         # Text is an array of paragraphs
         temp = []
         for paragraph in text:
+            paragraph = paragraph.replace("Editor's note: The IAPP is policy neutral. We publish contributed opinion and analysis pieces to enable our members to hear a broad spectrum of views in our domains.", "")
             words = paragraph.split(" ")
             
             for word in words:
@@ -40,6 +41,13 @@ def remove_stop_words(documents):
         
         results.append(" ".join(temp))
 
+    if len(results) > 500:
+
+        doc_contents = {i: results[i] for i in range(len(results))}
+
+        with open("doc_contents.json", "w") as json_file:
+            json.dump(doc_contents, json_file, indent=4)
+
     return results
 
 def replace_rare_words(corpus, min_freq=5):
@@ -48,7 +56,6 @@ def replace_rare_words(corpus, min_freq=5):
     for doc in corpus:
         for word in doc.split():
             word_freq[word] = word_freq.get(word, 0) + 1
-    print("len word freq", len(word_freq))
 
     # Build fixed vocab with frequent words only
     word2int = {"<PAD>": 0, "<UNK>": 1}
@@ -74,11 +81,11 @@ def replace_rare_words(corpus, min_freq=5):
 def get_data():
     doc_ids, articles = get_articles()
 
-    np.save('doc_ids.npy', doc_ids)
     documents = articles[0: math.floor(len(articles) * 0.8)]
 
     # Corpus: documents without stop words
     corpus = remove_stop_words(documents)
+    print("corpus", len(corpus))
 
     data, word2int = replace_rare_words(corpus)
 
@@ -99,9 +106,6 @@ def get_data():
             else:
                 temp.append(word2int[word])
         eval_data.append(temp)
-
-    print("vocab_size", vocab_size)
-    print(len(corpus))
 
     return data, eval_data, word2int
 
