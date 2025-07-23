@@ -4,6 +4,8 @@ from tensorflow.keras.utils import register_keras_serializable
 from tensorflow.keras.models import load_model
 from tensorflow.keras import regularizers
 
+import tensorflowjs as tfjs
+
 from get_data import get_data
 
 @register_keras_serializable()
@@ -189,6 +191,7 @@ if __name__ == '__main__':
     np.savetxt('word_embeddings.csv', word_embeddings, delimiter=',')
 
     model.save('doc2vec_model.keras')
+    tfjs.converters.save_keras_model(model, 'tfjs_doc2vec')
 
     # Evaluate Data
     contexts, doc_ids, target_words = zip(*eval_samples)

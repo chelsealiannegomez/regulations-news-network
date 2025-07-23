@@ -5,7 +5,7 @@ import numpy as np
 from stop_words import stop_words
 
 def get_articles():
-    response = requests.get('http://localhost:3000/api/articles')
+    response = requests.get('https://regulations-news-network.vercel.app/api/articles')
     articles = response.json()["articles"]
 
     documents = [article['content'] for article in articles]
