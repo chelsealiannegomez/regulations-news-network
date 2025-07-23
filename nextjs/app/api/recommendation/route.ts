@@ -138,9 +138,12 @@ export const POST = async (request: NextRequest, res: NextResponse) => {
             scoredArticles.push({ id: article_id, score: finalScore });
         }
 
-        scoredArticles.sort((a, b) => b.score - a.score).map((a) => a.id);
+        scoredArticles.sort((a, b) => b.score - a.score);
 
-        return NextResponse.json({ results: scoredArticles }, { status: 200 });
+        return NextResponse.json(
+            { results: scoredArticles.map((a) => a.id) },
+            { status: 200 }
+        );
     } catch (err) {
         console.error(err);
         return NextResponse.json(
