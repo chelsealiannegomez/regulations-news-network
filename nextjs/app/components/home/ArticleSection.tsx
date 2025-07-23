@@ -22,15 +22,14 @@ export default function ArticleSection({ user }: HomePageProps) {
 
     const [currentPage, setCurrentPage] = useState<number>(1);
 
-    const [currentPageArticles, setCurrentPageArticles] = useState<Article[]>(
-        []
-    );
+    const [currentPageArticles, setCurrentPageArticles] = useState<Article[]>();
 
     const [numArticles, setNumArticles] = useState<number>(0);
 
     const [sortMode, setSortMode] = useState<SortMode>(SortMode.Relevance);
 
     useEffect(() => {
+        setCurrentPageArticles(undefined);
         let userQuery = "";
         console.log(user.preferences);
         if (user.preferences) {
@@ -57,13 +56,12 @@ export default function ArticleSection({ user }: HomePageProps) {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    setCurrentPageArticles(data.articles.results);
+                    console.log("Data", data);
+                    setCurrentPageArticles(data.articles);
                     setTotalPages(
-                        Math.ceil(
-                            data.articles.total_articles / NUM_ARTICLES_PER_PAGE
-                        )
+                        Math.ceil(data.total_articles / NUM_ARTICLES_PER_PAGE)
                     );
-                    setNumArticles(data.articles.total_articles);
+                    setNumArticles(data.total_articles);
                 });
         } else if (sortMode === SortMode.DatePosted) {
             fetch("api/articles/date_posted", {
@@ -121,7 +119,9 @@ export default function ArticleSection({ user }: HomePageProps) {
             </div>
             <p className="mb-3">Showing results for: {query}</p>
             {currentPageArticles === undefined ? (
-                <span className="loading loading-infinity loading-xl"></span>
+                <div className="flex items-center w-screen justify-center">
+                    <span className="loading loading-infinity loading-xl text-primary h-180 w-120"></span>
+                </div>
             ) : (
                 <div>
                     {currentPageArticles.map((article) => (

@@ -914,6 +914,7 @@ packages:
 
   '@tailwindcss/postcss@4.1.11':
     resolution: {integrity: sha512-q/EAIIpF6WpLhKEuQSEVMZNMIY8KhWoAemZ9eylNAih9jxMGAYPPWBn3I9QL/2jZ+e7OEz/tZkX5HwbBR4HohA==}
+<<<<<<< HEAD
 
   '@tensorflow/tfjs-backend-cpu@4.22.0':
     resolution: {integrity: sha512-1u0FmuLGuRAi8D2c3cocHTASGXOmHc/4OvoVDENJayjYkS119fcTcQf4iHrtLthWyDIPy3JiPhRrZQC9EwnhLw==}
@@ -950,6 +951,8 @@ packages:
   '@tensorflow/tfjs@4.22.0':
     resolution: {integrity: sha512-0TrIrXs6/b7FLhLVNmfh8Sah6JgjBPH4mZ8JGb7NU6WW+cx00qK5BcAZxw7NCzxj6N8MRAIfHq+oNbPUNG5VAg==}
     hasBin: true
+=======
+>>>>>>> 3cc9712247ec0951bacc3ecb44f445632a8baeab
 
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -4830,6 +4833,7 @@ snapshots:
       '@tailwindcss/oxide': 4.1.11
       postcss: 8.5.6
       tailwindcss: 4.1.11
+<<<<<<< HEAD
 
   '@tensorflow/tfjs-backend-cpu@4.22.0(@tensorflow/tfjs-core@4.22.0)':
     dependencies:
@@ -4891,6 +4895,8 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - seedrandom
+=======
+>>>>>>> 3cc9712247ec0951bacc3ecb44f445632a8baeab
 
   '@tootallnate/once@2.0.0': {}
 

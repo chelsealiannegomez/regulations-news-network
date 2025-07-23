@@ -4,8 +4,6 @@ import { Article } from "@/lib/definitions";
 export default function ArticleCard({ article }: { article: Article }) {
     const [seeMore, setSeeMore] = useState<boolean>(false);
 
-    // const articleContent = parseArticleContent(article.content);
-
     const date = new Date(article.date_posted).toLocaleString("en-US", {
         month: "long",
         day: "numeric",
