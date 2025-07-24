@@ -41,26 +41,15 @@ export const POST = async (request: NextRequest) => {
             );
         }
 
-        console.log(
-            "print",
-            page_num,
-            num_articles_per_page,
-            ordered_articles.length
-        );
-
         const [firstId, lastId] = getArticleIds(
             page_num,
             num_articles_per_page,
             ordered_articles.length
         );
 
-        console.log(firstId, lastId);
-
         for (let i = firstId; i < lastId + 1; i++) {
             articles.push(ordered_articles[i]);
         }
-
-        console.log(articles);
 
         return NextResponse.json(
             { articles: articles, total_articles: ordered_articles.length },
