@@ -35,7 +35,7 @@ service = Service(executable_path=DRIVER_PATH)
 driver = webdriver.Chrome(service=service)
 
 # Scraper Function
-def load_articles(base_url, url_to_scrape):
+def load_iapp_articles(base_url, url_to_scrape):
     try:
         # Wait for up to 20 seconds until the element with ID "css-jghyns" is present in the DOM (article element)
         driver.get(url_to_scrape)
@@ -182,5 +182,3 @@ def connect_to_db():
 NUM_ARTICLES = 8
 BASE_URL = 'https://iapp.org'
 URL_TO_SCRAPE = f'{BASE_URL}/news?size=n_{NUM_ARTICLES}_n'
-
-iapp_articles = load_articles(BASE_URL, URL_TO_SCRAPE)

@@ -64,7 +64,7 @@ class Article:
 
 
 # Scraper Function
-def load_articles(base_url):
+def load_reuters_articles(base_url):
     options = uc.ChromeOptions()
     prefs = {"profile.managed_default_content_settings.images": 2}
     options.add_argument("--disable-gpu")
@@ -80,7 +80,6 @@ def load_articles(base_url):
     driver.set_page_load_timeout(30)
 
     try:
-        # Wait for up to 20 seconds until the element with ID "css-jghyns" is present in the DOM (article element)
         time.sleep(random.uniform(2, 5))
         driver.get(base_url)
 
@@ -224,8 +223,3 @@ def connect_to_db():
 
     except Exception as e:
         return "Error connecting to database:", e
-
-
-BASE_URL = "https://www.reuters.com/legal/data-privacy"
-
-reuters_articles = load_articles(BASE_URL)
