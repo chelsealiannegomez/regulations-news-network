@@ -6,7 +6,6 @@ export const POST = async (request: NextRequest) => {
     const { query, page_num, num_articles_per_page, locations, user_id } =
         await request.json();
     try {
-        console.log(query, locations);
         const data = await fetch(`${process.env.DOMAIN}/api/recommendation`, {
             method: "POST",
             headers: {
@@ -61,7 +60,7 @@ export const POST = async (request: NextRequest) => {
             { status: 200 }
         );
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return NextResponse.json(
             { message: "Something went wrong" },
             { status: 500 }

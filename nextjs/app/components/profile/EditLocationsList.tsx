@@ -68,7 +68,6 @@ export default function EditLocationsList({
             if (response.ok) {
                 setIsEdit((prev) => !prev);
             }
-            console.log(message.message);
         } catch (err) {
             console.error(err);
         }
