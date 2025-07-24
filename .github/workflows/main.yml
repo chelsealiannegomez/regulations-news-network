@@ -22,7 +22,10 @@ jobs:
 
             - name: Install dependencies
               run: |
+                  cd nextjs
                   npm install
 
             - name: Run Jest tests
-              run: npm test
+              run: |
+                  cd nextjs
+                  npm test
