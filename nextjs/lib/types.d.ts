@@ -1,7 +1,12 @@
-import { User, Location } from "./definitions";
+import { User, Location, Article } from "./definitions";
 
 export type HomePageProps = {
     user: User;
+};
+
+export type ArticleCardProps = {
+    user: User;
+    article: Article;
 };
 
 export type PaginationProps = {

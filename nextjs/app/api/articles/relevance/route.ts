@@ -2,10 +2,9 @@ import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
 
 export const POST = async (request: NextRequest) => {
-    const { query, page_num, num_articles_per_page, locations } =
+    const { query, page_num, num_articles_per_page, locations, user_id } =
         await request.json();
     try {
-        console.log(query, locations);
         const data = await fetch(`http://localhost:3000/api/recommendation`, {
             method: "POST",
             headers: {
@@ -14,6 +13,7 @@ export const POST = async (request: NextRequest) => {
             body: JSON.stringify({
                 query: query,
                 locations: locations,
+                user_id: user_id,
             }),
         });
 
@@ -64,7 +64,7 @@ export const POST = async (request: NextRequest) => {
             { status: 200 }
         );
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return NextResponse.json(
             { message: "Something went wrong" },
             { status: 500 }

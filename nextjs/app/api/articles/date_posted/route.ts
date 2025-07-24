@@ -29,7 +29,7 @@ export const POST = async (request: NextRequest) => {
 
         return NextResponse.json({ articles: data }, { status: 200 });
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return NextResponse.json(
             { message: "Something went wrong" },
             { status: 500 }

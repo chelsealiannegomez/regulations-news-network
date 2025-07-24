@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Article } from "@/lib/definitions";
+import { ArticleCardProps } from "@/lib/types";
 
-export default function ArticleCard({ article }: { article: Article }) {
+export default function ArticleCard({ article, user }: ArticleCardProps) {
     const [seeMore, setSeeMore] = useState<boolean>(false);
 
     const date = new Date(article.date_posted).toLocaleString("en-US", {
@@ -12,6 +12,25 @@ export default function ArticleCard({ article }: { article: Article }) {
     });
 
     const locations = article.location.split(", ");
+
+    const onSeeMore = async () => {
+        setSeeMore(true);
+
+        try {
+            const response = await fetch("/api/log", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user_id: user.id,
+                    article_id: article.id,
+                }),
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <div className="border rounded-xl mb-5 px-7 py-5 bg-gray-50 border-gray-200 hover:border-gray-400 hover:bg-white relative">
@@ -41,7 +60,7 @@ export default function ArticleCard({ article }: { article: Article }) {
                 <div>
                     <p className="text-lg">{article.description}</p>
                     <button
-                        onClick={() => setSeeMore(true)}
+                        onClick={onSeeMore}
                         className="bg-gray-200 px-5 rounded-md mt-3 duration-500 transition-[background-color] hover:bg-gray-400 cursor-pointer"
                     >
                         Read more

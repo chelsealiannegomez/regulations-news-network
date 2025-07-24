@@ -31,7 +31,6 @@ export default function ArticleSection({ user }: HomePageProps) {
     useEffect(() => {
         setCurrentPageArticles(undefined);
         let userQuery = "";
-        console.log(user.preferences);
         if (user.preferences) {
             userQuery = user.preferences.join(" and ");
             setQuery(user.preferences.join(", "));
@@ -52,11 +51,11 @@ export default function ArticleSection({ user }: HomePageProps) {
                     page_num: currentPage,
                     num_articles_per_page: NUM_ARTICLES_PER_PAGE,
                     locations: userLocations,
+                    user_id: user.id,
                 }),
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log("Data", data);
                     setCurrentPageArticles(data.articles);
                     setTotalPages(
                         Math.ceil(data.total_articles / NUM_ARTICLES_PER_PAGE)
@@ -92,6 +91,7 @@ export default function ArticleSection({ user }: HomePageProps) {
         sortMode,
         NUM_ARTICLES_PER_PAGE,
         user.locations,
+        user.id,
     ]);
 
     const handleSort = () => {
@@ -125,7 +125,11 @@ export default function ArticleSection({ user }: HomePageProps) {
             ) : (
                 <div>
                     {currentPageArticles.map((article) => (
-                        <ArticleCard article={article} key={article.id} />
+                        <ArticleCard
+                            article={article}
+                            key={article.id}
+                            user={user}
+                        />
                     ))}
                     <div className="flex">
                         <Pagination

@@ -21,7 +21,7 @@ export async function decrypt(session: string | undefined = "") {
         });
         return payload;
     } catch (err) {
-        console.log("Failed to verify session:", err);
+        console.error("Failed to verify session:", err);
     }
 }
 
