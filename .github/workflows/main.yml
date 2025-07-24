@@ -24,7 +24,7 @@ jobs:
               run: |
                   cd nextjs
                   npm install
-                  npm install --save-dev ts-node typescript
+                  npm install --save-dev ts-node typescript jest-environment-jsdom
 
             - name: Run Jest tests
               run: |
