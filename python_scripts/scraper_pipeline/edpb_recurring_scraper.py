@@ -9,6 +9,11 @@ import psycopg2
 from dotenv import load_dotenv
 import os
 
+from infer_article_embedding import infer_article
+from parse_date import parse_date_DMY
+from datetime import date
+
+
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
 keywords_list = []
@@ -35,7 +40,6 @@ driver = webdriver.Chrome(service=service)
 
 # Scraper Function
 def load_articles(base_url, page_number):
-    articles_list = []
     try:
         # Wait for up to 20 seconds until the element with ID "view-row-content" is present in the DOM (articles container)
         url_to_scrape = f'{base_url}/news/news_en?page={page_number}'
@@ -122,9 +126,24 @@ def load_articles(base_url, page_number):
             cursor.execute(query, values)
             conn.commit()
 
-            articles_list.append(new_article)
+            # Append article embedding to embedding table
+            cursor.execute('SELECT id FROM "Article" WHERE url=%s', (new_article.url,))
+            exists = cursor.fetchone()
+            article_id = exists[0]
 
-        return articles_list
+            
+            cursor.execute('SELECT 1 FROM embeddings WHERE article_id=%s', (article_id,))
+            in_embeddings = cursor.fetchone()
+
+            if not in_embeddings:
+                article_vector = infer_article(" ".join(new_article.content), article_id)
+                query = 'INSERT INTO embeddings (article_id, vector) VALUES (%s, %s)'
+                values = (str(article_id), article_vector.tolist())
+                print("Inserted into DB")
+
+                cursor.execute(query, values)
+                conn.commit()
+
 
     except Exception as e:
         print("An error occured:", e)
@@ -151,3 +170,4 @@ def connect_to_db():
 
 
 BASE_URL = 'https://www.edpb.europa.eu'
+load_articles(BASE_URL, 0)

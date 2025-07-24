@@ -10,6 +10,8 @@ import psycopg2
 from dotenv import load_dotenv
 import os
 
+from infer_article_embedding import infer_article
+
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
 class Article:
@@ -34,7 +36,6 @@ driver = webdriver.Chrome(service=service)
 
 # Scraper Function
 def load_articles(base_url, url_to_scrape):
-    articles_list = []
     try:
         # Wait for up to 20 seconds until the element with ID "css-jghyns" is present in the DOM (article element)
         driver.get(url_to_scrape)
@@ -133,9 +134,25 @@ def load_articles(base_url, url_to_scrape):
             cursor.execute(query, values)
             conn.commit()
                         
-            articles_list.append(new_article)
+
+            # Append article embedding to embedding table
+            cursor.execute('SELECT id FROM "Article" WHERE url=%s', (new_article.url,))
+            exists = cursor.fetchone()
+            article_id = exists[0]
+
+            
+            cursor.execute('SELECT 1 FROM embeddings WHERE article_id=%s', (article_id,))
+            in_embeddings = cursor.fetchone()
+
+            if not in_embeddings:
+                article_vector = infer_article(" ".join(new_article.content), article_id)
+                query = 'INSERT INTO embeddings (article_id, vector) VALUES (%s, %s)'
+                values = (str(article_id), article_vector.tolist())
+                print("Inserted into DB")
+
+                cursor.execute(query, values)
+                conn.commit()
         
-        return articles_list
 
     except Exception as e:
         print("Error occured:", e)

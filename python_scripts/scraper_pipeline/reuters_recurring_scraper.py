@@ -16,6 +16,8 @@ from dotenv import load_dotenv
 import os
 import psycopg2
 
+from infer_article_embedding import infer_article
+
 
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
@@ -76,7 +78,7 @@ def load_articles(base_url):
     driver = uc.Chrome(options=options)
 
     driver.set_page_load_timeout(30)
-    articles_list = []
+
     try:
         # Wait for up to 20 seconds until the element with ID "css-jghyns" is present in the DOM (article element)
         time.sleep(random.uniform(2, 5))
@@ -104,7 +106,6 @@ def load_articles(base_url):
         soup = BeautifulSoup(html, 'html.parser')
 
         articles = soup.select('.story-card__tpl-common__1Q7br.story-card__tpl-feed-media-on-right-image-landscape-big__34KGa.story-card__transition-no-description-for-mobile__2uxm-.feed-list__card__Praes')
-        count = 0
 
         for i in articles:
             try: 
@@ -174,22 +175,31 @@ def load_articles(base_url):
                     datetime_object = datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%SZ")
                     new_article.date_published = datetime_object
 
-                print(date_string)
+                # Append article embedding to embedding table
+                cursor.execute('SELECT id FROM "Article" WHERE url=%s', (new_article.url,))
+                exists = cursor.fetchone()
+                article_id = exists[0]
 
-                # Append new article to DB
-                query = 'INSERT INTO "Article" (url, title, date_posted, location, description, content, keywords) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-                values = (new_article.url, new_article.title, new_article.date_published, new_article.location, new_article.description, new_article.content, new_article.keywords)
-                cursor.execute(query, values)
-                conn.commit()
+                
+                cursor.execute('SELECT 1 FROM embeddings WHERE article_id=%s', (article_id,))
+                in_embeddings = cursor.fetchone()
 
-                articles_list.append(new_article)
+                if not in_embeddings:
+                    article_vector = infer_article(" ".join(new_article.content), article_id)
+                    query = 'INSERT INTO embeddings (article_id, vector) VALUES (%s, %s)'
+                    values = (str(article_id), article_vector.tolist())
+
+                    cursor.execute(query, values)
+                    conn.commit()
+
+
+
             except Exception as e:
                 print(f"Error on article: {complete_link} -", e)
 
 
             continue
         driver.quit()
-        return articles_list
         
         
     except Exception as e:

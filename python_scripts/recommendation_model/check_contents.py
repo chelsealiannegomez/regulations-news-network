@@ -29,5 +29,7 @@ cursor.execute("SELECT * FROM embeddings;")
 
 contents = cursor.fetchall()
 
-for i in contents:
-    print(i)
+print(len(contents))
+
+# for i in contents:
+#     print(i)

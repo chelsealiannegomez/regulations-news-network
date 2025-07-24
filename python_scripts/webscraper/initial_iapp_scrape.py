@@ -12,7 +12,7 @@ import asyncio
 from keybert_extraction import extract_keywords
 from insert_to_db import insert_json_to_db
 from parse_date import parse_date_DMY
-from translate import translate_text, is_english, translate_title
+from python_scripts.scraper_pipeline.translate import translate_text, is_english, translate_title
 
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
