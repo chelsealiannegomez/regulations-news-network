@@ -35,7 +35,7 @@ export const PATCH = async (
             { status: 201 }
         );
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return NextResponse.json(
             { message: "Something went wrong" },
             { status: 401 }

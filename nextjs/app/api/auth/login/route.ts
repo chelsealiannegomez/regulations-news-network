@@ -33,7 +33,7 @@ export const POST = async (request: NextRequest) => {
             { status: 401 }
         );
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return NextResponse.json(
             { message: "Something went wrong:", err },
             { status: 500 }

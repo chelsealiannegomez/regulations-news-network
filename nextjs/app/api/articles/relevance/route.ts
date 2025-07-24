@@ -1,12 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
+import getArticleIds from "@/app/utils/getArticleIds";
 
 export const POST = async (request: NextRequest) => {
     const { query, page_num, num_articles_per_page, locations, user_id } =
         await request.json();
     try {
-        console.log(query, locations);
-        const data = await fetch(`http://localhost:3000/api/recommendation`, {
+        const data = await fetch(`${process.env.DOMAIN}/api/recommendation`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -31,9 +31,6 @@ export const POST = async (request: NextRequest) => {
 
         const articles = [];
 
-        let firstId = -1;
-        let lastId = -1;
-
         const maxPageNum = Math.ceil(
             ordered_ids.length / num_articles_per_page
         );
@@ -45,13 +42,11 @@ export const POST = async (request: NextRequest) => {
             );
         }
 
-        if (page_num * num_articles_per_page > ordered_ids.length) {
-            firstId = (page_num - 1) * ordered_ids.length + 1;
-            lastId = page_num * num_articles_per_page;
-        } else {
-            firstId = (page_num - 1) * num_articles_per_page + 1;
-            lastId = page_num * num_articles_per_page;
-        }
+        const [firstId, lastId] = getArticleIds(
+            page_num,
+            num_articles_per_page,
+            ordered_ids.length
+        );
 
         for (let i = firstId; i < lastId + 1; i++) {
             const article = await prisma.article.findUnique({
@@ -65,7 +60,7 @@ export const POST = async (request: NextRequest) => {
             { status: 200 }
         );
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return NextResponse.json(
             { message: "Something went wrong" },
             { status: 500 }

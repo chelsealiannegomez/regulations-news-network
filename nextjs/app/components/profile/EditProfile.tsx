@@ -28,7 +28,6 @@ export default function EditProfile({ user }: ProfilePageProps) {
             if (response.ok) {
                 setIsNameEdit((prev) => !prev);
             }
-            console.log(message.message);
         } catch (err) {
             console.error(err);
         }
@@ -57,7 +56,6 @@ export default function EditProfile({ user }: ProfilePageProps) {
             if (response.ok) {
                 setIsEmailEdit((prev) => !prev);
             }
-            console.log(message.message);
         } catch (err) {
             console.error(err);
         }
