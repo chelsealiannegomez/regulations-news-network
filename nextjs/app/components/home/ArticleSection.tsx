@@ -57,7 +57,6 @@ export default function ArticleSection({ user }: HomePageProps) {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log("Data", data);
                     setCurrentPageArticles(data.articles);
                     setTotalPages(
                         Math.ceil(data.total_articles / NUM_ARTICLES_PER_PAGE)
@@ -78,13 +77,11 @@ export default function ArticleSection({ user }: HomePageProps) {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    setCurrentPageArticles(data.articles.results);
+                    setCurrentPageArticles(data.articles);
                     setTotalPages(
-                        Math.ceil(
-                            data.articles.total_articles / NUM_ARTICLES_PER_PAGE
-                        )
+                        Math.ceil(data.total_articles / NUM_ARTICLES_PER_PAGE)
                     );
-                    setNumArticles(data.articles.total_articles);
+                    setNumArticles(data.total_articles);
                 });
         }
     }, [
