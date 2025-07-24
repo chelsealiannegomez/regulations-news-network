@@ -43,3 +43,4 @@
 **/venv/
 
 **/__pycache__
+**/sendgrid.env
