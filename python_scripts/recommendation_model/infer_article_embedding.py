@@ -2,7 +2,13 @@ import json
 import tensorflow as tf
 import numpy as np
 
+<<<<<<< HEAD
+from nltk.corpus import stopwords
+
+stop_words = set(stopwords.words('english'))
+=======
 from stop_words import stop_words
+>>>>>>> 3cc9712247ec0951bacc3ecb44f445632a8baeab
 
 from create_model import ReduceMeanLayer
 

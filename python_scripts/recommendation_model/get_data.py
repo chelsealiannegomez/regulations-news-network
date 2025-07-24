@@ -2,7 +2,11 @@ import requests
 import math
 import json
 import numpy as np
-from stop_words import stop_words
+
+from nltk.corpus import stopwords
+
+stop_words = set(stopwords.words('english'))
+
 
 from nltk.corpus import stopwords
 

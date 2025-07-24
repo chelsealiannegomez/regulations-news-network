@@ -6,19 +6,16 @@ export const POST = async (request: NextRequest) => {
         await request.json();
     try {
         console.log(query, locations);
-        const data = await fetch(
-            `${process.env.FASTAPI_DOMAIN}/ordered_articles`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    query: query,
-                    locations: locations,
-                }),
-            }
-        );
+        const data = await fetch(`http://localhost:3000/api/recommendation`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                query: query,
+                locations: locations,
+            }),
+        });
 
         const response = await data.json();
 

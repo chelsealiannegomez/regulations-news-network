@@ -1,38 +1,49 @@
-// schema.prisma
-
 generator client {
   provider = "prisma-client-js"
   output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
-  id            Int          @id @default(autoincrement())  
-  email         String       @unique
-  firstName     String
-  lastName      String
-  password      String
-  preferences   String[]
-  locations     Int[]
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  firstName   String
+  lastName    String
+  password    String
+  preferences String[]
+  locations   Int[]
 }
 
 model Article {
-  id            Int          @id @default(autoincrement())  
-  url           String       @unique
-  title         String
-  date_posted   DateTime     @db.Date
-  location      String
-  description   String
-  content       String[]
-  keywords      String[]
+  id          Int      @id @default(autoincrement())
+  url         String   @unique
+  title       String
+  date_posted DateTime @db.Date
+  location    String
+  description String
+  content     String[]
+  keywords    String[]
 }
 
 model Preferences {
-  id            Int         @id @default(autoincrement())
-  topic         String
+  id    Int    @id @default(autoincrement())
+  topic String
+}
+
+model embeddings {
+  id         Int                   @id @default(autoincrement())
+  article_id Int
+  vector     Unsupported("vector")
+}
+
+model Log {
+  id        Int                   @id @default(autoincrement())
+  user_id   Int
+  article_id Int
+  time      DateTime              @default(now())
 }
