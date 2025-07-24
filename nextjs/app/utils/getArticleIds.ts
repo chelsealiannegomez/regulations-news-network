@@ -9,7 +9,6 @@ export const getArticleIds = (
     if (lastId > totalArticles) {
         lastId = totalArticles;
     }
-    console.log("hi", firstId, lastId);
     return [firstId, lastId];
 };
 
