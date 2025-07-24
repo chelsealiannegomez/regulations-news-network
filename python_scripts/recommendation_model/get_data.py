@@ -8,6 +8,11 @@ from nltk.corpus import stopwords
 stop_words = set(stopwords.words('english'))
 
 
+from nltk.corpus import stopwords
+
+stop_words = set(stopwords.words('english'))
+
+
 def get_articles():
     response = requests.get('https://regulations-news-network.vercel.app/api/articles')
     articles = response.json()["articles"]

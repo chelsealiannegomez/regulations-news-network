@@ -66,6 +66,8 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.1.11
         version: 4.1.11
+        specifier: ^4.1.11
+        version: 4.1.11
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
