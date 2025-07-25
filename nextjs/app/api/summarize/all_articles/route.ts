@@ -1,3 +1,5 @@
+// Only used to initialize summaries of articles already stored in database
+
 import { NextRequest, NextResponse } from "next/server";
 import { Pool } from "pg";
 import dotenv from "dotenv";
@@ -17,8 +19,7 @@ const pool = new Pool({
     },
 });
 
-export const delay = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const GET = async (request: NextRequest) => {
     // const { query, locations, user_id } = await request.json();
