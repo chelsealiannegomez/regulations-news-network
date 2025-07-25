@@ -62,9 +62,9 @@ export const getAllUserLogs = async (user_id: number) => {
 };
 
 export const getArticleSeenWeight = (logs: number) => {
-    if (logs > 3) {
-        return 0;
-    } else {
+    if (logs === 0) {
         return 1;
+    } else {
+        return 1 / (1 + logs);
     }
 };
