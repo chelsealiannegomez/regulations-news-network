@@ -115,27 +115,35 @@ export default function ArticleSection({ user }: HomePageProps) {
                         : "Sort by Date Posted"}
                 </div>
             </div>
-            <p className="mb-3">Showing results for: {query}</p>
-            {currentPageArticles === undefined ? (
+            {query === "" ? (
+                <div className="h-screen flex justify-center">
+                    <p className="text-xl">
+                        Please select preferences in the profile page!
+                    </p>
+                </div>
+            ) : currentPageArticles === undefined ? (
                 <div className="flex items-center w-screen justify-center">
                     <span className="loading loading-infinity loading-xl text-primary h-180 w-120"></span>
                 </div>
             ) : (
                 <div>
-                    {currentPageArticles.map((article) => (
-                        <ArticleCard
-                            article={article}
-                            key={article.id}
-                            user={user}
-                        />
-                    ))}
-                    <div className="flex">
-                        <Pagination
-                            totalPages={totalPages}
-                            currentPage={currentPage}
-                            setCurrentPage={setCurrentPage}
-                            totalArticles={numArticles}
-                        />
+                    <p className="mb-3">Showing results for: {query}</p>
+                    <div>
+                        {currentPageArticles.map((article) => (
+                            <ArticleCard
+                                article={article}
+                                key={article.id}
+                                user={user}
+                            />
+                        ))}
+                        <div className="flex">
+                            <Pagination
+                                totalPages={totalPages}
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                totalArticles={numArticles}
+                            />
+                        </div>
                     </div>
                 </div>
             )}

@@ -33,7 +33,6 @@ export default function EditPreferencesList({
             preferredTemp.push(input);
             setPreferencesCopy(preferredTemp);
             setInput("");
-            console.error(preferredTemp);
         }
     };
 
@@ -55,7 +54,6 @@ export default function EditPreferencesList({
             if (response.ok) {
                 setIsEdit((prev) => !prev);
             }
-            console.error(message.message);
         } catch (err) {
             console.error(err);
         }

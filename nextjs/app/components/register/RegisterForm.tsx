@@ -29,7 +29,10 @@ export default function RegisterForm() {
                 body: JSON.stringify({ firstName, lastName, email, password }),
             });
             if (response.ok) {
-                router.push("/initial-selection");
+                alert(
+                    "Please select your preferences and locations in the next page!"
+                );
+                router.push("/profile");
             }
             const message = await response.json();
             setSuccessfulRegister(message.message);
