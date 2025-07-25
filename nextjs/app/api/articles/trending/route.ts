@@ -18,6 +18,10 @@ export const GET = async () => {
 
         const map = new Map();
 
+        if (!logs) {
+            return NextResponse.json({ results: [] }, { status: 400 });
+        }
+
         if (logs) {
             for (const log of logs) {
                 if (map.has(log.article_id)) {
@@ -27,8 +31,6 @@ export const GET = async () => {
                 }
             }
         }
-
-        console.log(map);
 
         const sortedLogs = [...map].sort((a, b) => b[1] - a[1]);
 
@@ -44,15 +46,24 @@ export const GET = async () => {
             },
         });
 
-        const articleMap = new Map(
-            trending.map((article) => [article.id, article])
-        );
+        if (trending) {
+            const articleMap = new Map(
+                trending.map((article) => [article.id, article])
+            );
 
-        const orderedTrending = ids
-            .map((id) => articleMap.get(id))
-            .filter(Boolean);
+            if (ids) {
+                const orderedTrending = ids
+                    .map((id) => articleMap.get(id))
+                    .filter(Boolean);
 
-        return NextResponse.json({ results: orderedTrending }, { status: 200 });
+                return NextResponse.json(
+                    { results: orderedTrending },
+                    { status: 200 }
+                );
+            }
+        }
+
+        return NextResponse.json({ results: [] }, { status: 400 });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ results: [] }, { status: 400 });
