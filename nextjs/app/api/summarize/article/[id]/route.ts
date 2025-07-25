@@ -1,28 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Pool } from "pg";
-import dotenv from "dotenv";
 import prisma from "@/lib/prisma";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-dotenv.config();
+export const GET = async (
+    request: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) => {
+    const { id } = await context.params;
 
-const pool = new Pool({
-    host: process.env.PGHOST,
-    database: process.env.PGDATABASE,
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
-    port: parseInt(process.env.PGPORT || "5432"),
-    ssl: {
-        rejectUnauthorized: false,
-    },
-});
-
-export const GET = async (request: NextRequest) => {
-    const { id } = await request.json();
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash-lite",
+        model: "gemini-2.5-flash-lite",
         tools: [
             {
                 codeExecution: {},
@@ -30,16 +19,22 @@ export const GET = async (request: NextRequest) => {
         ],
     });
 
-    const client = await pool.connect();
-
     try {
         const article = await prisma.article.findUnique({
             where: {
-                id: id,
+                id: parseInt(id),
             },
         });
 
         if (article) {
+            if (article.summary !== "") {
+                return NextResponse.json(
+                    {
+                        message: `Article already has summary`,
+                    },
+                    { status: 201 }
+                );
+            }
             const prompt = `Summarize the following privacy news article in 4 sentences. Only include what is explicitly written in the article: ${article.content}`;
 
             const result = await model.generateContent(prompt);
@@ -47,7 +42,7 @@ export const GET = async (request: NextRequest) => {
             const text = result.response.text();
 
             const updatedArticle = await prisma.article.update({
-                where: { id: id },
+                where: { id: parseInt(id) },
                 data: {
                     summary: text,
                 },
@@ -72,7 +67,5 @@ export const GET = async (request: NextRequest) => {
             { message: "Something went wrong: ", err },
             { status: 401 }
         );
-    } finally {
-        client.release();
     }
 };
