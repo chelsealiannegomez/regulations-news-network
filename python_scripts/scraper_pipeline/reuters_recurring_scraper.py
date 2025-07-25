@@ -186,6 +186,7 @@ def load_reuters_articles(base_url):
                 exists = cursor.fetchone()
                 article_id = exists[0]
 
+                requests.get(f"http://localhost:3000/api/cluster/{article_id}")
                 
                 cursor.execute('SELECT 1 FROM embeddings WHERE article_id=%s', (article_id,))
                 in_embeddings = cursor.fetchone()

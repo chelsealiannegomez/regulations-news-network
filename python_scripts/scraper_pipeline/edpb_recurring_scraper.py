@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import psycopg2
 from dotenv import load_dotenv
 import os
+import requests
 
 from infer_article_embedding import infer_article
 from parse_date import parse_date_DMY
@@ -131,6 +132,7 @@ def load_edpb_articles(base_url, page_number):
             exists = cursor.fetchone()
             article_id = exists[0]
 
+            requests.get(f"http://localhost:3000/api/cluster/{article_id}")
             
             cursor.execute('SELECT 1 FROM embeddings WHERE article_id=%s', (article_id,))
             in_embeddings = cursor.fetchone()

@@ -25,7 +25,7 @@ export const GET = async (
     const { id } = await context.params;
     const client = await pool.connect();
 
-    const filePath = path.resolve(__dirname, "centroids.json");
+    const filePath = path.join(process.cwd(), "public", "centroids.json");
     const jsonData = fs.readFileSync(filePath, "utf-8");
 
     const centroids = JSON.parse(jsonData);
