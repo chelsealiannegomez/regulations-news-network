@@ -55,7 +55,7 @@ const pool = new Pool({
 });
 
 export const POST = async (request: NextRequest) => {
-    const { query, locations, user_id } = await request.json();
+    const { query, locations, user_id, rate } = await request.json();
 
     if (!query || !locations) {
         return NextResponse.json(
@@ -117,9 +117,9 @@ export const POST = async (request: NextRequest) => {
             const articleSeenWeight = getArticleSeenWeight(map.get(article_id));
 
             const finalScore =
-                similarity * 0.7 +
-                recencyWeight(daysOld) * 0.2 +
-                articleSeenWeight * 0.1;
+                similarity * rate +
+                recencyWeight(daysOld) * ((1 - rate) / 2) +
+                articleSeenWeight * ((1 - rate) / 2);
 
             scoredArticles.push({ id: article_id, score: finalScore });
         }

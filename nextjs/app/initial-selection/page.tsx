@@ -28,10 +28,14 @@ export default async function Page() {
         redirect("/login");
     }
 
+    const fixedUser = {
+        ...user,
+        rate: user.rate === null ? undefined : user.rate,
+    };
+
     return (
         <div>
-            <InitialSelection user={user} />
+            <InitialSelection user={fixedUser} />
         </div>
     );
 }
-

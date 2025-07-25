@@ -13,6 +13,7 @@ export interface User {
     email: string;
     preferences?: string[];
     locations?: number[];
+    rate?: number;
 }
 
 export interface Article {

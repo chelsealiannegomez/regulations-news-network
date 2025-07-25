@@ -28,5 +28,10 @@ export default async function Page() {
         redirect("/login");
     }
 
-    return <HomePage user={user} />;
+    const fixedUser = {
+        ...user,
+        rate: user.rate === null ? undefined : user.rate,
+    };
+
+    return <HomePage user={fixedUser} />;
 }

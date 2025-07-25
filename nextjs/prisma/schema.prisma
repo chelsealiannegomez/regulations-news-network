@@ -17,7 +17,7 @@ model User {
   password    String
   preferences String[]
   locations   Int[]    @default([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-  rate        Float    @default(0.7)
+  rate        Float?   @default(0.7)
 }
 
 model Article {
