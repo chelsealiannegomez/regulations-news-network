@@ -16,3 +16,6 @@ def main():
     # Reuters Scraping Call
     BASE_URL = "https://www.reuters.com/legal/data-privacy"
     load_reuters_articles(BASE_URL)
+
+if __name__ == "__main__":
+    main()

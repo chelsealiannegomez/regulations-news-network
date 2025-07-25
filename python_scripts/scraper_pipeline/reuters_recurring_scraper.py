@@ -185,7 +185,6 @@ def load_reuters_articles(base_url):
                 cursor.execute('SELECT id FROM "Article" WHERE url=%s', (new_article.url,))
                 exists = cursor.fetchone()
                 article_id = exists[0]
-
                 
                 cursor.execute('SELECT 1 FROM embeddings WHERE article_id=%s', (article_id,))
                 in_embeddings = cursor.fetchone()
@@ -197,6 +196,8 @@ def load_reuters_articles(base_url):
 
                     cursor.execute(query, values)
                     conn.commit()
+
+                requests.get(f"https://regulationsnewsnetwork.online/api/cluster/{article_id}")
 
 
 
