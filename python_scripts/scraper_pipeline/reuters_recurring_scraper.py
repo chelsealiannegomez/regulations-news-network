@@ -220,6 +220,5 @@ def connect_to_db():
         cursor = conn.cursor()
 
         return conn, cursor
-
     except Exception as e:
-        return "Error connecting to database:", e
+        print(e)
