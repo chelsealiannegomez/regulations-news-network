@@ -40,11 +40,12 @@ model embeddings {
   id         Int                   @id @default(autoincrement())
   article_id Int
   vector     Unsupported("vector")
+  cluster    Int                  @default(-1)
 }
 
 model Log {
   id        Int                   @id @default(autoincrement())
   user_id   Int
-  article_id Int
+  article_id Int 
   time      DateTime              @default(now())
 }

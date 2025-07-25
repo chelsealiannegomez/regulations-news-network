@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArticleCardProps } from "@/lib/types";
+import prisma from "@/lib/prisma";
 
 export default function ArticleCard({ article, user }: ArticleCardProps) {
     const [seeMore, setSeeMore] = useState<boolean>(false);
+    const [seeSimilar, setSeeSimilar] = useState<boolean>(false);
 
     const date = new Date(article.date_posted).toLocaleString("en-US", {
         month: "long",
@@ -31,6 +33,25 @@ export default function ArticleCard({ article, user }: ArticleCardProps) {
             console.error(err);
         }
     };
+
+    const [similar, setSimilar] = useState([]);
+
+    const onSeeSimilar = async () => {
+        setSeeSimilar((prev) => !prev);
+
+        try {
+            const response = await fetch(
+                `/api/articles/get_similar/${article.id}`
+            );
+            const data = await response.json();
+            setSimilar(data);
+            console.log(data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {}, [similar]);
 
     return (
         <div className="border rounded-xl mb-5 px-7 py-5 bg-gray-50 border-gray-200 hover:border-gray-400 hover:bg-white relative">
@@ -79,6 +100,26 @@ export default function ArticleCard({ article, user }: ArticleCardProps) {
                     >
                         Close
                     </button>
+                    <div>
+                        <button
+                            onClick={onSeeSimilar}
+                            className="bg-gray-200 px-5 rounded-md mt-3 duration-500 transition-[background-color] hover:bg-gray-400 cursor-pointer"
+                        >
+                            See Similar
+                        </button>
+                        {seeSimilar ? (
+                            <div className="absolute bg-gray-200 min-w-32 min-h-32 mb-2">
+                                {Array.isArray(similar) &&
+                                    similar.map((article) => (
+                                        <div key={article.url}>
+                                            <a href={article.url}>
+                                                {article.title}
+                                            </a>
+                                        </div>
+                                    ))}
+                            </div>
+                        ) : null}
+                    </div>
                 </div>
             )}
         </div>

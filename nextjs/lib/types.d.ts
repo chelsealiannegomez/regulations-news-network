@@ -76,3 +76,9 @@ export type Log = {
     article_id: number;
     time: Date;
 };
+
+export type Embedding = {
+    article_id: number;
+    vector: number[];
+    cluster: number;
+};

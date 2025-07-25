@@ -40,22 +40,29 @@ export const GET = async (request: NextRequest) => {
         const articles = await prisma.article.findMany();
 
         for (const article of articles) {
-            if (article.summary !== "") {
-                continue;
+            // if (article.summary !== "") {
+            //     continue;
+            // }
+            if (
+                article.summary.includes("`") ||
+                article.summary.includes("*") ||
+                article.summary.includes("Here's a") ||
+                article.summary.includes("Here is a")
+            ) {
+                const prompt = `Write a description of the following privacy news article in 4 sentences. Only include what is explicitly written in the article and return only the description. Use only plain text and return only the description. Article Content: ${article.content}`;
+                const result = await model.generateContent(prompt);
+
+                const text = result.response.text();
+
+                const updatedArticle = await prisma.article.update({
+                    where: { id: article.id },
+                    data: {
+                        summary: text,
+                    },
+                });
+                console.log(`Updated article ${article.id}`);
+                await delay(4100); // Add delay of 4+ seconds to not go over rate of 15 rpm
             }
-            const prompt = `Summarize the following privacy news article in 4 sentences. Only include what is explicitly written in the article: ${article.content}`;
-            const result = await model.generateContent(prompt);
-
-            const text = result.response.text();
-
-            const updatedArticle = await prisma.article.update({
-                where: { id: article.id },
-                data: {
-                    summary: text,
-                },
-            });
-            console.log(`Updated article ${article.id}`);
-            await delay(4100); // Add delay of 4+ seconds to not go over rate of 15 rpm
         }
 
         return NextResponse.json(

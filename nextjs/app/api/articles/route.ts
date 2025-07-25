@@ -7,7 +7,7 @@ export const GET = async () => {
 
         if (!articles) {
             return NextResponse.json(
-                { message: "Invalid credentials" },
+                { message: "Articles not found" },
                 { status: 401 }
             );
         }

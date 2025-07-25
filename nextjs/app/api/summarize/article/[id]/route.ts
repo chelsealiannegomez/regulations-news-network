@@ -32,7 +32,7 @@ export const GET = async (
                     {
                         message: `Article already has summary`,
                     },
-                    { status: 201 }
+                    { status: 409 }
                 );
             }
             const prompt = `Summarize the following privacy news article in 4 sentences. Only include what is explicitly written in the article: ${article.content}`;
