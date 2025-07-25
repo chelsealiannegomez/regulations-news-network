@@ -1,3 +1,4 @@
+import TrendingPage from "../components/trending/TrendingPage";
 export default async function Page() {
-    return <p>Top engaged articles</p>;
+    return <TrendingPage />;
 }

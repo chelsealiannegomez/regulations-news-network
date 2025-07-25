@@ -17,8 +17,9 @@ const pool = new Pool({
     },
 });
 
-export const GET = async (request: NextRequest) => {
-    const { id } = await request.json();
+export const GET = async (context: { params: Promise<{ id: string }> }) => {
+    const { id } = await context.params;
+
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
     const model = genAI.getGenerativeModel({
@@ -35,7 +36,7 @@ export const GET = async (request: NextRequest) => {
     try {
         const article = await prisma.article.findUnique({
             where: {
-                id: id,
+                id: parseInt(id),
             },
         });
 
@@ -47,7 +48,7 @@ export const GET = async (request: NextRequest) => {
             const text = result.response.text();
 
             const updatedArticle = await prisma.article.update({
-                where: { id: id },
+                where: { id: parseInt(id) },
                 data: {
                     summary: text,
                 },
