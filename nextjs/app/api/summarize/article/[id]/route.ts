@@ -8,6 +8,23 @@ export const GET = async (
 ) => {
     const { id } = await context.params;
 
+<<<<<<< HEAD
+=======
+const pool = new Pool({
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    port: parseInt(process.env.PGPORT || "5432"),
+    ssl: {
+        rejectUnauthorized: false,
+    },
+});
+
+export const GET = async (context: { params: Promise<{ id: string }> }) => {
+    const { id } = await context.params;
+
+>>>>>>> e763ed8f659ff07a78ff5ffc44b58505350058be
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
     const model = genAI.getGenerativeModel({

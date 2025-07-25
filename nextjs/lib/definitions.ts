@@ -19,16 +19,12 @@ export interface Article {
     id: number;
     url: string;
     title: string;
-    date_posted: string;
+    date_posted: Date;
     location: string;
     description: string;
+    summary: string;
     content: string[];
-    keywords: Keyword[];
-}
-
-export interface Keyword {
-    score: number;
-    keyword: string;
+    keywords: string[];
 }
 
 export interface Preference {
