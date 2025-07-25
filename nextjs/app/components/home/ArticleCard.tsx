@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ArticleCardProps } from "@/lib/types";
-import prisma from "@/lib/prisma";
+import { Article } from "@prisma/client";
 
 export default function ArticleCard({ article, user }: ArticleCardProps) {
     const [seeMore, setSeeMore] = useState<boolean>(false);
@@ -34,7 +34,7 @@ export default function ArticleCard({ article, user }: ArticleCardProps) {
         }
     };
 
-    const [similar, setSimilar] = useState([]);
+    const [similar, setSimilar] = useState<Article[]>([]);
 
     const onSeeSimilar = async () => {
         setSeeSimilar((prev) => !prev);
@@ -44,14 +44,12 @@ export default function ArticleCard({ article, user }: ArticleCardProps) {
                 `/api/articles/get_similar/${article.id}`
             );
             const data = await response.json();
-            setSimilar(data);
+            setSimilar(data.result);
             console.log(data);
         } catch (err) {
             console.error(err);
         }
     };
-
-    useEffect(() => {}, [similar]);
 
     return (
         <div className="border rounded-xl mb-5 px-7 py-5 bg-gray-50 border-gray-200 hover:border-gray-400 hover:bg-white relative">
@@ -86,6 +84,24 @@ export default function ArticleCard({ article, user }: ArticleCardProps) {
                     >
                         Read more
                     </button>
+                    <button
+                        onClick={onSeeSimilar}
+                        className="bg-gray-200 px-5 rounded-md mt-3 duration-500 transition-[background-color] hover:bg-gray-400 cursor-pointer ml-2"
+                    >
+                        See Similar
+                    </button>
+                    {seeSimilar && similar ? (
+                        <div className="absolute bg-gray-300 mt-2 z-2 rounded-md">
+                            {similar.map((article) => (
+                                <div
+                                    key={article.url}
+                                    className="px-3 py-2 hover:underline"
+                                >
+                                    <a href={article.url}>{article.title}</a>
+                                </div>
+                            ))}
+                        </div>
+                    ) : null}
                 </div>
             ) : (
                 <div key={article.id}>
@@ -107,16 +123,18 @@ export default function ArticleCard({ article, user }: ArticleCardProps) {
                         >
                             See Similar
                         </button>
-                        {seeSimilar ? (
-                            <div className="absolute bg-gray-200 min-w-32 min-h-32 mb-2">
-                                {Array.isArray(similar) &&
-                                    similar.map((article) => (
-                                        <div key={article.url}>
-                                            <a href={article.url}>
-                                                {article.title}
-                                            </a>
-                                        </div>
-                                    ))}
+                        {seeSimilar && similar ? (
+                            <div className="absolute bg-gray-300 mt-2 z-2 rounded-md">
+                                {similar.map((article) => (
+                                    <div
+                                        key={article.url}
+                                        className="px-3 py-2 hover:underline"
+                                    >
+                                        <a href={article.url}>
+                                            {article.title}
+                                        </a>
+                                    </div>
+                                ))}
                             </div>
                         ) : null}
                     </div>

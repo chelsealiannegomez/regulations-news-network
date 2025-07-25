@@ -16,6 +16,6 @@ export const GET = async (
         return NextResponse.json({ result: result }, { status: 201 });
     } catch (err) {
         console.error(err);
-        return NextResponse.json({ result: "not found" }, { status: 404 });
+        return NextResponse.json({ result: [] }, { status: 404 });
     }
 };
