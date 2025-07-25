@@ -140,8 +140,6 @@ def load_iapp_articles(base_url, url_to_scrape):
             cursor.execute('SELECT id FROM "Article" WHERE url=%s', (new_article.url,))
             exists = cursor.fetchone()
             article_id = exists[0]
-
-            requests.get(f"http://localhost:3000/api/cluster/{article_id}")
             
             cursor.execute('SELECT 1 FROM embeddings WHERE article_id=%s', (article_id,))
             in_embeddings = cursor.fetchone()
@@ -154,6 +152,8 @@ def load_iapp_articles(base_url, url_to_scrape):
 
                 cursor.execute(query, values)
                 conn.commit()
+
+            requests.get(f"http://re/api/cluster/{article_id}")
         
 
     except Exception as e:
