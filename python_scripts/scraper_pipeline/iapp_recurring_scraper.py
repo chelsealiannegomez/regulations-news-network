@@ -3,8 +3,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
+
+import requests
 
 import psycopg2
 from dotenv import load_dotenv
@@ -140,6 +141,7 @@ def load_iapp_articles(base_url, url_to_scrape):
             exists = cursor.fetchone()
             article_id = exists[0]
 
+            requests.get(f"http://localhost:3000/api/cluster/{article_id}")
             
             cursor.execute('SELECT 1 FROM embeddings WHERE article_id=%s', (article_id,))
             in_embeddings = cursor.fetchone()
