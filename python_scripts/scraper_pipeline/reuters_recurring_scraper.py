@@ -18,6 +18,8 @@ import psycopg2
 
 from infer_article_embedding import infer_article
 
+import requests
+
 
 locations = ["North America", "Europe", "Africa", "Asia", "South America", "Carribean", "Central America", "Middle East", "Oceania"]
 
@@ -197,6 +199,8 @@ def load_reuters_articles(base_url):
 
                     cursor.execute(query, values)
                     conn.commit()
+
+                response = requests.get(f"https://www.regulationsnewsnetwork.online/api/summarize/article/{article_id}")
 
 
 
