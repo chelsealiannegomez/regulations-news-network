@@ -126,7 +126,7 @@ const createContent = async (query: string, firstName: string) => {
         if (article) {
             let content = "";
             content += `<h1>${article.title}</h1>`;
-            content += `<p>${article.content}<p>`;
+            content += `<p>${article.summary}<p>`;
             content += `<br>`;
             html += content;
         }
@@ -136,10 +136,6 @@ const createContent = async (query: string, firstName: string) => {
 
 export const POST = async (request: NextRequest) => {
     const { firstName, email, query } = await request.json();
-
-    // const articles = await getArticlesLast7Days();
-
-    // const rankedArticles = await rankArticles(query, articles);
 
     const html = await createContent(query, firstName);
 
