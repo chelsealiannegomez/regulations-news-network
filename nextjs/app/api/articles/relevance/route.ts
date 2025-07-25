@@ -6,17 +6,20 @@ export const POST = async (request: NextRequest) => {
     const { query, page_num, num_articles_per_page, locations, user_id } =
         await request.json();
     try {
-        const data = await fetch(`${process.env.DOMAIN}/api/recommendation`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                query: query,
-                locations: locations,
-                user_id: user_id,
-            }),
-        });
+        const data = await fetch(
+            `${process.env.DOMAIN}/api/articles/recommendation`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    query: query,
+                    locations: locations,
+                    user_id: user_id,
+                }),
+            }
+        );
 
         const response = await data.json();
 

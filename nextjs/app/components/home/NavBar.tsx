@@ -20,6 +20,15 @@ export default function NavBar() {
                 </li>
                 <li
                     className={
+                        pathname === "/trending"
+                            ? "bg-gray-900 text-white rounded-md px-3 py-2 text-base font-medium underline"
+                            : "text-gray-300 hover:underline hover:text-white rounded-md px-3 py-2 text-base font-medium"
+                    }
+                >
+                    <Link href="/trending">Trending</Link>
+                </li>
+                <li
+                    className={
                         pathname === "/profile"
                             ? "bg-gray-900 text-white rounded-md px-3 py-2 text-base font-medium underline"
                             : "text-gray-300 hover:underline hover:text-white rounded-md px-3 py-2 text-base font-medium"

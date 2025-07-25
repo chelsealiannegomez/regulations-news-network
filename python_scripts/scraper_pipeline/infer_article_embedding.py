@@ -27,11 +27,6 @@ def get_word2int():
 
     return word2int
 
-def get_doc_ids():
-    with open('doc_ids.json', 'r') as f:
-        doc_ids = json.load(f)
-
-    return doc_ids
 
 def contents_to_word_indices(content, word2int):
     cleaned_content = remove_stop_words(content)
@@ -58,14 +53,9 @@ def generate_context(content, doc_id, context_size):
 
 def infer_article(content, id):
     word2int = get_word2int()
-    doc_ids = get_doc_ids()
 
     # process_article: str[] (array of words)
     process_article = contents_to_word_indices(content, word2int)
-
-    # Update doc_ids with new doc index
-    with open('doc_ids.json', "w") as json_file:
-        json.dump(doc_ids, json_file, indent=4)
 
     testing_samples = generate_context(process_article, id, context_size=3)
     contexts, _, _ = zip(*testing_samples)

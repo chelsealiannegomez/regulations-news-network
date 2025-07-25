@@ -39,7 +39,7 @@ service = Service(executable_path=DRIVER_PATH)
 driver = webdriver.Chrome(service=service)
 
 # Scraper Function
-def load_articles(base_url, page_number):
+def load_edpb_articles(base_url, page_number):
     try:
         # Wait for up to 20 seconds until the element with ID "view-row-content" is present in the DOM (articles container)
         url_to_scrape = f'{base_url}/news/news_en?page={page_number}'
@@ -167,7 +167,3 @@ def connect_to_db():
 
     except Exception as e:
         return "Error connecting to database:", e
-
-
-BASE_URL = 'https://www.edpb.europa.eu'
-load_articles(BASE_URL, 0)

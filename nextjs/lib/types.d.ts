@@ -70,3 +70,9 @@ export type SideBarProps = {
     setting: string;
     setSetting: React.Dispatch<React.SetStateAction<string>>;
 };
+
+export type Log = {
+    user_id: number;
+    article_id: number;
+    time: Date;
+};
