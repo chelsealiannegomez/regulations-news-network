@@ -2,9 +2,6 @@ from iapp_recurring_scraper import load_iapp_articles
 from edpb_recurring_scraper import load_edpb_articles
 from reuters_recurring_scraper import load_reuters_articles
 
-# def get_email_content():
-    
-
 def main():
     # IAPP Scraping Call
     NUM_ARTICLES = 8

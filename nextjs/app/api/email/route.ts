@@ -9,13 +9,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
-import {
-    cosineSimilarity,
-    recencyWeight,
-    getQueryEmbedding,
-    getAllUserLogs,
-    getArticleSeenWeight,
-} from "@/app/utils/queryHelpers";
+import { cosineSimilarity, getQueryEmbedding } from "@/app/utils/queryHelpers";
 
 dotenv.config();
 
@@ -121,6 +115,10 @@ const createContent = async (query: string, firstName: string) => {
     const rankedArticles = await rankArticles(query, articles);
 
     let html = `<h2>Hello, ${firstName}!</h2> <h4>Ready to dive into this week’s top privacy news and insights?</h4><br>`;
+
+    html += `<h5>See recent news just for you:</h5>`;
+
+    html += `<p>Click <a href='https://regulationsnewsnetwork.online/'>here</a> to view all articles</p>`;
 
     for (const article of rankedArticles) {
         if (article) {

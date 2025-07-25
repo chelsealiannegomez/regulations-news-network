@@ -15,6 +15,7 @@ import undetected_chromedriver as uc
 from dotenv import load_dotenv
 import os
 import psycopg2
+import requests
 
 from infer_article_embedding import infer_article
 
@@ -174,6 +175,12 @@ def load_reuters_articles(base_url):
                     datetime_object = datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%SZ")
                     new_article.date_published = datetime_object
 
+                # Append new article to DB
+                query = 'INSERT INTO "Article" (url, title, date_posted, location, description, content, keywords) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                values = (new_article.url, new_article.title, new_article.date_published, new_article.location, new_article.description, new_article.content, new_article.keywords)
+                cursor.execute(query, values)
+                conn.commit()
+
                 # Append article embedding to embedding table
                 cursor.execute('SELECT id FROM "Article" WHERE url=%s', (new_article.url,))
                 exists = cursor.fetchone()
@@ -220,5 +227,6 @@ def connect_to_db():
         cursor = conn.cursor()
 
         return conn, cursor
+
     except Exception as e:
-        print(e)
+        return "Error connecting to database:", e

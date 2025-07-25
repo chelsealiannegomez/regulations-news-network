@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Pool } from "pg";
-import dotenv from "dotenv";
 import prisma from "@/lib/prisma";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-dotenv.config();
+export const GET = async (
+    request: NextRequest,
+    context: { params: Promise<{ id: string }> }
+) => {
+    const { id } = await context.params;
 
+<<<<<<< HEAD
+=======
 const pool = new Pool({
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
@@ -20,18 +24,17 @@ const pool = new Pool({
 export const GET = async (context: { params: Promise<{ id: string }> }) => {
     const { id } = await context.params;
 
+>>>>>>> e763ed8f659ff07a78ff5ffc44b58505350058be
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash-lite",
+        model: "gemini-2.5-flash-lite",
         tools: [
             {
                 codeExecution: {},
             },
         ],
     });
-
-    const client = await pool.connect();
 
     try {
         const article = await prisma.article.findUnique({
@@ -41,6 +44,14 @@ export const GET = async (context: { params: Promise<{ id: string }> }) => {
         });
 
         if (article) {
+            if (article.summary !== "") {
+                return NextResponse.json(
+                    {
+                        message: `Article already has summary`,
+                    },
+                    { status: 409 }
+                );
+            }
             const prompt = `Summarize the following privacy news article in 4 sentences. Only include what is explicitly written in the article: ${article.content}`;
 
             const result = await model.generateContent(prompt);
@@ -73,7 +84,5 @@ export const GET = async (context: { params: Promise<{ id: string }> }) => {
             { message: "Something went wrong: ", err },
             { status: 401 }
         );
-    } finally {
-        client.release();
     }
 };
