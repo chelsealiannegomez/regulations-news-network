@@ -7,13 +7,14 @@ export const GET = async () => {
         const numDays = 10;
         const daysSinceSeen = new Date();
         daysSinceSeen.setDate(daysSinceSeen.getDate() - numDays);
-        const logs: Log[] = await prisma.log.findMany({
-            where: {
-                time: {
-                    gte: daysSinceSeen,
+        const logs: Log[] =
+            (await prisma.log.findMany({
+                where: {
+                    time: {
+                        gte: daysSinceSeen,
+                    },
                 },
-            },
-        });
+            })) || [];
 
         const map = new Map();
 
@@ -53,6 +54,7 @@ export const GET = async () => {
 
         return NextResponse.json({ results: orderedTrending }, { status: 200 });
     } catch (err) {
-        return [];
+        console.error(err);
+        return NextResponse.json({ results: [] }, { status: 400 });
     }
 };
