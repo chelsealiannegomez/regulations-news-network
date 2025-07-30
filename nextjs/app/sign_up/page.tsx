@@ -1,8 +1,8 @@
-import TrendingPage from "../components/trending/TrendingPage";
 import { cookies } from "next/headers";
 import { decrypt } from "@/lib/session";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
+import SignUp from "../components/sign_up/SignUp";
 
 export default async function Page() {
     const sessionCookie = (await cookies()).get("session")?.value;
@@ -27,5 +27,9 @@ export default async function Page() {
     if (!user) {
         redirect("/login");
     }
-    return <TrendingPage />;
+    const fixedUser = {
+        ...user,
+        rate: user.rate === null ? undefined : user.rate,
+    };
+    return <SignUp user={fixedUser} />;
 }
