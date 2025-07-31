@@ -5,9 +5,9 @@ import requests
 from dotenv import load_dotenv
 import os
 import nltk
-nltk.download('stopwords')
 
 def main():
+    nltk.download('stopwords')
     # IAPP Scraping Call
     NUM_ARTICLES = 8
     IAPP_URL = 'https://iapp.org'
