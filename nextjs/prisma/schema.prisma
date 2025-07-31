@@ -50,3 +50,8 @@ model Log {
   article_id Int 
   time      DateTime              @default(now())
 }
+
+model MailingList {
+  id        Int                   @id @default(autoincrement())
+  user_id   Int                   @unique
+}
