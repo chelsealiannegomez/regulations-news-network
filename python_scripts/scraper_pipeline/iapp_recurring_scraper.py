@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 
 import requests
+import undetected_chromedriver as uc
 
 import psycopg2
 from dotenv import load_dotenv
@@ -25,18 +26,21 @@ class Article:
         self.description = description
         self.content = content
 
-# options = Options()
-# options.headless = True  # Enable headless mode (not yet for development purposes)
-
-# Set the path to the Chromedriver
-DRIVER_PATH = '/Users/chelseagomez/Downloads/chromedriver-mac-arm64/chromedriver'
-
-# Set up the Chrome WebDriver
-service = Service(executable_path=DRIVER_PATH)
-driver = webdriver.Chrome(service=service)
 
 # Scraper Function
 def load_iapp_articles(base_url, url_to_scrape):
+    options = uc.ChromeOptions()
+    prefs = {"profile.managed_default_content_settings.images": 2}
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--blink-settings=imagesEnabled=false")
+    options.add_argument("--no-sandbox")
+    # options.add_argument("--headless=new")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_experimental_option("prefs", prefs)
+
+    driver = uc.Chrome(options=options)
+
     try:
         # Wait for up to 20 seconds until the element with ID "css-jghyns" is present in the DOM (article element)
         driver.get(url_to_scrape)

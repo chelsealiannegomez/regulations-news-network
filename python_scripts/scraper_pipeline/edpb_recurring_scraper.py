@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 import os
 import requests
 
+import undetected_chromedriver as uc
+
 from infer_article_embedding import infer_article
 from parse_date import parse_date_DMY
 from datetime import date
@@ -32,15 +34,21 @@ class Article:
 # options = Options()
 # options.headless = True  # Enable headless mode (not yet for development purposes)
 
-# Set the path to the Chromedriver
-DRIVER_PATH = '/Users/chelseagomez/Downloads/chromedriver-mac-arm64/chromedriver'
-
-# Set up the Chrome WebDriver
-service = Service(executable_path=DRIVER_PATH)
-driver = webdriver.Chrome(service=service)
-
 # Scraper Function
 def load_edpb_articles(base_url, page_number):
+    options = uc.ChromeOptions()
+    prefs = {"profile.managed_default_content_settings.images": 2}
+    options.add_argument("--disable-gpu")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--blink-settings=imagesEnabled=false")
+    options.add_argument("--no-sandbox")
+    # options.add_argument("--headless=new")
+    options.add_argument("--disable-blink-features=AutomationControlled")
+    options.add_experimental_option("prefs", prefs)
+
+    driver = uc.Chrome(options=options)
+
+    driver.set_page_load_timeout(30)
     try:
         # Wait for up to 20 seconds until the element with ID "view-row-content" is present in the DOM (articles container)
         url_to_scrape = f'{base_url}/news/news_en?page={page_number}'
