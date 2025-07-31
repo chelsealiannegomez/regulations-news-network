@@ -30,6 +30,11 @@ jobs:
                   pip install -r requirements.txt
 
             - name: Run Scraper Pipeline
+              env:
+                  PGHOST: ${{ secrets.PGHOST }}
+                  PGUSER: ${{ secrets.PGUSER }}
+                  PGDATABASE: ${{ secrets.PGDATABASE }}
+                  PGPASSWORD: ${{ secrets.PGPASSWORD }}
               run: |
                   cd python_scripts/scraper_pipeline
                   python3 pipeline.py
