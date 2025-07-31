@@ -1,6 +1,9 @@
 from iapp_recurring_scraper import load_iapp_articles
 from edpb_recurring_scraper import load_edpb_articles
 from reuters_recurring_scraper import load_reuters_articles
+import requests
+from dotenv import load_dotenv
+import os
 
 def main():
     # IAPP Scraping Call
@@ -16,6 +19,10 @@ def main():
     # Reuters Scraping Call
     BASE_URL = "https://www.reuters.com/legal/data-privacy"
     load_reuters_articles(BASE_URL)
+
+    load_dotenv()
+    domain = os.getenv("DOMAIN")
+    requests.get(f"{domain}/api/email") # Call NextJS API Endpoint to send emails
 
 if __name__ == "__main__":
     main()
