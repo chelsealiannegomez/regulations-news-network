@@ -4,6 +4,8 @@ from reuters_recurring_scraper import load_reuters_articles
 import requests
 from dotenv import load_dotenv
 import os
+import nltk
+nltk.download('stopwords')
 
 def main():
     # IAPP Scraping Call
