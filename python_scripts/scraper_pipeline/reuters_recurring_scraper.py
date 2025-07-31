@@ -221,7 +221,8 @@ def connect_to_db():
     try:
         load_dotenv()
         host = os.getenv("PGHOST")
-        conn_string = f"host={host} dbname={os.getenv("PGDATABASE")} user={os.getenv("PGUSER")} password={os.getenv("PGPASSWORD")}"
+
+        conn_string = f"host={host} dbname={os.getenv('PGDATABASE')} user={os.getenv('PGUSER')} password={os.getenv('PGPASSWORD')}"
 
         conn = psycopg2.connect(conn_string)
 

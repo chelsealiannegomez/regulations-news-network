@@ -153,7 +153,7 @@ def load_iapp_articles(base_url, url_to_scrape):
                 cursor.execute(query, values)
                 conn.commit()
 
-            requests.get(f"http://re/api/cluster/{article_id}")
+            requests.get(f"https://regulationsnewsnetwork.online/api/cluster/{article_id}")
         
 
     except Exception as e:
